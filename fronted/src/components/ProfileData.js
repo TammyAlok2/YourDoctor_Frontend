@@ -27,7 +27,7 @@ const profileData = [
 const ProfileData = () => {
   return (
     <div className="flex items-center justify-center">
-        <div className="grid justify-center grid-cols-3 space-x-[2rem] mx-[2rem] max-[850px]:grid-cols-1 gap-[1rem] relative top-[3rem]">
+        <div className="flex justify-center mx-[2rem] gap-[1rem] my-[3rem] xs:flex-col sm:flex-col lg:flex-row">
     {
         profileData.map((userData, index)=>(
       <div className="flex gap-[2rem] p-[1rem] [box-shadow:0rem_0rem_1rem_0rem_gray]" key={index}>

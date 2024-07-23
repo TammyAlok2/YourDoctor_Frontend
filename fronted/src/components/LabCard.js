@@ -14,8 +14,8 @@ const labData = [
 
 const LabCard = () => {
   return (
-    <div className="relative max-[430px]:top-[3rem] max-[540px]:top-[5rem]">
-        <div className="flex gap-[3rem] items-center justify-center my-[8rem] max-[850px]:flex-col">
+    <div className="">
+        <div className="flex gap-[3rem] xs:gap-[1rem] sm:flex-col items-center justify-center my-[8rem] xs:flex-col lg:flex-row">
     {
         labData.map((data, index)=>(
       <div className="w-[20rem] h-[11rem] [box-shadow:0rem_0rem_1rem_0rem_gray] flex items-center justify-center" key={index}>

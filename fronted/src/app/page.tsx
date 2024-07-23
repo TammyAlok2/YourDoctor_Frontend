@@ -1,17 +1,11 @@
 "use client"
-import React from 'react'
-import HomeCard from '@/components/HomeCard'
-import CardInfo from '@/components/CardInfo'
-import ProfileData from '@/components/ProfileData'
-import LabCard from '@/components/LabCard'
+import React from 'react';
+import Home from '@/components/Home'
 
 const page = () => {
   return (
     <div>
-      <HomeCard  />
-      <ProfileData />
-      <CardInfo />
-      <LabCard />
+      <Home />
     </div>
   )
 }
