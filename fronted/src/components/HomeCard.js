@@ -47,28 +47,28 @@ const HomeCard = () => {
   }
 
   return (
-    <div className="flex items-center mt-[3rem] justify-center max-[430px]:mt-[3rem]">
+    <div className="mt-[3rem] xs:mt-8">
       {cardData.map((cardItem, index) => (
         <div
-          className={index === current ? "flex items-center justify-center w-[80%] slide active" : "slide"}
+          className={index === current ? "flex items-center justify-center slide active" : "slide"}
           key={index}
         >
           {index === current && (
-            <div className="bg-[rgb(206_206_206_/_71%)] rounded-2xl w-[80%] p-[5rem] relative max-[430px]:h-[32rem] max-[540px]:w-[93%]" data-aos="fade-left">
+            <div className="bg-[rgb(206_206_206_/_71%)] rounded-2xl w-[80%] p-[5rem]" data-aos="fade-left">
               <div className="flex items-center justify-center font-semibold text-[2.3rem] my-[3rem]">
                 <h1 className="">{cardItem.cardText}</h1>
               </div>
-              <div className="absolute bottom-[2rem] flex items-center justify-center gap-[5rem] w-[80%] max-[430px]:flex-col max-[430px]:left-[2rem]">
-                <div className="h-[2.4rem] bg-white rounded-lg relative w-[40%] max-[430px]:w-[85%]">
+              <div className="flex items-center justify-center gap-[5rem] xs:flex-col">
+                <div className="relative h-[2.4rem] bg-white rounded-lg">
                   <input
                     type="text"
-                    className="w-full h-full rounded-lg relative py-[1rem] px-[1rem] outline-0"
+                    className="w-full h-full rounded-lg relative py-[1rem] px-[1rem] outline-0 sm:w-[11rem]"
                     placeholder={"Search here"}
                     value={inputVal}
                     onChange={handleChange}
                   />
                   <Image
-                    className="absolute right-[0.5rem] top-[0.4rem] invert-[0.2] cursor-pointer"
+                    className="absolute right-[0.2rem] top-[0.6rem] invert-[0.2] cursor-pointer"
                     width={20}
                     height={20}
                     src={"https://img.icons8.com/ios-glyphs/50/search--v1.png"}
@@ -76,7 +76,7 @@ const HomeCard = () => {
                   />
                 </div>
                 <div className="flex gap-[3rem] items-center justify-center">
-                  <button className="text-[0.9rem] font-semibold text-white bg-[rgb(247,86,61)] py-[0.6rem] px-[1rem] rounded-xl [box-shadow:0_0_0.4rem_0_gray]">
+                  <button className="text-[0.9rem] font-semibold text-white bg-[rgb(247,86,61)] py-[0.6rem] px-[1rem] rounded-xl [box-shadow:0_0_0.4rem_0_gray] xs:w-[7rem] sm:w-[7rem]">
                     Lab Tests
                   </button>
                   <button className="text-[0.9rem] font-semibold text-white bg-[rgb(17_164_160_/_99%)] py-[0.6rem] px-[1rem] rounded-xl [box-shadow:0_0_0.4rem_0_gray]">

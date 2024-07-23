@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
 // components/Navbar.js
 import { useState } from "react";
 import {
@@ -63,7 +62,7 @@ const Navbar = () => {
           <div>
             <Link
               href={"/help"}
-              className="cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem]"
+              className="cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] lg:w-[8rem] lg:ml-[1rem]"
             >
               <Image
                 className="rotate-[-80deg] invert-[0.3]"
@@ -124,7 +123,7 @@ const Navbar = () => {
             </Link>
           </div>
         </div>
-        <div className="md:hidden">
+        <div className="md:hidden relative xs:top-[0.4rem] xs:left-2">
           <button onClick={toggleMenu} className="text-xl focus:outline-none">
             <FaBars />
           </button>
