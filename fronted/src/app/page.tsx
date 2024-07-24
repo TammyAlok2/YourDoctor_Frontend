@@ -7,8 +7,8 @@ import LoginForm from '@/app/login/page.js'
 const page = () => {
   return (
     <div>
-      {/* <Home /> */}
-       <LoginForm/>
+       <Home /> 
+       
 
     </div>
   )
