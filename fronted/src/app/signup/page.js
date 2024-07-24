@@ -71,7 +71,7 @@ export default function signup() {
           </button>
           <div className="text-center">
             <span className="text-black">Already have an account? </span>
-              <Link href="/" className="text-blue-800">Log In</Link>
+              <Link href="/login" className="text-blue-800">Log In</Link>
                </div>
         </form>
       </div>
