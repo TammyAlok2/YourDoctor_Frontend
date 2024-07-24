@@ -110,7 +110,7 @@ const Navbar = () => {
 
           <div>
             <Link
-              href={"/registration"}
+              href={"/signup"}
               className="cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem]"
             >
               <Image
