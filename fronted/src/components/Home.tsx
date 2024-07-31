@@ -1,7 +1,7 @@
-import HomeCard from '@/components/HomeCard'
-import CardInfo from '@/components/CardInfo'
-import ProfileData from '@/components/ProfileData'
-import LabCard from '@/components/LabCard'
+import HomeCard from '@/components/HomePage/HomeCard'
+import CardInfo from '@/components/HomePage/CardInfo'
+import ProfileData from '@/components/HomePage/ProfileData'
+import LabCard from '@/components/HomePage/LabCard'
 
 const Home = () => {
   return (
