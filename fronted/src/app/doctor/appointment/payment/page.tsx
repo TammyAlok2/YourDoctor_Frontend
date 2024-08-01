@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link'
 
 export default function PaymentPage() {
   return (
@@ -66,7 +67,7 @@ export default function PaymentPage() {
         </div>
 
         <div className="flex justify-center">
-          <button className="w-52 bg-teal-500 text-white p-3 rounded shadow-lg hover:bg-teal-600">Pay</button>
+          <button className="w-52 bg-teal-500 text-white p-3 rounded shadow-lg hover:bg-teal-600"><Link href={"/doctor/appointment/payment/submit"}><h1>Pay</h1></Link></button>
         </div>
       </main>
     </div>

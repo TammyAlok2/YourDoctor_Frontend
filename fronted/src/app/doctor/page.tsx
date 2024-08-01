@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link'
 
 export default function DoctorPage() {
   return (
@@ -41,7 +42,7 @@ export default function DoctorPage() {
         </section>
 
         <div className="text-center mt-8">
-          <button className="bg-teal-500 text-white py-2 px-4 rounded">Book Appointment</button>
+          <button className="bg-teal-500 text-white py-2 px-4 rounded"><Link href={"/doctor/appointment"}>Book Appointment</Link></button>
         </div>
       </main>
     </div>

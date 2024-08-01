@@ -26,12 +26,15 @@ const Navbar = () => {
       <div className="container mx-auto flex justify-between items-center max-[1025px]:min-[765px]:gap-[2rem]">
         <div className="flex gap-[2.5rem] items-center justify-center">
           <div className="flex gap-[0.2rem] items-end">
+            <Link href ={'/'}>
             <Image
               width={16}
               height={16}
               src={"/yourlabico.png"}
               alt="yourlab icon"
+              
             />
+            </Link>
             <h1 className="font-bold text-[1.5rem] relative top-[0.4rem] text-[#61b1ae]">
               YOURLab
             </h1>

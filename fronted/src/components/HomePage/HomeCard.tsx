@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import 'aos/dist/aos.css';
 import AOS from 'aos';
+import Link from 'next/link'
 
 const cardData = [
   {
@@ -80,7 +81,7 @@ const HomeCard = () => {
                     Lab Tests
                   </button>
                   <button className="text-[0.9rem] font-semibold text-white bg-[rgb(17_164_160_/_99%)] py-[0.6rem] px-[1rem] rounded-xl [box-shadow:0_0_0.4rem_0_gray]">
-                    Doctors
+                    <Link href ={"/doctor"}>Doctor </Link>
                   </button>
                 </div>
               </div>
