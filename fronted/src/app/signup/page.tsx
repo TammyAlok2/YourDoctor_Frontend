@@ -1,8 +1,9 @@
 'use client'
 import { useState } from 'react';
 import Link from 'next/link'; 
+import Image from 'next/image';
 
-export default function signup() {
+export default function SignUp() {
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
@@ -49,7 +50,7 @@ export default function signup() {
               onClick={togglePasswordVisibility}
               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 mt-1"
             >
-              <img
+              <Image
                 src={showPassword ? "/eye-open-icon.png" : "/eye-closed-icon.png"}
                 alt="Toggle Password Visibility"
                 width="20"
