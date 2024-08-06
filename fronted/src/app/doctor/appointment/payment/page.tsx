@@ -12,7 +12,7 @@ export default function PaymentPage() {
       <main className="w-full max-w-2xl bg-white p-8 shadow-lg mt-10">
         <div className="flex justify-center mb-10">
           <div className="border-2 border-teal-500 p-4 w-3/4 h-64 flex flex-col justify-center items-center">
-            <h2 className="text-xl">You’re paying,</h2>
+            <h2 className="text-xl">You re paying,</h2>
             <p className="mt-4 text-xl font-bold text-center">450 Rupees</p>
             <hr className="my-4 w-full" />
             <div className="flex justify-between w-full mt-4">
