@@ -3,6 +3,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link'
 
+
 export default function PaymentPage() {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center py-10">
