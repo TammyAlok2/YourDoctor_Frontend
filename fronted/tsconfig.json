@@ -21,6 +21,20 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/HomeCardRandom.js", "src/components/Navbar.tsx", "src/components/HomePage/HomeCard.tsx", "src/components/HomePage/CardInfo.tsx", "src/app/signup/page.tsx", "src/app/Reset/page.ts", src/app/login/page.tsxs", src/app/forget/page.tsxs"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/components/HomeCardRandom.js",
+    "src/components/Navbar.tsx",
+    "src/components/HomePage/HomeCard.tsx",
+    "src/components/HomePage/CardInfo.tsx",
+    "src/app/signup/page.tsx",
+    "src/app/Reset/page.ts",
+    "src/app/login/page.tsx",
+    "src/app/forget/page.tsx"
+  ],
   "exclude": ["node_modules"]
 }
+
