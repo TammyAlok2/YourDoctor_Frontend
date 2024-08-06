@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link'
+import Link from 'next/lin'
 
 export default function PaymentPage() {
   return (
@@ -25,7 +25,7 @@ export default function PaymentPage() {
           </div>
         </div>
 
-        <h3 className="text-2xl font-semibold mb-10 text-center">Let's Make Payment</h3>
+        <h3 className="text-2xl font-semibold mb-10 text-center">Lets Make Payment</h3>
 
         <div className="flex flex-wrap justify-center mb-6 gap-4">
           {['Credit Card', 'Debit Card', 'Net Banking', 'UPI', 'Cash', 'Wallet'].map((method) => (
@@ -36,7 +36,7 @@ export default function PaymentPage() {
         </div>
 
         <div className="mb-6 flex flex-col items-center">
-          <label className="block text-gray-700">Cardholder's Name</label>
+          <label className="block text-gray-700">Cardholders Name</label>
           <input type="text" className="w-1/2 border-2 border-teal-500 rounded p-2 mb-4 mx-auto" />
 
           <label className="block text-gray-700">Card Number</label>
