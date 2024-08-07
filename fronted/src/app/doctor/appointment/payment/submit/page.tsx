@@ -1,4 +1,4 @@
-const appointmentsubmitted = () => {
+const appointmentSubmitted = () => {
   return (
     <>
       <div>
@@ -30,4 +30,4 @@ const appointmentsubmitted = () => {
   );
 };
 
-export default appointmentsubmitted;
+export default appointmentSubmitted;

@@ -11,7 +11,7 @@ export default function Forget() {
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md bg-white p-8 rounded shadow-md">
         <h1 className="font-extrabold text-3xl text-gray-950 font-bold mb-6 text-center">Forget Password</h1>
-        <form>
+        <form >
           <div className="mb-6 text-black">
             <label className="font-bold mb-2 text-gray-950">Email</label>
             <input
