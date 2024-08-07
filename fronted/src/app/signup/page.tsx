@@ -64,7 +64,7 @@ export default function SignUp() {
 
             
             
-              <img src="/google-logo.png" alt="Google Logo" width="20" height="20" className="mr-2" />
+              <Image src="/google-logo.png" alt="Google Logo" width="20" height="20" className="mr-2" />
             
             <span className="mx-auto">Sign up with Google</span>
           </button>
