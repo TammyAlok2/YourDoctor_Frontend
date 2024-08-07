@@ -33,7 +33,7 @@ const HomeCard = () => {
     });
   }, []);
 
-  const handleChange = (e) => {
+  const handleChange = (e:any) => {
     setInputVal(e.target.value);
   };
 
