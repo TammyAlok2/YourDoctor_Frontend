@@ -3,6 +3,7 @@ import { FaFileMedicalAlt } from "react-icons/fa";
 import { FaClock } from "react-icons/fa";
 
 const CardInfo = () => {
+  
   return (
     <div className="my-[3rem] lg:mx-auto lg:w-[50rem] lg:my-[2rem] xs:w-[20rem] xs:mx-auto md:mx-auto md:w-[50rem] md:my-[0]">
       <div className="flex xs:mx-10 xs:justify-center h-[34vh] xs:flex-col xs:mb-[1rem] lg:h-[7vh]">
