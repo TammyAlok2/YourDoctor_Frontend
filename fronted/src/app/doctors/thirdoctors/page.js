@@ -24,6 +24,8 @@ const ThirdDoctorSection = ({setData2, filteredThirdData}) => {
   useEffect(() => {
     getAllDoctor();
   }, []);
+
+  
   
   // console.log("our data: ",filteredThirdData)
   

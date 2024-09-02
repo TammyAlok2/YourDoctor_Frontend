@@ -39,9 +39,7 @@ export const getAllDoctors = createAsyncThunk(
   "doctor/getAllData",
   async (data) => {
     try {
-      const res = axiosInstance.get("doctor/allDoctors", {
-        withCredentials: true,
-      });
+      const res = axiosInstance.get("doctor/allDoctors");
       console.log(res);
       return (await res).data;
     } catch (error) {

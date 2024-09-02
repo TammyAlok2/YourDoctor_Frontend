@@ -5,55 +5,45 @@ import "aos/dist/aos.css";
 import AOS from "aos";
 import Image from "next/image";
 import AppointmentSec3 from "./AppointmentSec3";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { allScheduleByDate } from "@/app/GlobalRedux/slice/AuthSlice";
 import { useParams } from "next/navigation";
+import {toast,Toaster} from 'react-hot-toast'
 
-const TimeSchedulingData = [
-  {
-    day: "Today",
-    slot: 9,
-    borderBottom: "0.2rem solid rgb(20 86 45)",
-  },
-  {
-    day: "Tomorrow",
-    slot: 7,
-  },
-  {
-    day: "26 July",
-    slot: 8,
-  },
-  {
-    day: "30 Jun",
-    slot: 4,
-  },
-  {
-    day: "25 August",
-    slot: 4,
-  },
-  {
-    day: "5 August",
-    slot: 5,
-  },
-];
+const generateNextWeekDates = () => {
+  const dates = [];
+  const today = new Date();
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(today);
+    date.setDate(today.getDate() + i);
+    dates.push({
+      day: date.toDateString(), // Display full date string
+      date: date.toISOString().split("T")[0], // Store as YYYY-MM-DD
+      slot: Math.floor(Math.random() * 10) + 1, // Random slot numbers for now
+      isToday: i === 0, // Mark today for special styling
+    });
+  }
+  return dates;
+};
 
 const AppointmentSec2 = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(null); // Track selected date index
   const dispatch = useDispatch();
-  const [timeSchedulingData, setTimeSchedulingData] = useState([]);
+  const [slot,setSlot] = useState([])
+  const [message,setMessage] = useState('')
+  const [timeSchedulingData, setTimeSchedulingData] = useState(generateNextWeekDates());
   const params = useParams();
-  // const res = useSelector((state)=>state.auth.schedule)
-  // console.log(res)
-
+console.log('slot',slot)
   const prevSlide = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? TimeSchedulingData.length - 1 : prevIndex - 1
+      prevIndex === 0 ? timeSchedulingData.length - 1 : prevIndex - 1
     );
   };
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === TimeSchedulingData.length - 1 ? 0 : prevIndex + 1
+      prevIndex === timeSchedulingData.length - 1 ? 0 : prevIndex + 1
     );
   };
 
@@ -61,57 +51,44 @@ const AppointmentSec2 = () => {
     const visibleItems = [];
     for (let i = 0; i < 3; i++) {
       visibleItems.push(
-        TimeSchedulingData[(currentIndex + i) % TimeSchedulingData.length]
+        timeSchedulingData[(currentIndex + i) % timeSchedulingData.length]
       );
     }
     return visibleItems;
   };
 
+  const fetchSchedules = async (date) => {
+    try {
+      const schedule = await dispatch(allScheduleByDate([params.id, date]));
+      
+      if(schedule?.payload?.success){
+        const response = schedule?.payload?.data;
+        
+        toast.success(schedule?.payload?.message)
+        setSlot(response)
+      }
+      
+      setMessage(schedule?.payload?.message)
+      
+      // You can handle the fetched schedule data as needed here
+    } catch (error) {
+      console.error("Error fetching schedules:", error);
+    }
+  };
+
   useEffect(() => {
     AOS.init({
-      // Global settings:
-      duration: 2000, // values from 0 to 3000, with step 50ms
-      once: false, // whether animation should happen only once - while scrolling down
-      mirror: false, // whether elements should animate out while scrolling past them
+    
+      once: false,
+      mirror: false,
     });
   }, []);
 
-  // Function to fetch schedule data
-  // const fetchSchedules = async () => {
-  //   try {
-  //     const response = await dispatch(allScheduleByDate([params.id])); 
-  //     console.log(response)// Replace with your API endpoint
-  //     setTimeSchedulingData(response);
-  //   } catch (error) {
-  //     console.error("Error fetching schedules:", error);
-  //   }
-  // };
 
-  // useEffect(()=>{
-  //   fetchSchedules()
-  // },[dispatch])
-
-  // console.log(timeSchedulingData)
-
-  useEffect(() => {
-    const fetchSchedules = async () => {
-      try {
-        const date = new Date().toISOString().split("T")[0]; // Format date as YYYY-MM-DD
-        // console.log(date)
-        const schedule = await dispatch(allScheduleByDate([params.id, date]));
-        console.log(schedule)
-        if (schedule) {
-          setTimeSchedulingData([schedule]); // Assuming the API returns a single schedule
-        } else {
-          setTimeSchedulingData([]); // Handle case where no schedule is found
-        }
-      } catch (error) {
-        console.error("Error fetching schedules:", error);
-      }
-    };
-
-    fetchSchedules();
-  }, [params.id]);
+  const handleDateClick = (index, date) => {
+    setSelectedIndex(index);
+    fetchSchedules(date);
+  };
 
   return (
     <div className="w-[75%] mx-auto">
@@ -131,13 +108,18 @@ const AppointmentSec2 = () => {
           {getVisibleItems().map((item, index) => (
             <div
               key={index}
-              className={`flex flex-col space-x-[0.5rem] w-1/3 p-4 bg-white items-center justify-center flex-shrink-0 ${
-                !index ? "border-b-4 border-black" : ""
+              className={`flex flex-col space-x-[0.5rem] w-1/3 p-4 bg-white items-center justify-center flex-shrink-0 rounded-lg cursor-pointer shadow-lg transition-all duration-200 ${
+                selectedIndex === index ? "bg-green-500 text-white border-b-4 border-green-700" : ""
+              } ${
+                item.isToday && selectedIndex !== index
+                  ? "bg-blue-500 text-white"
+                  : "hover:bg-gray-200"
               }`}
-              data-aos="fade-left"
+              
+              onClick={() => handleDateClick(index, item.date)}
             >
               <h2 className="text-xl font-bold mb-2">{item.day}</h2>
-              <p className="text-green-500">{item.slot}</p>
+              <p className="text-lg">{item.slot} slots</p>
             </div>
           ))}
         </div>
@@ -154,7 +136,10 @@ const AppointmentSec2 = () => {
           />
         </button>
       </div>
-      <AppointmentSec3 />
+      <Toaster/> {
+       !slot ? (<h1>{!message ? (<h1>No Schedule </h1>):(<h1>{message}</h1>)}</h1>): (<AppointmentSec3 allSlot = {slot} />)
+     }
+    
     </div>
   );
 };

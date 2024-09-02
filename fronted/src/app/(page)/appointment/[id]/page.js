@@ -7,7 +7,7 @@ const Appointment = () =>{
     <div>
       <AppointmentSec1 />
       <AppointmentSec2 />
-      <AppointmentForm />
+      
     </div>
   )
 }

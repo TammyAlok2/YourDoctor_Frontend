@@ -1,13 +1,13 @@
 "use client";
 
-import FormSelectedButton from "./AppointmentForm components/FormSelectButton";
 import FormHead from "./AppointmentForm components/FormHead";
+import FormSelectedButton from "./AppointmentForm components/FormSelectButton";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "next/navigation";
 import { createAppointment } from "@/app/GlobalRedux/slice/AuthSlice";
 import { useRouter } from "next/navigation";
-import WeekDateInput from "./AppointmentForm components/WeekDateInput";
+
 
 const DocForm = () => {
   // const formik = useFormik({
@@ -23,8 +23,10 @@ const DocForm = () => {
 
   const dispatch = useDispatch();
   const router = useRouter();
+  const { date, slotId } = router.query;
   const params = useParams();
   // console.log(params.id)
+  const time = new Date()
 
   const [appointmentData, setAppointmentData] = useState({
     patientName: "",
@@ -32,7 +34,7 @@ const DocForm = () => {
     age: "",
     gender: "",
     description: "",
-    date: "",
+    date: date,
     time: "",
     bloodPressure: "",
     diabetes: "",
@@ -141,20 +143,10 @@ const DocForm = () => {
                 value={appointmentData.date}
                 onChange={handleAppointment}
               /> */}
-              <WeekDateInput value={appointmentData.date} onChange={handleAppointment}/>
+             
             </div>
 
-            <div className="flex flex-col gap-[0.3rem] ml-[11rem] w-[4rem] md:ml-0 md:mt-3 sm:ml-0 sm:mt-3 xs:ml-0 xs:mt-3 lg:ml-[11rem] lg:relative lg:bottom-3">
-              <label htmlFor="time">Time.*</label>
-              <input
-                type="time"
-                name="time"
-                id="time"
-                className="p-[0.2rem] border-[0.1rem] [box-shadow:0rem_0.1rem_.1rem_0rem_gray] border-black py-3 px-2 w-[12rem]"
-                value={appointmentData.time}
-                onChange={handleAppointment}
-              />
-            </div>
+           
 
           </div>
 

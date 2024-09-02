@@ -132,7 +132,7 @@ const Navbar = () => {
               </Link>
             </div>
 
-            {!isLoggedIn || !isSignedIn ? (
+            {!isLoggedIn ? (
               <div
                 className="cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem]"
                 onClick={toggleSignup}
@@ -149,7 +149,7 @@ const Navbar = () => {
               ""
             )}
 
-            {isLoggedIn === true || isSignedIn === true ? (
+            {isLoggedIn === true  ? (
               <div>
                 <button
                   className={`w-full p-3 bg-gradient-to-r from-[#0CEDE6] text-white rounded-xl to-[#0A8E8A]`}
