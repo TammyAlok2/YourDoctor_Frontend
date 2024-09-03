@@ -26,6 +26,8 @@ const ThirdDoctorSection = ({setData2, filteredThirdData}) => {
   }, []);
 
   
+
+  
   
   // console.log("our data: ",filteredThirdData)
   

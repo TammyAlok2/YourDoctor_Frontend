@@ -8,8 +8,9 @@ import AppointmentSec3 from "./AppointmentSec3";
 import { useDispatch } from "react-redux";
 import { allScheduleByDate } from "@/app/GlobalRedux/slice/AuthSlice";
 import { useParams } from "next/navigation";
-import {toast,Toaster} from 'react-hot-toast'
+import { toast, Toaster } from "react-hot-toast";
 
+// Generate dates for the next 7 days
 const generateNextWeekDates = () => {
   const dates = [];
   const today = new Date();
@@ -29,24 +30,28 @@ const generateNextWeekDates = () => {
 const AppointmentSec2 = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState(null); // Track selected date index
-  const dispatch = useDispatch();
-  const [slot,setSlot] = useState([])
-  const [message,setMessage] = useState('')
+  const [slot, setSlot] = useState(null);
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false); // Loader state
   const [timeSchedulingData, setTimeSchedulingData] = useState(generateNextWeekDates());
+  const dispatch = useDispatch();
   const params = useParams();
-console.log('slot',slot)
+
+  // Function to go to the previous slide
   const prevSlide = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? timeSchedulingData.length - 1 : prevIndex - 1
     );
   };
 
+  // Function to go to the next slide
   const nextSlide = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === timeSchedulingData.length - 1 ? 0 : prevIndex + 1
     );
   };
 
+  // Get the visible items (3 dates) based on the current index
   const getVisibleItems = () => {
     const visibleItems = [];
     for (let i = 0; i < 3; i++) {
@@ -57,37 +62,46 @@ console.log('slot',slot)
     return visibleItems;
   };
 
+  // Fetch schedules based on the selected date
   const fetchSchedules = async (date) => {
     try {
+      setLoading(true); // Start loader
       const schedule = await dispatch(allScheduleByDate([params.id, date]));
-      
-      if(schedule?.payload?.success){
+
+      if (schedule?.payload?.success) {
         const response = schedule?.payload?.data;
-        
-        toast.success(schedule?.payload?.message)
-        setSlot(response)
+        toast.success(schedule?.payload?.message);
+        setSlot(response);
+      } else {
+        setSlot(null);
+        setMessage(schedule?.payload?.message || "No schedules available.");
       }
-      
-      setMessage(schedule?.payload?.message)
-      
-      // You can handle the fetched schedule data as needed here
     } catch (error) {
       console.error("Error fetching schedules:", error);
+      setMessage("Failed to fetch schedules.");
+    } finally {
+      setLoading(false); // Stop loader
     }
   };
 
+  // Fetch schedules when the selectedIndex changes
+  useEffect(() => {
+    if (selectedIndex !== null) {
+      const selectedDate = timeSchedulingData[selectedIndex].date;
+      fetchSchedules(selectedDate);
+    }
+  }, [selectedIndex]);
+
   useEffect(() => {
     AOS.init({
-    
       once: false,
       mirror: false,
     });
   }, []);
 
-
-  const handleDateClick = (index, date) => {
+  // Handle date click to fetch schedules for the selected date
+  const handleDateClick = (index) => {
     setSelectedIndex(index);
-    fetchSchedules(date);
   };
 
   return (
@@ -108,15 +122,16 @@ console.log('slot',slot)
           {getVisibleItems().map((item, index) => (
             <div
               key={index}
-              className={`flex flex-col space-x-[0.5rem] w-1/3 p-4 bg-white items-center justify-center flex-shrink-0 rounded-lg cursor-pointer shadow-lg transition-all duration-200 ${
-                selectedIndex === index ? "bg-green-500 text-white border-b-4 border-green-700" : ""
+              className={`flex flex-col space-x-[0.5rem] w-1/3 p-4 items-center justify-center flex-shrink-0 rounded-lg cursor-pointer  ${
+                selectedIndex === index
+                  ? "bg-gradient-to-r from-green-400 to-green-600 text-white border-b-4 border-green-700"
+                  : "bg-gray-400"
               } ${
                 item.isToday && selectedIndex !== index
-                  ? "bg-blue-500 text-white"
-                  : "hover:bg-gray-200"
+                  ? "bg-blue-500 text-black"
+                  : "hover:bg-red-500"
               }`}
-              
-              onClick={() => handleDateClick(index, item.date)}
+              onClick={() => handleDateClick(index)}
             >
               <h2 className="text-xl font-bold mb-2">{item.day}</h2>
               <p className="text-lg">{item.slot} slots</p>
@@ -136,10 +151,14 @@ console.log('slot',slot)
           />
         </button>
       </div>
-      <Toaster/> {
-       !slot ? (<h1>{!message ? (<h1>No Schedule </h1>):(<h1>{message}</h1>)}</h1>): (<AppointmentSec3 allSlot = {slot} />)
-     }
-    
+      <Toaster />
+      {loading ? (
+        <div className="text-center mt-4">Loading...</div> // Loader
+      ) : slot ? (
+        <AppointmentSec3 allSlot={slot} />
+      ) : (
+        <h1 className="text-center mt-4">{message}</h1>
+      )}
     </div>
   );
 };

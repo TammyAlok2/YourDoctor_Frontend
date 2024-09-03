@@ -18,14 +18,12 @@ const Logout = () => {
 
   return (
     <div>
-      {(isLoggedIn === true || isSignedIn === true) ? (
-        <button
+             <button
           className={`w-full mt-6 p-3 bg-gradient-to-r from-[#0CEDE6] text-white rounded-xl to-[#0A8E8A]`}
           onClick={onLogout}
         >
           Logout
         </button>
-        ) : ''}
     </div>
   );
 };

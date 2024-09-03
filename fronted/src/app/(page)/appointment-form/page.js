@@ -109,7 +109,7 @@ const DocForm = () => {
             <div className="flex flex-col gap-[0.3rem]">
               <label htmlFor="patientPhone">Mobile No.*</label>
               <input
-                type="tel"
+                type="number"
                 name="patientPhone"
                 id="patientPhone"
                 value={formData.patientPhone}

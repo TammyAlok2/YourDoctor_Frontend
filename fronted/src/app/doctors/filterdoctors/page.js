@@ -6,7 +6,8 @@ import { getAllDoctors } from '@/app/GlobalRedux/slice/DoctorSlice';
 
 const DoctorList = () => {
   const dispatch = useDispatch();
-  const { doctors } = useSelector((state) => state.doctor);
+ 
+  const doctors = localStorage.getItem('doctors')
   // const filteredDoctors = doctors.filter((data)=>console.log(data.fullName))
   const [pincode, setPincode] = useState('');
   
