@@ -12,7 +12,7 @@ const AppointmentSubmitted = () => {
   const params = useParams();
   const [doctor, setDoctor] = useState(null);
 
-  // console.log(params.id)
+  console.log(params.id)
   const getDoctorData = async () => {
     try {
       const response = await dispatch(getAllDoctor());

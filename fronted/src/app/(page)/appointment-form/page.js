@@ -87,7 +87,7 @@ const DocForm = () => {
           createAppointment([doctorId, formData])
         );
         if (response?.payload?.success) {
-          router.push(`/appointmentsubmit/${params.id}`);
+          router.push(`/appointmentsubmit/${doctorId}`);
         }
       } catch (error) {
         toast.error("Failed to create appointment");
