@@ -128,7 +128,6 @@ const DocForm = () => {
               />
             </div>
 
-
           </div>
 
           <div className="flex md:flex-col lg:flex-row sm:flex-col xs:flex-col">

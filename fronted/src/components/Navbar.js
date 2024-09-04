@@ -30,7 +30,7 @@ const Navbar = () => {
   const showForgot = () => setVisibleComponent("forgot");
 
   // Selecting the auth state from the Redux store
-  const { isLoggedIn, isSignedIn } = useSelector((state) => state.auth);
+  const { isLoggedIn } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(getUserData());
@@ -149,7 +149,7 @@ const Navbar = () => {
               ""
             )}
 
-            {isLoggedIn === true  ? (
+            {isLoggedIn ? (
               <div>
                 <button
                   className={`w-full p-3 bg-gradient-to-r from-[#0CEDE6] text-white rounded-xl to-[#0A8E8A]`}
@@ -182,16 +182,12 @@ const Navbar = () => {
               <FaShoppingCart className="text-xl" />
               <span>Cart</span>
             </div>
-            {!isLoggedIn || !isSignedIn ? (
-            <div className="flex items-center space-x-4">
-              <FaUser className="text-xl" onClick={toggleSignup} />
-              <span>Register</span>
-            </div>
-          ) : (
-              ""
-            )}
-
-            {isLoggedIn === true || isSignedIn === true ? (
+            {!isLoggedIn ? (
+              <div className="flex items-center space-x-4">
+                <FaUser className="text-xl" onClick={toggleSignup} />
+                <span>Register</span>
+              </div>
+            ) : (
               <div>
                 <button
                   className={`w-full p-3 bg-gradient-to-r from-[#0CEDE6] text-white rounded-xl to-[#0A8E8A]`}
@@ -199,8 +195,6 @@ const Navbar = () => {
                   <Link href="/profile">Profile</Link>
                 </button>
               </div>
-            ) : (
-              ""
             )}
           </div>
         )}
@@ -208,8 +202,16 @@ const Navbar = () => {
 
       {visibleComponent === "signup" && isSignupVisible && (
         <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto">
-          <div className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer" onClick={()=>setVisibleComponent(null)}>
-          <img width="30" height="30" src="https://img.icons8.com/ios-glyphs/30/multiply.png" alt="multiply"/>
+          <div
+            className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer"
+            onClick={() => setVisibleComponent(null)}
+          >
+            <img
+              width="30"
+              height="30"
+              src="https://img.icons8.com/ios-glyphs/30/multiply.png"
+              alt="multiply"
+            />
           </div>
           <Signup onBack={showLogin} />
         </div>
@@ -217,17 +219,37 @@ const Navbar = () => {
 
       {visibleComponent === "login" && (
         <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto">
-          <div className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer" onClick={()=>setVisibleComponent(null)}>
-          <img width="30" height="30" src="https://img.icons8.com/ios-glyphs/30/multiply.png" alt="multiply"/>
+          <div
+            className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer"
+            onClick={() => setVisibleComponent(null)}
+          >
+            <img
+              width="30"
+              height="30"
+              src="https://img.icons8.com/ios-glyphs/30/multiply.png"
+              alt="multiply"
+            />
           </div>
-          <Login onBack={showSignup} onBack1={showForgot} setVisibleComponent={setVisibleComponent}/>
+          <Login
+            onBack={showSignup}
+            onBack1={showForgot}
+            setVisibleComponent={setVisibleComponent}
+          />
         </div>
       )}
 
       {visibleComponent === "forgot" && (
         <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto">
-          <div className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer" onClick={()=>setVisibleComponent(null)}>
-          <img width="30" height="30" src="https://img.icons8.com/ios-glyphs/30/multiply.png" alt="multiply"/>
+          <div
+            className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer"
+            onClick={() => setVisibleComponent(null)}
+          >
+            <img
+              width="30"
+              height="30"
+              src="https://img.icons8.com/ios-glyphs/30/multiply.png"
+              alt="multiply"
+            />
           </div>
           <Forget />
         </div>

@@ -23,7 +23,7 @@ const FormSelectedButton: React.FC<FormSelectButtonProps> = ({
   const handleToggle = () => {
     setToggle((prev) => !prev);
     setToggleIcon(
-      toggle === false
+      !toggle
         ? "https://img.icons8.com/ios/50/circled-chevron-up.png"
         : "https://img.icons8.com/windows/32/circled-chevron-down.png"
     );
@@ -32,6 +32,7 @@ const FormSelectedButton: React.FC<FormSelectButtonProps> = ({
   const handleSelect = (value: string) => {
     setSelectVal(value);
     setToggle(false);
+    setToggleIcon("https://img.icons8.com/windows/32/circled-chevron-down.png");
     onSelect(value); // Call the callback function with the selected value
   };
 
@@ -39,22 +40,22 @@ const FormSelectedButton: React.FC<FormSelectButtonProps> = ({
     <div>
       <div
         onClick={handleToggle}
-        className="cursor-pointer flex gap-[0.5rem] border-[0.1rem] border-black rounded-lg p-[0.1rem]"
+        className="cursor-pointer flex gap-[0.5rem] border-[0.1rem] border-black rounded-lg p-[0.1rem] transition-all duration-300"
       >
         <h1>{selectval}</h1>
         <Image width={22} height={20} src={toggleicon} alt="Toggle Icon" />
       </div>
       {toggle && (
-        <div className="cursor-pointer absolute border-[0.1rem] border-black rounded-lg mt-[0.3rem] transition-[3s]">
+        <div className="cursor-pointer absolute border-[0.1rem] border-black rounded-lg mt-[0.3rem]">
           <div
             onClick={() => handleSelect(first)}
-            className="p-[0.2rem] m-0 box-content rounded-lg hover:bg-[#a56a72]"
+            className="p-[0.2rem] m-0 box-content rounded-lg hover:bg-[#a56a72] transition-all duration-300"
           >
             {first}
           </div>
           <div
             onClick={() => handleSelect(second)}
-            className="p-[0.2rem] m-0 box-content rounded-lg hover:bg-[#54d6bc]"
+            className="p-[0.2rem] m-0 box-content rounded-lg hover:bg-[#54d6bc] transition-all duration-300"
           >
             {second}
           </div>

@@ -34,7 +34,7 @@ const doctorId = allSlot?.doctorId || '';
     <div className="w-[50rem] mx-auto flex flex-col gap-[3rem] my-6 md:w-[40rem] sm:w-[30rem] xs:w-[20rem]">
       <div className="flex flex-col space-y-4">
         <div className="flex space-x-10 items-center xs:flex-col xs:gap-[1rem] xs:justify-center xs:space-x-0">
-          <h1 className="text-xl font-bold">Morning</h1>
+          <h1 className="text-xl">Morning</h1>
           <div className="flex flex-wrap gap-4">
             {morningSlots.length > 0 ? (
               morningSlots.map((slot, index) => (

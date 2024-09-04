@@ -33,7 +33,9 @@ const AppointmentSec2 = () => {
   const [slot, setSlot] = useState(null);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false); // Loader state
-  const [timeSchedulingData, setTimeSchedulingData] = useState(generateNextWeekDates());
+  const [timeSchedulingData, setTimeSchedulingData] = useState(
+    generateNextWeekDates()
+  );
   const dispatch = useDispatch();
   const params = useParams();
 
@@ -101,45 +103,49 @@ const AppointmentSec2 = () => {
 
   // Handle date click to fetch schedules for the selected date
   const handleDateClick = (index) => {
-    setSelectedIndex(index);
+    setSelectedIndex((currentIndex + index) % timeSchedulingData.length);
   };
 
   return (
     <div className="w-[75%] mx-auto">
       <div className="relative w-full max-w-4xl mx-auto flex items-center justify-between space-x-2">
         <button
-          className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded-full h-[3rem] w-[3rem]"
+          className="text-gray-800 font-bold py-1 px-2 rounded-full h-[4rem] w-[4rem]"
           onClick={prevSlide}
         >
           <Image
-            width="34"
-            height="34"
+            width="36"
+            height="36"
             src="https://img.icons8.com/metro/26/back.png"
             alt="back"
           />
         </button>
         <div className="flex space-x-4 overflow-hidden w-full justify-center">
-          {getVisibleItems().map((item, index) => (
-            <div
-              key={index}
-              className={`flex flex-col space-x-[0.5rem] w-1/3 p-4 items-center justify-center flex-shrink-0 rounded-lg cursor-pointer  ${
-                selectedIndex === index
-                  ? "bg-gradient-to-r from-green-400 to-green-600 text-white border-b-4 border-green-700"
-                  : "bg-gray-400"
-              } ${
-                item.isToday && selectedIndex !== index
-                  ? "bg-blue-500 text-black"
-                  : "hover:bg-red-500"
-              }`}
-              onClick={() => handleDateClick(index)}
-            >
-              <h2 className="text-xl font-bold mb-2">{item.day}</h2>
-              <p className="text-lg">{item.slot} slots</p>
-            </div>
-          ))}
+          {getVisibleItems().map((item, index) => {
+            const globalIndex =
+              (currentIndex + index) % timeSchedulingData.length;
+            return (
+              <div
+                key={index}
+                className={`flex flex-col space-x-[0.5rem] w-1/3 p-4 items-center justify-center flex-shrink-0 cursor-pointer  ${
+                  selectedIndex === globalIndex
+                    ? "bg-gradient-to-r from-green-400 to-green-600 text-white border-b-4 border-green-700 rounded-lg"
+                    : ""
+                } ${
+                  item.isToday && selectedIndex !== index
+                    ? "text-black"
+                    : "hover:border-b-[0.3rem] hover:border-black"
+                } ${!index && "border-b-[0.3rem] border-teal-500"}`}
+                onClick={() => handleDateClick(index)}
+              >
+                <h2 className="text-xl font-bold mb-2">{item.day}</h2>
+                <p className="text-lg">{item.slot} slots</p>
+              </div>
+            )
+          })}
         </div>
         <button
-          className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded-full h-[3rem] w-[3rem]"
+          className="text-gray-800 font-bold py-1 px-2 rounded-full h-[4rem] w-[4rem]"
           onClick={nextSlide}
         >
           <Image
