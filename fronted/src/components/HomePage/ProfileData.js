@@ -112,6 +112,7 @@ import { getAllDoctors } from "@/app/GlobalRedux/slice/DoctorSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import ReviewComponent from './ratings/page'
 
 const ProfileData = () => {
   const [data, setData] = useState([]);
@@ -143,7 +144,6 @@ const ProfileData = () => {
                 Specialist:{" "}
                 <span className="text-blue-600">{userData.specialist}</span>
               </h1>
-              <p>Time: {userData.data2}</p>
               <p>Address: {userData.address}</p>
                 <ul className="text-gray-600 list-none">
                 <a className="list-none text-gray-600">First Visit Fees: <span className="text-teal-700">{userData?.fees && userData?.fees?.firstVisitFee + "rs"}</span></a>
