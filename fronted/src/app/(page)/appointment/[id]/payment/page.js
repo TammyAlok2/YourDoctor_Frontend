@@ -5,7 +5,6 @@ import Image from 'next/image';
 export default function PaymentPage() {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center py-10">
-      <header className="w-full bg-white shadow-md p-4"></header>
 
       <main className="w-full max-w-2xl bg-white p-8 shadow-lg mt-10">
         <div className="flex justify-center mb-10">

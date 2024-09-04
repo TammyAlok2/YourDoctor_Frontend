@@ -2,6 +2,7 @@
 
 import { getAllDoctor } from "@/app/GlobalRedux/slice/AuthSlice";
 import Image from "next/image";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -89,6 +90,7 @@ const AppointmentSec1 = () => {
                 {doctor?.fees && doctor?.fees?.visitUnder7DaysFee + "rs"}
               </span>
             </a>
+            <Link href={`/appointment/${params.id}/payment`}><button className="bg-[#61b1ae] px-[2rem] py-[0.5rem] font-bold w-[8rem] rounded-lg">Payment</button></Link>
           </div>
         </div>
       </div>
