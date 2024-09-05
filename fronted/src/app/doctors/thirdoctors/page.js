@@ -53,7 +53,7 @@ const ThirdDoctorSection = ({setData2, filteredThirdData}) => {
               </div>
               <h1 className="text-[rgb(17_164_160_/_99%)] font-bold">{userData.fullName}</h1>
               <button className="bg-[rgb(17_164_160_/_99%)] hover:bg-[rgba(17,164,159,0.89)] p-[0.3rem] text-white rounded-md">
-                <Link href={`/doctor/${userData._id}`}>Book Appointment</Link>
+                <Link href={`/appointment/${userData._id}`}>Book Appointment</Link>
               </button>
             </div>
           </div>

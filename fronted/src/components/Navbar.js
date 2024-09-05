@@ -186,7 +186,7 @@ const Navbar = () => {
               ""
             )}
 
-            {isLoggedIn === true  ? (
+            {isLoggedIn  ? (
               <div>
                 <button
                   className={`w-full p-3 bg-gradient-to-r from-[#0CEDE6] text-white rounded-xl to-[#0A8E8A]`}
@@ -219,7 +219,7 @@ const Navbar = () => {
               <FaShoppingCart className="text-xl" />
               <span>Cart</span>
             </div>
-            {!isLoggedIn || !isSignedIn ? (
+            {!isLoggedIn ? (
             <div className="flex items-center space-x-4">
               <FaUser className="text-xl" onClick={toggleSignup} />
               <span>Register</span>
@@ -228,7 +228,7 @@ const Navbar = () => {
               ""
             )}
 
-            {isLoggedIn === true || isSignedIn === true ? (
+            {isLoggedIn ? (
               <div>
                 <button
                   className={`w-full p-3 bg-gradient-to-r from-[#0CEDE6] text-white rounded-xl to-[#0A8E8A]`}

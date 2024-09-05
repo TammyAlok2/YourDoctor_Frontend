@@ -49,7 +49,7 @@ const FirstDoctorsSection = ({setData, filteredData}) => {
               </div>
               <h1 className="text-[rgb(17_164_160_/_99%)] font-bold items-end ml-auto">{userData.fullName}</h1>
               <button className="bg-[rgb(17_164_160_/_99%)] hover:bg-[rgba(17,164,159,0.89)] p-[0.3rem] text-white rounded-md">
-                <Link href={`/doctor/${params.id}`}>Book Appointment</Link>
+                <Link href={`/appointment/${params.id}`}>Book Appointment</Link>
               </button>
             </div>
           </div>
