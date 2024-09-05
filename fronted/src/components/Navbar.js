@@ -1,11 +1,11 @@
 "use client";
 
-import Forget from "@/app/forget/page";
 import { getUserData } from "@/app/GlobalRedux/slice/AuthSlice";
 import Login from "@/app/login/page";
 import NeedHelp from "@/app/needhelp/page";
 import Location from "@/app/location/page";
 import Signup from "@/app/signup/page";
+import Forget from "@/app/forget/page";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -18,17 +18,13 @@ import {
   FaBars,
 } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { isNull } from "util";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-
   const [visibleComponent, setVisibleComponent] = useState(null);
   const [isSignupVisible, setSignupVisible] = useState(false);
-  const [isNeedVisible, setNeedVisible] = useState(false);
-  const [isLocationVisible, setLocationVisible] = useState(false);
   const showSignup = () => setVisibleComponent("signup");
   const showLogin = () => setVisibleComponent("login");
   const showForgot = () => setVisibleComponent("forgot");
@@ -38,20 +34,38 @@ const Navbar = () => {
 
   useEffect(() => {
     dispatch(getUserData());
-    // console.log(response)
   }, [dispatch]);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  const toggleMenu = () => setIsOpen(!isOpen);
 
-  const toggleSignup = () => {
-    if (isSignupVisible) {
-      setVisibleComponent(null);
+  const showComponent = (component) => setVisibleComponent(component);
+  const hideComponent = () => setVisibleComponent(null);
+
+  const renderAuthButton = () => {
+    if (isLoggedIn) {
+      return (
+        <div>
+          <button className="w-full p-3 bg-gradient-to-r from-[#0CEDE6] to-[#0A8E8A] text-white rounded-xl">
+            <Link href="/profile">Profile</Link>
+          </button>
+        </div>
+      );
     } else {
-      setVisibleComponent("signup");
+      return (
+        <div
+          className="cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem]"
+          onClick={() => showComponent("signup")}
+        >
+          <Image
+            width={16}
+            height={16}
+            src={"https://img.icons8.com/ios/50/guest-male.png"}
+            alt="registration icon"
+          />
+          <span className="text-lg">Registration</span>
+        </div>
+      );
     }
-    setSignupVisible(!isSignupVisible);
   };
 
   const toggleNeed = () =>{
@@ -94,7 +108,7 @@ const Navbar = () => {
                   width={28}
                   height={24}
                   src={"https://img.icons8.com/ios/50/marker--v1.png"}
-                  alt="yourlab icon"
+                  alt="location icon"
                 />
                 <span className="text-lg">Location</span>
             </div>
@@ -108,7 +122,7 @@ const Navbar = () => {
                   src={
                     "https://img.icons8.com/material-outlined/24/phone-disconnected.png"
                   }
-                  alt="yourlab icon"
+                  alt="help icon"
                 />
                 <span className="text-lg">Need Help</span>
             </div>
@@ -122,7 +136,7 @@ const Navbar = () => {
                   width={16}
                   height={16}
                   src={"/reports.png"}
-                  alt="Need Help icon"
+                  alt="reports icon"
                 />
                 <span className="text-lg">Reports</span>
               </Link>
@@ -138,7 +152,7 @@ const Navbar = () => {
                   width={16}
                   height={16}
                   src={"https://img.icons8.com/material-two-tone/24/buy.png"}
-                  alt="Reports icon"
+                  alt="cart icon"
                 />
                 <span className="text-lg">Cart</span>
               </Link>
@@ -146,7 +160,7 @@ const Navbar = () => {
 
             {!isLoggedIn ? (
               <div
-                className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${isSignupVisible && 'bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg'}`}
+                className="cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem]"
                 onClick={toggleSignup}
               >
                 <Image
@@ -161,7 +175,7 @@ const Navbar = () => {
               ""
             )}
 
-            {isLoggedIn ? (
+            {isLoggedIn === true  ? (
               <div>
                 <button
                   className={`w-full p-3 bg-gradient-to-r from-[#0CEDE6] text-white rounded-xl to-[#0A8E8A]`}
@@ -182,7 +196,7 @@ const Navbar = () => {
         </div>
         {isOpen && (
           <div className="md:hidden mt-2 space-y-4 xs:py-[1rem] xs:px-[3rem] sm:px-[4rem] sm:py-[2rem] ">
-            <div className={`flex items-center space-x-4 ${isNeedVisible && 'bg-[#0A8E8A] p-[0.3rem] text-white rounded-lg'}`} onClick={toggleNeed}>
+            <div className="flex items-center space-x-4">
               <FaPhone className="text-xl" />
               <span>Need Help</span>
             </div>
@@ -194,12 +208,16 @@ const Navbar = () => {
               <FaShoppingCart className="text-xl" />
               <span>Cart</span>
             </div>
-            {!isLoggedIn ? (
-              <div className={`flex items-center space-x-4 ${isSignupVisible && 'bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg'}`}>
-                <FaUser className="text-xl" onClick={toggleSignup} />
-                <span>Register</span>
-              </div>
-            ) : (
+            {!isLoggedIn || !isSignedIn ? (
+            <div className="flex items-center space-x-4">
+              <FaUser className="text-xl" onClick={toggleSignup} />
+              <span>Register</span>
+            </div>
+          ) : (
+              ""
+            )}
+
+            {isLoggedIn === true || isSignedIn === true ? (
               <div>
                 <button
                   className={`w-full p-3 bg-gradient-to-r from-[#0CEDE6] text-white rounded-xl to-[#0A8E8A]`}
@@ -207,6 +225,8 @@ const Navbar = () => {
                   <Link href="/profile">Profile</Link>
                 </button>
               </div>
+            ) : (
+              ""
             )}
           </div>
         )}
@@ -228,56 +248,28 @@ const Navbar = () => {
         </div>
       )}      
 
-      {visibleComponent === "signup" && isSignupVisible && (
+      {visibleComponent === "signup" && (
         <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto">
-          <div
-            className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer"
-            onClick={() => setVisibleComponent(null) || setSignupVisible(!isSignupVisible)}
-          >
-            <img
-              width="30"
-              height="30"
-              src="https://img.icons8.com/ios-glyphs/30/multiply.png"
-              alt="multiply"
-            />
+          <div className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer" onClick={()=>setVisibleComponent(null)}>
+          <img width="30" height="30" src="https://img.icons8.com/ios-glyphs/30/multiply.png" alt="multiply"/>
           </div>
-          <Signup onBack={showLogin} />
+          <Signup onBack={() => showComponent("login")} />
         </div>
       )}
 
       {visibleComponent === "login" && (
         <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto">
-          <div
-            className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer"
-            onClick={() => setVisibleComponent(null) || setSignupVisible(!isSignupVisible)}
-          >
-            <img
-              width="30"
-              height="30"
-              src="https://img.icons8.com/ios-glyphs/30/multiply.png"
-              alt="multiply"
-            />
+          <div className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer" onClick={()=>setVisibleComponent(null)}>
+          <img width="30" height="30" src="https://img.icons8.com/ios-glyphs/30/multiply.png" alt="multiply"/>
           </div>
-          <Login
-            onBack={showSignup}
-            onBack1={showForgot}
-            setVisibleComponent={setVisibleComponent}
-          />
+          <Login onBack={showSignup} onBack1={showForgot} setVisibleComponent={setVisibleComponent}/>
         </div>
       )}
 
       {visibleComponent === "forgot" && (
         <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto">
-          <div
-            className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer"
-            onClick={() => setVisibleComponent(null) || setSignupVisible(!isSignupVisible)}
-          >
-            <img
-              width="30"
-              height="30"
-              src="https://img.icons8.com/ios-glyphs/30/multiply.png"
-              alt="multiply"
-            />
+          <div className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer" onClick={()=>setVisibleComponent(null)}>
+          <img width="30" height="30" src="https://img.icons8.com/ios-glyphs/30/multiply.png" alt="multiply"/>
           </div>
           <Forget />
         </div>
