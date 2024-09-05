@@ -71,7 +71,16 @@ const Navbar = () => {
   };
 
   const toggleSignup = () =>{
-    if(isNeedVisible){
+
+    if (isLocationVisible) {
+      setLocationVisible(false); // Hide Location if Need Help is toggled
+    }
+
+    if (isNeedVisible) {
+      setNeedVisible(false); // Hide Need Help if Location is toggled
+    }
+
+    if(isSignupVisible){
       setVisibleComponent(null);
     } else{
       setVisibleComponent("signup");
@@ -80,6 +89,15 @@ const Navbar = () => {
   }
 
   const toggleNeed = () =>{
+
+    if (isLocationVisible) {
+      setLocationVisible(false); // Hide Location if Need Help is toggled
+    }
+
+    if(isSignupVisible){
+      setSignupVisible(false)
+    }
+
     if(isNeedVisible){
       setVisibleComponent(null);
     } else{
@@ -89,6 +107,15 @@ const Navbar = () => {
   }
 
   const toggleLocation = () =>{
+
+    if (isNeedVisible) {
+      setNeedVisible(false); // Hide Need Help if Location is toggled
+    }
+
+    if(isSignupVisible){
+      setSignupVisible(false)
+    }
+
     if(isLocationVisible){
       setVisibleComponent(null);
     } else{
@@ -171,7 +198,7 @@ const Navbar = () => {
 
             {!isLoggedIn ? (
               <div
-                className="cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem]"
+                className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${isSignupVisible && 'bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg'}`}
                 onClick={toggleSignup}
               >
                 <Image
@@ -245,7 +272,7 @@ const Navbar = () => {
 
       {visibleComponent === "location" && isLocationVisible && (
         <div className="absolute z-10 top-[16%] w-full h-[100vh] bg-[#0000004b]">
-        <div className="absolute left-[15%] top-[4%] z-10 bg-white rounded-xl">
+        <div className="absolute left-[15%] top-[4%] z-10 bg-white rounded-xl py-[0.5rem] px-[1rem]">
           <Location />
         </div>
         </div>
@@ -261,7 +288,7 @@ const Navbar = () => {
 
       {visibleComponent === "signup" && (
         <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto">
-          <div className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer" onClick={()=>setVisibleComponent(null)}>
+          <div className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer" onClick={()=>setVisibleComponent(null) || setSignupVisible(!isSignupVisible)}>
           <img width="30" height="30" src="https://img.icons8.com/ios-glyphs/30/multiply.png" alt="multiply"/>
           </div>
           <Signup onBack={() => showComponent("login")} />
@@ -270,7 +297,7 @@ const Navbar = () => {
 
       {visibleComponent === "login" && (
         <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto">
-          <div className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer" onClick={()=>setVisibleComponent(null)}>
+          <div className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer" onClick={()=>setVisibleComponent(null) || setSignupVisible(!isSignupVisible)}>
           <img width="30" height="30" src="https://img.icons8.com/ios-glyphs/30/multiply.png" alt="multiply"/>
           </div>
           <Login onBack={showSignup} onBack1={showForgot} setVisibleComponent={setVisibleComponent}/>
@@ -279,7 +306,7 @@ const Navbar = () => {
 
       {visibleComponent === "forgot" && (
         <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto">
-          <div className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer" onClick={()=>setVisibleComponent(null)}>
+          <div className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer" onClick={()=>setVisibleComponent(null) || setSignupVisible(!isSignupVisible)}>
           <img width="30" height="30" src="https://img.icons8.com/ios-glyphs/30/multiply.png" alt="multiply"/>
           </div>
           <Forget />
