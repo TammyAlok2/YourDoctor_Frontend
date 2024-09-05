@@ -25,6 +25,8 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [visibleComponent, setVisibleComponent] = useState(null);
   const [isSignupVisible, setSignupVisible] = useState(false);
+  const [isNeedVisible, setNeedVisible] = useState(false);
+  const [isLocationVisible, setLocationVisible] = useState(false);
   const showSignup = () => setVisibleComponent("signup");
   const showLogin = () => setVisibleComponent("login");
   const showForgot = () => setVisibleComponent("forgot");
@@ -68,6 +70,15 @@ const Navbar = () => {
     }
   };
 
+  const toggleSignup = () =>{
+    if(isNeedVisible){
+      setVisibleComponent(null);
+    } else{
+      setVisibleComponent("signup");
+    }
+    setSignupVisible(!isSignupVisible)
+  }
+
   const toggleNeed = () =>{
     if(isNeedVisible){
       setVisibleComponent(null);
@@ -78,7 +89,7 @@ const Navbar = () => {
   }
 
   const toggleLocation = () =>{
-    if(isNeedVisible){
+    if(isLocationVisible){
       setVisibleComponent(null);
     } else{
       setVisibleComponent("location");
