@@ -5,6 +5,7 @@ import { getAllDoctors } from "@/app/GlobalRedux/slice/DoctorSlice";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import ReviewComponent from "@/components/HomePage/ratings/page";
 
 const ThirdDoctorSection = ({setData2, filteredThirdData}) => {
   // const [data, setData] = useState([]);
@@ -38,7 +39,7 @@ const ThirdDoctorSection = ({setData2, filteredThirdData}) => {
           <div className="flex flex-col sm:flex-row gap-[2rem] p-[1rem] shadow-md rounded-md" key={userData._id}>
             <div className="flex flex-col gap-[1rem]">
               <h1 className="font-bold">Specialist: <span className="text-[blue]">{userData.specialist}</span></h1>
-              <p>Time: {userData.data2}</p>
+              <p className="flex gap-[0.5rem]">Ratings: <ReviewComponent /></p>
               <p>Address: {userData.address}</p>
               <ul className="text-gray-600 list-none">
                 <a className="list-none text-gray-600">First Visit Fees: <span className="text-teal-700">{userData?.fees && userData?.fees?.firstVisitFee + "rs"}</span></a>

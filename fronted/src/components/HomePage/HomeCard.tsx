@@ -93,7 +93,7 @@ const HomeCard = () => {
           </div>
           <div className="flex gap-[3rem] items-center justify-center">
             <button className="text-[0.9rem] font-semibold text-white bg-[rgb(247,86,61)] py-[0.6rem] px-[1rem] rounded-xl [box-shadow:0_0_0.4rem_0_gray] xs:w-[7rem] sm:w-[7rem]">
-              Lab Tests
+            <Link href={"/labtests"}>Lab Tests</Link>
             </button>
             <button className="text-[0.9rem] font-semibold text-white bg-[rgb(17_164_160_/_99%)] hover:bg-[rgba(17,164,159,0.89)] py-[0.6rem] px-[1rem] rounded-xl [box-shadow:0_0_0.4rem_0_gray]">
               <Link href={"/doctors"}>Doctors</Link>

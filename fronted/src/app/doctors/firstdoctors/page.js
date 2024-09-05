@@ -5,10 +5,13 @@ import { getAllDoctors } from "@/app/GlobalRedux/slice/DoctorSlice";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import Image from "next/image";
+import ReviewComponent from "@/components/HomePage/ratings/page";
+import { useParams } from "next/navigation";
 
 const FirstDoctorsSection = ({setData, filteredData}) => {
   // const [data, setData] = useState([]);
   const dispatch = useDispatch();
+  const params = useParams();
   
   const getAllDoctor = async () => {
     try {
@@ -32,7 +35,7 @@ const FirstDoctorsSection = ({setData, filteredData}) => {
           <div className="flex flex-col sm:flex-row gap-[2rem] p-[1rem] shadow-md rounded-md" key={userData._id}>
             <div className="flex flex-col gap-[1rem]">
               <h1 className="font-bold">Specialist: <span className="text-[blue]">{userData.specialist}</span></h1>
-              <p>Time: {userData.data2}</p>
+              <p className="flex gap-[0.5rem]">Ratings: <ReviewComponent /></p>
               <p>Address: {userData.address}</p>
               <ul className="text-gray-600 list-none">
                 <a className="list-none text-gray-600">First Visit Fees: <span className="text-teal-700">{userData?.fees && userData?.fees?.firstVisitFee + "rs"}</span></a>
@@ -46,7 +49,7 @@ const FirstDoctorsSection = ({setData, filteredData}) => {
               </div>
               <h1 className="text-[rgb(17_164_160_/_99%)] font-bold items-end ml-auto">{userData.fullName}</h1>
               <button className="bg-[rgb(17_164_160_/_99%)] hover:bg-[rgba(17,164,159,0.89)] p-[0.3rem] text-white rounded-md">
-                <Link href={`/doctor/${userData._id}`}>Book Appointment</Link>
+                <Link href={`/doctor/${params.id}`}>Book Appointment</Link>
               </button>
             </div>
           </div>

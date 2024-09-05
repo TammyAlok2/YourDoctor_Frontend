@@ -144,6 +144,7 @@ const ProfileData = () => {
                 Specialist:{" "}
                 <span className="text-blue-600">{userData.specialist}</span>
               </h1>
+              <p className="flex gap-[0.5rem]">Ratings: <ReviewComponent /></p>
               <p>Address: {userData.address}</p>
                 <ul className="text-gray-600 list-none">
                 <a className="list-none text-gray-600">First Visit Fees: <span className="text-teal-700">{userData?.fees && userData?.fees?.firstVisitFee + "rs"}</span></a>
@@ -165,7 +166,7 @@ const ProfileData = () => {
                 {userData.fullName}
               </h1>
               <button className="bg-teal-600 hover:bg-teal-500 p-2 text-white rounded-md">
-                <Link href={`/doctor/${userData._id}`}>Book Appointment</Link>
+                <Link href={`/appointment/${userData._id}`}>Book Appointment</Link>
               </button>
             </div>
           </div>

@@ -3,6 +3,8 @@
 import Forget from "@/app/forget/page";
 import { getUserData } from "@/app/GlobalRedux/slice/AuthSlice";
 import Login from "@/app/login/page";
+import NeedHelp from "@/app/needhelp/page";
+import Location from "@/app/location/page";
 import Signup from "@/app/signup/page";
 import Image from "next/image";
 import Link from "next/link";
@@ -25,6 +27,8 @@ const Navbar = () => {
 
   const [visibleComponent, setVisibleComponent] = useState(null);
   const [isSignupVisible, setSignupVisible] = useState(false);
+  const [isNeedVisible, setNeedVisible] = useState(false);
+  const [isLocationVisible, setLocationVisible] = useState(false);
   const showSignup = () => setVisibleComponent("signup");
   const showLogin = () => setVisibleComponent("login");
   const showForgot = () => setVisibleComponent("forgot");
@@ -50,6 +54,24 @@ const Navbar = () => {
     setSignupVisible(!isSignupVisible);
   };
 
+  const toggleNeed = () =>{
+    if(isNeedVisible){
+      setVisibleComponent(null);
+    } else{
+      setVisibleComponent("need-help");
+    }
+    setNeedVisible(!isNeedVisible)
+  }
+
+  const toggleLocation = () =>{
+    if(isNeedVisible){
+      setVisibleComponent(null);
+    } else{
+      setVisibleComponent("location");
+    }
+    setLocationVisible(!isLocationVisible)
+  }
+
   return (
     <>
       <nav className="p-4 border-b-[0.3rem] border-[#d5d5d5]">
@@ -66,11 +88,7 @@ const Navbar = () => {
                 />
               </Link>
             </div>
-            <div>
-              <Link
-                href={"/location"}
-                className="cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] xs:right-4"
-              >
+            <div onClick={toggleLocation} className={`flex items-center justify-center gap-1 mt-2 cursor-pointer ${isLocationVisible && 'bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg'}`}>
                 <Image
                   className="invert-[0.4]"
                   width={28}
@@ -79,15 +97,10 @@ const Navbar = () => {
                   alt="yourlab icon"
                 />
                 <span className="text-lg">Location</span>
-              </Link>
             </div>
           </div>
           <div className="hidden md:flex items-center space-x-10">
-            <div>
-              <Link
-                href={"/help"}
-                className="cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] lg:w-[8rem] lg:ml-[1rem] mx-[2rem] w-[7rem] md:mr-[-1rem]"
-              >
+            <div onClick={toggleNeed} className={`flex items-center justify-center gap-1 mt-2 cursor-pointer ${isNeedVisible && 'bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg'}`}>
                 <Image
                   className="rotate-[-80deg] invert-[0.3]"
                   width={16}
@@ -98,7 +111,6 @@ const Navbar = () => {
                   alt="yourlab icon"
                 />
                 <span className="text-lg">Need Help</span>
-              </Link>
             </div>
 
             <div>
@@ -134,7 +146,7 @@ const Navbar = () => {
 
             {!isLoggedIn ? (
               <div
-                className="cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem]"
+                className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${isSignupVisible && 'bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg'}`}
                 onClick={toggleSignup}
               >
                 <Image
@@ -170,9 +182,9 @@ const Navbar = () => {
         </div>
         {isOpen && (
           <div className="md:hidden mt-2 space-y-4 xs:py-[1rem] xs:px-[3rem] sm:px-[4rem] sm:py-[2rem] ">
-            <div className="flex items-center space-x-4">
+            <div className={`flex items-center space-x-4 ${isNeedVisible && 'bg-[#0A8E8A] p-[0.3rem] text-white rounded-lg'}`} onClick={toggleNeed}>
               <FaPhone className="text-xl" />
-              <span>Contact</span>
+              <span>Need Help</span>
             </div>
             <div className="flex items-center space-x-4">
               <FaFileAlt className="text-xl" />
@@ -183,7 +195,7 @@ const Navbar = () => {
               <span>Cart</span>
             </div>
             {!isLoggedIn ? (
-              <div className="flex items-center space-x-4">
+              <div className={`flex items-center space-x-4 ${isSignupVisible && 'bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg'}`}>
                 <FaUser className="text-xl" onClick={toggleSignup} />
                 <span>Register</span>
               </div>
@@ -200,11 +212,27 @@ const Navbar = () => {
         )}
       </nav>
 
+      {visibleComponent === "location" && isLocationVisible && (
+        <div className="absolute z-10 top-[16%] w-full h-[100vh] bg-[#0000004b]">
+        <div className="absolute left-[15%] top-[4%] z-10 bg-white rounded-xl">
+          <Location />
+        </div>
+        </div>
+      )}      
+
+      {visibleComponent === "need-help" && isNeedVisible && (
+        <div className="absolute z-10 top-[16%] w-full h-[100vh] bg-[#0000004b]">
+        <div className="absolute right-[15%] top-[4%] z-10">
+          <NeedHelp />
+        </div>
+        </div>
+      )}      
+
       {visibleComponent === "signup" && isSignupVisible && (
         <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto">
           <div
             className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer"
-            onClick={() => setVisibleComponent(null)}
+            onClick={() => setVisibleComponent(null) || setSignupVisible(!isSignupVisible)}
           >
             <img
               width="30"
@@ -221,7 +249,7 @@ const Navbar = () => {
         <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto">
           <div
             className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer"
-            onClick={() => setVisibleComponent(null)}
+            onClick={() => setVisibleComponent(null) || setSignupVisible(!isSignupVisible)}
           >
             <img
               width="30"
@@ -242,7 +270,7 @@ const Navbar = () => {
         <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto">
           <div
             className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer"
-            onClick={() => setVisibleComponent(null)}
+            onClick={() => setVisibleComponent(null) || setSignupVisible(!isSignupVisible)}
           >
             <img
               width="30"
@@ -259,36 +287,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-// "use client";
-
-// import { useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { logout } from "../GlobalRedux/slice/AuthSlice";
-// import { login } from "../GlobalRedux/slice/AuthSlice";
-// import { useRouter } from "next/navigation";
-
-// const Logout = () => {
-//   const [shadow, setShadow] = useState("0_0_0.4rem_0_gray");
-
-//   const router = useRouter();
-
-//   const dispatch = useDispatch();
-
-//   return (
-//     <div>
-//       {(isLoggedIn === true || isSignedIn === true) ? (
-//         <button
-//           className={`w-full mt-6 p-3 bg-gradient-to-r from-[#0CEDE6] text-white rounded-xl to-[#0A8E8A]`}
-//           onMouseDown={() => setShadow("inset_0_0_0.4rem_0_gray")}
-//           onMouseUp={() => setShadow("0_0_0.4rem_0_gray")}
-//           onClick={onLogout}
-//         >
-//           Logout
-//         </button>
-//         ) : ''}
-//     </div>
-//   );
-// };
-
-// export default Logout;

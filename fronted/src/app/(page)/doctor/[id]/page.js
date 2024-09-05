@@ -9,6 +9,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
+import ReviewComponent from '@/components/HomePage/ratings/page'
 // import { useEffect, useState } from "react";
 
 const DoctorPage = () => {
@@ -46,7 +47,7 @@ console.log(doctor)
           <div className="flex flex-col md:flex-row justify-between items-start">
             <div className="text-black space-y-4">
               <p>Specialist: {doctor?.specialist}</p>
-              <p>Time: </p>
+              <p className="flex gap-[0.5rem]">Ratings: <ReviewComponent /></p>
               <p className="flex-1">Address: {doctor?.address && doctor?.address.trim() + "," || ""} {doctor?.pincode}</p>
               <div className="grid grid-cols-2 gap-2 text-[0.9rem]">
                 <a className="list-none text-gray-600">Emergency Fee1: <span className="text-teal-700">{doctor?.fees && doctor?.fees?.emergencyFee1 + "rs"}</span></a>

@@ -269,7 +269,7 @@ const DocForm = () => {
       <div className="flex items-center justify-center mt-6">
         <button
           type="submit"
-          className="text-[1.2rem] font-bold py-[0.8rem] px-[4rem] bg-[#0A8E8A] font-sans tracking-tighter"
+          className="text-[1.2rem] text-white font-bold py-[0.5rem] px-[4rem] bg-[#0A8E8A] font-sans tracking-tighter"
         >
           SUBMIT
         </button>
