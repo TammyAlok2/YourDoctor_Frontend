@@ -47,22 +47,23 @@ const UpdateUserImage = () => {
 
   const onFormSubmit = async (e) => {
     e.preventDefault();
-    if (!data.fullName) {
+    if (data.fullName === "") {
       toast.error("All fields are mandatory");
       return;
     }
-    // if (data.fullName > 5) {
-    //   toast.error("name cannot be of less than 5 characters");
-    //   return;
-    // }
+    if (data.fullName > 5) {
+      toast.error("name cannot be of less than 5 characters");
+      return;
+    }
     const formData = new FormData();
-    formData.append("fullName", data.fullName);
+    formData.append("fullName", data?.fullName);
     // formData.append("avatar", data.avatar);
     // console.log(formData.entries().next())
     // console.log(formData.entries().next())
-    await dispatch(updateUserProfile([data.userId, formData]));
+    const updateData = await dispatch(updateUserProfile([data?.userId, formData]));
     
     await dispatch(getUserData());
+    console.log(updateData)
   };
 
   return (

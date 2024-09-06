@@ -13,7 +13,7 @@ import {
 import { toast } from "react-hot-toast";
 import { BsPersonCircle } from "react-icons/bs";
 
-export default function Signup({onBack}) {
+export default function Signup({onBack, setVisibleComponent, setSignupVisible}) {
   const dispatch = useDispatch();
 
   // const userData = useSelector((state)=>state.data)
@@ -123,6 +123,8 @@ export default function Signup({onBack}) {
         avatar: "",
       });
       setPreviewImage("");
+      setVisibleComponent(null)
+      setSignupVisible(false)
     }
   }
 

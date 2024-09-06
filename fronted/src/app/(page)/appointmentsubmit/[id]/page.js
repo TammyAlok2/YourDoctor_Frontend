@@ -32,24 +32,26 @@ const AppointmentSubmitted = () => {
       <div>
         <div className="2xl:w-[70rem] xl:w-[70rem] lg:w-[58rem] mx-auto flex my-[2rem] rounded-xl flex-row-reverse justify-between p-[2rem] shadow-md md:w-[40rem] sm:w-[30rem] xs:w-[20rem] xs:flex-col">
           <div className="flex items-center flex-col space-y-2">
+          <div className="border-4 rounded-full border-[#0A8E8A] w-[8.8rem] h-[8.8rem] flex text-center justify-center p-[0.2rem] mx-auto">
             <div className="w-[7.5rem] h-[7.5rem] rounded-full relative flex items-center justify-center">
               {doctor?.avatar && (
                 <Image
                   src={doctor?.avatar?.secure_url}
                   alt="Profile"
-                  className="w-24 h-24 rounded-full mb-4"
+                  className="w-24 h-24 rounded-full"
                   width={100}
                   height={100}
                   priority
                 />
               )}
               <div
-                className={`absolute w-[0.7rem] right-3 animate-ping rounded-full bottom-5 h-[0.7rem]`}
+                className={`absolute w-[1rem] right-1 animate-ping rounded-full bottom-1 h-[1rem]`}
                 style={{
-                  backgroundColor: `${doctor?.status === false ? "" : "green"}`,
+                  backgroundColor: `${doctor?.status === false ? "" : "#54FC05"}`,
                 }}
               ></div>
             </div>
+          </div>
             <h1 className="font-bold text-center text-[#61b1ae] text-[1.7rem]">
               {doctor?.fullName}
             </h1>

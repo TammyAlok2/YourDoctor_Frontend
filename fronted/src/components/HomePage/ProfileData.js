@@ -112,7 +112,7 @@ import { getAllDoctors } from "@/app/GlobalRedux/slice/DoctorSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import ReviewComponent from './ratings/page'
+import ReviewComponent from "./ratings/page";
 
 const ProfileData = () => {
   const [data, setData] = useState([]);
@@ -139,34 +139,51 @@ const ProfileData = () => {
             className="flex flex-col sm:flex-row gap-4 p-4 shadow-md rounded-md"
             key={userData._id}
           >
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 w-[16rem]">
               <h1 className="font-bold">
                 Specialist:{" "}
                 <span className="text-blue-600">{userData.specialist}</span>
               </h1>
-              <p className="flex gap-[0.5rem]">Ratings: <ReviewComponent /></p>
+              <p className="flex gap-[0.5rem]">
+                Ratings: <ReviewComponent />
+              </p>
               <p>Address: {userData.address}</p>
-                <ul className="text-gray-600 list-none">
-                <a className="list-none text-gray-600">First Visit Fees: <span className="text-teal-700">{userData?.fees && userData?.fees?.firstVisitFee + "rs"}</span></a>
-                </ul>
+              <ul className="text-gray-600 list-none">
+                <a className="list-none text-gray-600">
+                  First Visit Fees:{" "}
+                  <span className="text-teal-700">
+                    {userData?.fees && userData?.fees?.firstVisitFee + "rs"}
+                  </span>
+                </a>
+              </ul>
             </div>
             <div className="ml-auto flex flex-col items-end sm:items-center gap-2 w-full sm:w-auto">
-              <div className="w-20 h-20 rounded-full bg-gray-300">
-                {userData?.avatar && (
-                  <Image
-                    src={userData?.avatar?.secure_url}
-                    alt={"image"}
-                    width={80}
-                    height={80}
-                    className="rounded-full"
-                  />
-                )}
+              <div className="w-22 h-22 rounded-full relative">
+                <div className="border-4 rounded-full w-22 h-22 border-[#0A8E8A] flex text-center justify-center p-[0.2rem] mx-auto">
+                  {userData?.avatar && (
+                    <Image
+                      src={userData?.avatar?.secure_url}
+                      alt={"image"}
+                      width={80}
+                      height={80}
+                      className="rounded-full"
+                    />
+                  )}
+                </div>
+                <div
+                className={`absolute right-2 w-[0.8rem] animate-ping rounded-full bottom-3 h-[0.8rem]`}
+                style={{
+                  backgroundColor: `${userData?.status === false ? "" : "#54FC05"}`,
+                }}
+              ></div>
               </div>
               <h1 className="text-teal-600 font-bold text-center sm:text-left">
                 {userData.fullName}
               </h1>
               <button className="bg-teal-600 hover:bg-teal-500 p-2 text-white rounded-md">
-                <Link href={`/appointment/${userData._id}`}>Book Appointment</Link>
+                <Link href={`/appointment/${userData._id}`}>
+                  Book Appointment
+                </Link>
               </button>
             </div>
           </div>

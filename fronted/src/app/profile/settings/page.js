@@ -6,7 +6,7 @@ export default function Settings() {
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <div className="w-full max-w-md">
         <div className="p-4 flex flex-col gap-3">
-          <h1 className="block w-full mt-6 p-3 text-center pr-5 bg-gradient-to-r from-[#0CEDE6] text-white rounded-xl to-[#0A8E8A]">Settings</h1>
+        <Link href={"/profile"}><h1 className="block w-full mt-6 p-3 text-center pr-5 bg-gradient-to-r from-[#0CEDE6] text-white rounded-xl to-[#0A8E8A]">Settings</h1></Link>
           <Link href="settings/manage-patient" className="relative flex w-full p-3 pl-[3rem] pr-10 text-gray-700 border rounded-xl focus:outline-none border-teal-500">
               Manage Patient
               <Image width="30" height="30" className='absolute right-2 bottom-[0.7rem]' src="https://img.icons8.com/ios-glyphs/30/chevron-right.png" alt="chevron-right"/>

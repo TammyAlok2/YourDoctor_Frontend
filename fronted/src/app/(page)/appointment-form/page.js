@@ -87,7 +87,7 @@ const DocForm = () => {
           createAppointment([doctorId, formData])
         );
         if (response?.payload?.success) {
-          router.push(`/appointmentsubmit/${doctorId}`);
+          router.push(`/doctorpayment/${doctorId}`);
         }
       } catch (error) {
         toast.error("Failed to create appointment");
@@ -96,7 +96,7 @@ const DocForm = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-full">
+    <div className="flex justify-center items-center h-full my-[2rem]">
   <div className="w-full max-w-[60rem] h-[85%] bg-white p-[2rem] border-x-[0.1rem] border-gray-200 mx-auto">
     <FormHead />
 

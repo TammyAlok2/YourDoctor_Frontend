@@ -107,7 +107,7 @@ const AppointmentSec2 = () => {
   };
 
   return (
-    <div className="w-[75%] mx-auto">
+    <div className="2xl:w-[70rem] shadow-lg mx-auto py-[1rem] my-[3rem]">
       <div className="relative w-full max-w-4xl mx-auto flex items-center justify-between space-x-2">
         <button
           className="text-gray-800 font-bold py-1 px-2 rounded-full h-[4rem] w-[4rem]"

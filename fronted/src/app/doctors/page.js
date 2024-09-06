@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import FirstDoctorsSection from "./firstdoctors/page";
 import SecondDoctorsSection from "./secondoctors/page";
 import ThirdDoctorsSection from "./thirdoctors/page";
+import Image from "next/image";
 
 const Doctors = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -22,28 +23,24 @@ const Doctors = () => {
       box?.fullName?.toLowerCase().includes(searchTerm)
   );
 
-  const filteredSecondData = data1?.filter(
-    (box) =>{
-      const doctorPincode = String(box?.pincode).toLowerCase();
-      return(
+  const filteredSecondData = data1?.filter((box) => {
+    const doctorPincode = String(box?.pincode).toLowerCase();
+    return (
       box?.title?.toLowerCase().includes(searchTerm) ||
       box?.description?.toLowerCase().includes(searchTerm) ||
       doctorPincode === searchTerm
-      )
-    }
-  )
+    );
+  });
 
-  const filteredThirdData = data2?.filter(
-    (box) =>{
-      const doctorPincode = String(box?.pincode).toLowerCase();
-      return(
-        box?.specialist?.toLowerCase().includes(searchTerm) ||
-        box?.address?.toLowerCase().includes(searchTerm) ||
-        box?.fullName?.toLowerCase().includes(searchTerm) ||
-        doctorPincode === searchTerm
-      )
-    }
-  )
+  const filteredThirdData = data2?.filter((box) => {
+    const doctorPincode = String(box?.pincode).toLowerCase();
+    return (
+      box?.specialist?.toLowerCase().includes(searchTerm) ||
+      box?.address?.toLowerCase().includes(searchTerm) ||
+      box?.fullName?.toLowerCase().includes(searchTerm) ||
+      doctorPincode === searchTerm
+    );
+  });
 
   // const filteredWithPincode = data2.filter((doctor) => {
   //   return doctorPincode === searchTerm.toLowerCase();
@@ -52,13 +49,24 @@ const Doctors = () => {
   return (
     <>
       <div className="flex flex-col items-center p-4 rounded-full">
-        <input
-          type="text"
-          placeholder="Search..."
-          className="mb-4 py-2 px-4 border rounded-full w-full max-w-md"
-          value={searchTerm}
-          onChange={handleSearch}
-        />
+        <div className="relative w-[28%]">
+          <input
+            type="text"
+            placeholder="Search..."
+            className="mb-4 py-2 pl-4 pr-8 border rounded-full w-full max-w-md"
+            value={searchTerm}
+            onChange={handleSearch}
+          />
+          <div className="bg-white absolute top-[0.6rem] right-3 cursor-pointer">
+            <Image
+              className="invert-[0.2]"
+              width={20}
+              height={20}
+              src={"https://img.icons8.com/ios-glyphs/50/search--v1.png"}
+              alt="search-icon"
+            />
+          </div>
+        </div>
       </div>
       <div>
         <FirstDoctorsSection setData={setData} filteredData={filteredData} />

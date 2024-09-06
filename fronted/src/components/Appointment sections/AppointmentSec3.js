@@ -68,8 +68,8 @@ const doctorId = allSlot?.doctorId || '';
         </div>
         <div className="h-[0.2rem] bg-violet-200"></div>
         <div className="flex space-x-10 items-center xs:flex-col xs:gap-[1rem] xs:justify-center xs:space-x-0">
-          <h1 className="text-xl font-bold">Evening</h1>
-          <div className="flex flex-wrap gap-4">
+          <h1 className="text-xl">Evening</h1>
+          <div className="grid grid-cols-2 gap-4 xs:grid-cols-2">
             {eveningSlots.length > 0 ? (
               eveningSlots.map((slot, index) => (
                 <Link
@@ -86,7 +86,7 @@ const doctorId = allSlot?.doctorId || '';
                   onClick={(e) => handleSlotClick(e, slot)}
                 >
                   <div
-                    className={`p-[0.5rem] border-gray-300 border-[0.1rem] rounded-md shadow-sm cursor-pointer ${
+                    className={`p-[0.5rem] w-[12rem] space-x-3 border-gray-300 border-[0.1rem] rounded-md shadow-sm cursor-pointer ${
                       slot.availableSlot === 0 ? 'bg-gray-200 cursor-not-allowed' : 'hover:bg-green-100'
                     }`}
                   >

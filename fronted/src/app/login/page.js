@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { isEmail, isValidPassword } from "../Helpers/regexMatcher";
 import { toast } from "react-hot-toast";
 
-export default function Login({onBack, onBack1, setVisibleComponent}) {
+export default function Login({onBack, onBack1, setVisibleComponent, setSignupVisible}) {
   const [showPassword, setShowPassword] = useState(false);
   const [loginData, setLoginData] = useState({
     email: "",
@@ -61,6 +61,7 @@ export default function Login({onBack, onBack1, setVisibleComponent}) {
         password: "",
       });
       setVisibleComponent(null)
+      setSignupVisible(false)
     }
   }
 

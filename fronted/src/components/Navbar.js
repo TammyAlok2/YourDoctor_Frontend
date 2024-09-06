@@ -271,7 +271,7 @@ const Navbar = () => {
       </nav>
 
       {visibleComponent === "location" && isLocationVisible && (
-        <div className="absolute z-10 top-[16%] w-full h-[100vh] bg-[#0000004b]">
+        <div className="absolute z-10 top-[11%] w-full h-[100vh] bg-[#0000004b]">
         <div className="absolute left-[15%] top-[4%] z-10 bg-white rounded-xl py-[0.5rem] px-[1rem]">
           <Location />
         </div>
@@ -279,7 +279,7 @@ const Navbar = () => {
       )}      
 
       {visibleComponent === "need-help" && isNeedVisible && (
-        <div className="absolute z-10 top-[16%] w-full h-[100vh] bg-[#0000004b]">
+        <div className="absolute z-10 top-[11%] w-full h-[100vh] bg-[#0000004b]">
         <div className="absolute right-[15%] top-[4%] z-10">
           <NeedHelp />
         </div>
@@ -291,7 +291,8 @@ const Navbar = () => {
           <div className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer" onClick={()=>setVisibleComponent(null) || setSignupVisible(!isSignupVisible)}>
           <img width="30" height="30" src="https://img.icons8.com/ios-glyphs/30/multiply.png" alt="multiply"/>
           </div>
-          <Signup onBack={() => showComponent("login")} />
+          <Signup onBack={() => showComponent("login")} setVisibleComponent={setVisibleComponent} setSignupVisible={setSignupVisible}
+          />
         </div>
       )}
 
@@ -300,7 +301,7 @@ const Navbar = () => {
           <div className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer" onClick={()=>setVisibleComponent(null) || setSignupVisible(!isSignupVisible)}>
           <img width="30" height="30" src="https://img.icons8.com/ios-glyphs/30/multiply.png" alt="multiply"/>
           </div>
-          <Login onBack={showSignup} onBack1={showForgot} setVisibleComponent={setVisibleComponent}/>
+          <Login onBack={showSignup} onBack1={showForgot} setVisibleComponent={setVisibleComponent} setSignupVisible={setSignupVisible}/>
         </div>
       )}
 

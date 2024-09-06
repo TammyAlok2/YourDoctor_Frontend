@@ -99,9 +99,8 @@ const ProfileSettings = () => {
           </button>
         </div>
         
-        <button className="relative flex w-full p-3 pl-[3rem] pr-10 mt-5 text-gray-700 border rounded-xl focus:outline-none border-teal-500" onClick={handleNavigateOnSetting}>
+        <button className="w-full mt-6 p-3 bg-gradient-to-r from-[#0CEDE6] text-white rounded-xl to-[#0A8E8A]" onClick={handleNavigateOnSetting}>
           Settings
-          <Image width="30" height="30" className='absolute right-2 bottom-[0.7rem]' src="https://img.icons8.com/ios-glyphs/30/chevron-right.png" alt="chevron-right" />
         </button>
         <Logout />
       </div>

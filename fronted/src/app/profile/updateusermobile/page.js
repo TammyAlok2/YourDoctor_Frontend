@@ -31,7 +31,7 @@ const UpdateUserImage = () => {
     }
   }, [userId]);
 
-  // console.log(dispatch(updateUserProfile([data.userId])))
+  console.log(dispatch(updateUserProfile([data.userId])))
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
