@@ -271,7 +271,7 @@ const Navbar = () => {
       </nav>
 
       {visibleComponent === "location" && isLocationVisible && (
-        <div className="absolute z-10 top-[11%] w-full h-[100vh] bg-[#0000004b]">
+        <div className="absolute z-10 top-[5rem] w-full h-[100vh] bg-[#0000004b]">
         <div className="absolute left-[15%] top-[4%] z-10 bg-white rounded-xl py-[0.5rem] px-[1rem]">
           <Location />
         </div>
@@ -279,7 +279,7 @@ const Navbar = () => {
       )}      
 
       {visibleComponent === "need-help" && isNeedVisible && (
-        <div className="absolute z-10 top-[11%] w-full h-[100vh] bg-[#0000004b]">
+        <div className="absolute z-10 top-[5rem] w-full h-[100vh] bg-[#0000004b]">
         <div className="absolute right-[15%] top-[4%] z-10">
           <NeedHelp />
         </div>

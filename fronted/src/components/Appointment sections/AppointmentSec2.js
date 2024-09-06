@@ -139,7 +139,7 @@ const AppointmentSec2 = () => {
                 onClick={() => handleDateClick(index)}
               >
                 <h2 className="text-xl font-bold mb-2">{item.day}</h2>
-                <p className="text-lg">{item.slot} slots</p>
+                {/* <p className="text-lg">{item.slot} slots</p> */}
               </div>
             )
           })}

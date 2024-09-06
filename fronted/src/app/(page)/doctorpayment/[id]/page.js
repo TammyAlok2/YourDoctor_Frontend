@@ -6,13 +6,15 @@ import Link from "next/link";
 
 const DoctorPayment = () => {
   const params = useParams();
+  
+
   return (
     <div className="flex h-screen flex-col items-center mt-[1.7rem]">
       <div className="bg-white pt-6 pb-10 px-7 border-[0.3rem] border-[#0A8E8A] w-[34rem] text-center">
         <h1 className="text-2xl text-left font-semibold mb-2">
           You're paying,
         </h1>
-        <p className="text-4xl font-semibold mt-[1.5rem] mb-2">450 Rupees</p>
+        <p className="text-4xl font-semibold mt-[1.5rem] mb-2"> Rupees</p>
         <hr />
         <div className="mt-4">
           <div className="flex justify-between text-lg">
@@ -25,7 +27,7 @@ const DoctorPayment = () => {
           </div>
           <div className="flex justify-between text-lg mt-1">
             <span className="font-bold">Total</span>
-            <span>450.00</span>
+            <span></span>
           </div>
         </div>
       </div>

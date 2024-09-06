@@ -7,12 +7,12 @@ import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
+import ReviewComponent from "@/components/HomePage/ratings/page";
 const AppointmentSubmitted = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const [doctor, setDoctor] = useState(null);
 
-  console.log(params.id)
   const getDoctorData = async () => {
     try {
       const response = await dispatch(getAllDoctor());
@@ -26,26 +26,25 @@ const AppointmentSubmitted = () => {
   useEffect(() => {
     getDoctorData();
   }, []);
-  console.log(doctor);
   return (
     <>
       <div>
         <div className="2xl:w-[70rem] xl:w-[70rem] lg:w-[58rem] mx-auto flex my-[2rem] rounded-xl flex-row-reverse justify-between p-[2rem] shadow-md md:w-[40rem] sm:w-[30rem] xs:w-[20rem] xs:flex-col">
           <div className="flex items-center flex-col space-y-2">
-          <div className="border-4 rounded-full border-[#0A8E8A] w-[8.8rem] h-[8.8rem] flex text-center justify-center p-[0.2rem] mx-auto">
-            <div className="w-[7.5rem] h-[7.5rem] rounded-full relative flex items-center justify-center">
+            <div className="w-[8rem] h-[8rem] rounded-full relative flex items-center justify-center">
+          <div className={`${doctor?.status === false ? "" : 'border-[#0A8E8A] border-4 rounded-full w-[8rem] h-[8rem] flex text-center justify-center p-[0.2rem] mx-auto'}`}>
               {doctor?.avatar && (
                 <Image
                   src={doctor?.avatar?.secure_url}
                   alt="Profile"
-                  className="w-24 h-24 rounded-full"
+                  className="w-28 h-26 rounded-full"
                   width={100}
                   height={100}
                   priority
                 />
               )}
               <div
-                className={`absolute w-[1rem] right-1 animate-ping rounded-full bottom-1 h-[1rem]`}
+                className={`absolute w-[1rem] right-3 animate-ping rounded-full bottom-3 h-[1rem]`}
                 style={{
                   backgroundColor: `${doctor?.status === false ? "" : "#54FC05"}`,
                 }}
@@ -56,12 +55,11 @@ const AppointmentSubmitted = () => {
               {doctor?.fullName}
             </h1>
               <h1 className="text-[rgba(0,0,0,0.99)] font-bold">{doctor?.email}</h1>
-              <h1 className="text-[rgba(62,62,62,0.99)] font-bold">{doctor?.mobileNumber}</h1>
           </div>
           <div className="mx-[2.5rem] xs:mx-[0.8rem] xs:my-[1rem]">
             <div className="space-y-10">
               <h1 className="font-semibold">Specialist: {doctor?.specialist}</h1>
-              <h1>Time: </h1>
+              <div className="flex gap-[0.5rem]">Ratings: <ReviewComponent /></div>
               <h1>Address: {doctor?.address}</h1>
             </div>
             <div className="mt-[3.8rem] grid grid-cols-2 gap-2">

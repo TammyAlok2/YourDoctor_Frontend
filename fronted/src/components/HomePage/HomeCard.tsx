@@ -6,6 +6,10 @@ import "aos/dist/aos.css";
 import AOS from "aos";
 import Link from "next/link";
 
+interface HomeCard {
+  setSearchTerm: any;
+}
+
 const cardData = [
   {
     cardImage:
@@ -21,7 +25,7 @@ const cardData = [
   },
 ];
 
-const HomeCard = () => {
+const HomeCard: React.FC<HomeCard> = ({ setSearchTerm }) => {
   const [current, setCurrent] = useState(0);
   const length = cardData.length;
 
@@ -38,12 +42,14 @@ const HomeCard = () => {
 
   const handleChange = (e: any) => {
     setInputVal(e.target.value);
+    setSearchTerm(e.target.value);
   };
 
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setCurrent(current === length - 1 ? 0 : current + 1);
     }, 4000);
+    return () => clearTimeout(timer); // Cleanup timer on unmount
   }, [current]);
 
   if (!Array.isArray(cardData) || cardData.length <= 0) {
@@ -75,7 +81,7 @@ const HomeCard = () => {
         ))}
         <div className="flex items-center justify-center font-semibold text-[2.3rem] my-[3rem]"></div>
         <div className="flex items-center justify-center gap-[5rem] xs:flex-col">
-          <div className="relative h-[2.4rem] bg-white rounded-lg">
+          <div className="relative h-[2.4rem] bg-white rounded-lg xs:mt-2 shadow-lg">
             <input
               type="text"
               className="w-full h-full rounded-lg relative py-[1rem] px-[1rem] outline-0 sm:w-[11rem] xs:w-[12rem] lg:w-[22rem]"
@@ -93,7 +99,7 @@ const HomeCard = () => {
           </div>
           <div className="flex gap-[3rem] items-center justify-center">
             <button className="text-[0.9rem] font-semibold text-white bg-[rgb(247,86,61)] py-[0.6rem] px-[1rem] rounded-xl [box-shadow:0_0_0.4rem_0_gray] xs:w-[7rem] sm:w-[7rem]">
-            <Link href={"/labtests"}>Lab Tests</Link>
+              <Link href={"/labtests"}>Lab Tests</Link>
             </button>
             <button className="text-[0.9rem] font-semibold text-white bg-[rgb(17_164_160_/_99%)] hover:bg-[rgba(17,164,159,0.89)] py-[0.6rem] px-[1rem] rounded-xl [box-shadow:0_0_0.4rem_0_gray]">
               <Link href={"/doctors"}>Doctors</Link>

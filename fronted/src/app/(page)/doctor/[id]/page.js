@@ -47,7 +47,7 @@ console.log(doctor)
           <div className="flex flex-col md:flex-row justify-between items-start">
             <div className="text-black space-y-4">
               <p>Specialist: {doctor?.specialist}</p>
-              <p className="flex gap-[0.5rem]">Ratings: <ReviewComponent /></p>
+              <div className="flex gap-[0.5rem]">Ratings: <ReviewComponent /></div>
               <p className="flex-1">Address: {doctor?.address && doctor?.address.trim() + "," || ""} {doctor?.pincode}</p>
               <div className="grid grid-cols-2 gap-2 text-[0.9rem]">
                 <a className="list-none text-gray-600">Emergency Fee1: <span className="text-teal-700">{doctor?.fees && doctor?.fees?.emergencyFee1 + "rs"}</span></a>
@@ -58,21 +58,22 @@ console.log(doctor)
               </div>
             </div>
             <div className="flex flex-col items-center mt-4 md:mt-0">
-              <div className="relative w-24 h-24 bg-gray-300 rounded-full mb-2">
+              <div className="relative w-24 h-24 rounded-full mb-2">
+              <div className={`${doctor ?.status === false ? "" : "border-4 rounded-full border-[#0A8E8A] w-[7rem] h-[7rem] flex items-center justify-center p-[0.2rem] mx-auto"}`}>
               {
                 doctor?.avatar && <Image
                   src={doctor?.avatar?.secure_url}
                   alt="Profile"
-                  className="w-24 h-24 rounded-full mb-4"
+                  className="w-24 h-24 rounded-full"
                   width={100}
                   height={100}
                   priority
                 />
               }
-                <div className={`absolute right-2 w-[0.7rem] animate-ping rounded-full bottom-3 h-[0.7rem]`} style={{backgroundColor: `${doctor?.status === false ? '' : 'green'}`}}></div>
-                
+                <div className={`absolute w-[0.7rem] animate-ping rounded-full right-0 -bottom-2 h-[0.7rem]`} style={{backgroundColor: `${doctor?.status === false ? '' : '#54FC05'}`}}></div>
               </div>
-              <h1 className="text-[rgb(17_164_160_/_99%)] font-bold">{doctor?.fullName}</h1>
+              </div>
+              <h1 className="text-[rgb(17_164_160_/_99%)] font-bold mt-2">{doctor?.fullName}</h1>
             </div>
           </div>
         </div>
