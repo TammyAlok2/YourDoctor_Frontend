@@ -71,9 +71,9 @@ const FirstDoctorsSection = ({ setData, filteredData }) => {
                 </a>
               </ul>
             </div>
-            <div className="ml-auto flex flex-col items-end sm:items-start relative gap-[0.8rem] w-[45%] sm:w-auto">
+            <div className="ml-auto flex flex-col items-end sm:items-start relative gap-[0.8rem] w-[45%] xs:w-[100%] sm:w-auto">
               <div className="w-[6rem] h-[6rem] rounded-full overflow-hidden items-end ml-auto relative">
-                <div className="border-4 rounded-full w-22 h-22 border-[#0A8E8A] flex text-center justify-center p-[0.2rem] mx-auto">
+                <div className={`${userData?.status === false ? "" : "border-4 rounded-full w-22 h-22 border-[#0A8E8A] flex text-center justify-center p-[0.2rem] mx-auto"}`}>
                   {userData?.avatar && (
                     <Image
                       src={userData?.avatar?.secure_url}

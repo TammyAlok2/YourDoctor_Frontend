@@ -34,7 +34,7 @@ const AppointmentSec1 = () => {
       <div className="2xl:w-[70rem] xl:w-[70rem] lg:w-[58rem] mx-auto flex mb-[3rem] mt-[4rem] flex-col px-[2rem] py-[1rem] shadow-lg rounded-xl md:w-[40rem] sm:w-[30rem] xs:w-[20rem]">
         <div className="flex items-center justify-center flex-col space-y-2">
           <Link href={`/doctor/${params.id}`}>
-          <div className="border-4 rounded-full border-[#0A8E8A] w-[8.8rem] h-[8.8rem] flex text-center justify-center p-[0.2rem] mx-auto">
+          <div className={`${doctor ?.status === false ? "" : "border-4 rounded-full border-[#0A8E8A] w-[8.8rem] h-[8.8rem] flex text-center justify-center p-[0.2rem] mx-auto"}`}>
             <div className="w-[8rem] h-[8rem] rounded-full flex items-center justify-center relative mx-auto">
               {doctor?.avatar && (
                 <Image
@@ -49,7 +49,7 @@ const AppointmentSec1 = () => {
               <div
                 className={`absolute right-2 w-[1rem] animate-ping rounded-full bottom-3 h-[1rem]`}
                 style={{
-                  backgroundColor: `${doctor?.status === true ? "" : "#54FC05"}`,
+                  backgroundColor: `${doctor?.status === false ? "" : "#54FC05"}`,
                 }}
               ></div>
             </div>

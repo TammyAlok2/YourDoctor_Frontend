@@ -48,12 +48,12 @@ const Doctors = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center p-4 rounded-full">
-        <div className="relative w-[28%]">
+      <div className="flex flex-col items-center p-4">
+        <div className="relative w-full max-w-md xs:w-[60%] sm:w-[60%] md:w-[60%] lg:w-[58%]">
           <input
             type="text"
             placeholder="Search..."
-            className="mb-4 py-2 pl-4 pr-8 border rounded-full w-full max-w-md"
+            className="mb-4 py-2 pl-4 pr-8 border rounded-full w-full"
             value={searchTerm}
             onChange={handleSearch}
           />

@@ -1,110 +1,3 @@
-// "use client";
-
-// import Link from "next/link";
-// import { getAllDoctors } from "@/app/GlobalRedux/slice/DoctorSlice";
-// import { useDispatch, useSelector } from "react-redux";
-// import { useEffect, useState } from "react";
-// import Image from "next/image";
-
-// const ProfileData = () => {
-//   const [data, setData] = useState([]);
-//   const dispatch = useDispatch();
-//   // const response = useSelector((state) => state?.doctor?.doctors);
-//   // console.log("doctor data : ", response);
-
-//   const getAllDoctor = async () => {
-//     try {
-//       const response = await dispatch(getAllDoctors());
-//       // console.log(response);
-//       setData(response?.payload?.data?.slice(0, 3));
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-//   useEffect(() => {
-//     getAllDoctor();
-//   }, []);
-
-//   // console.log("our data: ",data)
-
-//   return (
-//     <div className="flex items-center justify-center relative">
-//       <div className="grid grid-cols-3 justify-center mx-[2rem] gap-[1rem] my-[3rem] xs:flex-col sm:flex-col lg:flex-row">
-//         {data?.map((userData) => (
-//           <div
-//             className="flex gap-[2rem] p-[1rem] shadow-md rounded-md"
-//             key={userData._id}
-//           >
-//             <div className="flex flex-col gap-[1rem]">
-//               <h1 className="font-bold w-[15rem]">
-//                 Specialist :{" "}
-//                 <span className="text-[blue]">{userData.specialist}</span>
-//               </h1>
-//               <p>Time : {userData.data2} </p>
-//               <p>Address : {userData.address}</p>
-//               <details>
-//                 <summary className="font-bold">Fees: </summary>
-//                 <summary className="ml-[1.4rem] list-none text-gray-600">
-//                   emergencyFee1:{" "}
-//                   <span className="text-teal-700">
-//                     {userData?.fees && userData?.fees?.emergencyFee1 + "rs"}
-//                   </span>
-//                 </summary>
-//                 <summary className="ml-[1.4rem] list-none text-gray-600">
-//                   emergencyFee1:{" "}
-//                   <span className="text-teal-700">
-//                     {userData?.fees && userData?.fees?.emergencyFee2 + "rs"}
-//                   </span>
-//                 </summary>
-//                 <summary className="ml-[1.4rem] list-none text-gray-600">
-//                   emergencyFee1:{" "}
-//                   <span className="text-teal-700">
-//                     {userData?.fees && userData?.fees?.firstVisitFee + "rs"}
-//                   </span>
-//                 </summary>
-//                 <summary className="ml-[1.4rem] list-none text-gray-600">
-//                   emergencyFee1:{" "}
-//                   <span className="text-teal-700">
-//                     {userData?.fees && userData?.fees?.secondVisitFee + "rs"}
-//                   </span>
-//                 </summary>
-//                 <summary className="ml-[1.4rem] list-none text-gray-600">
-//                   emergencyFee1:{" "}
-//                   <span className="text-teal-700">
-//                     {userData?.fees &&
-//                       userData?.fees?.visitUnder7DaysFee + "rs"}
-//                   </span>
-//                 </summary>
-//               </details>
-//             </div>
-//             <div className="flex flex-col relative gap-[0.8rem] w-[10rem]">
-//               <div className="w-[5rem] h-[5rem] rounded-full bg-[rgb(206_206_206_/_71%)]">
-//                 {userData?.avatar && (
-//                   <Image
-//                     src={userData?.avatar?.secure_url}
-//                     alt={"image"}
-//                     width={100}
-//                     height={100}
-//                     className="rounded-full"
-//                   />
-//                 )}
-//               </div>
-//               <h1 className="text-[rgb(17_164_160_/_99%)] font-bold">
-//                 {userData.fullName}
-//               </h1>
-//               <button className="bg-[rgb(17_164_160_/_99%)] hover:bg-[rgba(17,164,159,0.89)] p-[0.3rem] text-white rounded-md">
-//                 <Link href={`/doctor/${userData._id}`}>Book Appointment</Link>
-//               </button>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ProfileData;
-
 "use client";
 
 import Link from "next/link";
@@ -114,7 +7,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import ReviewComponent from "./ratings/page";
 
-const ProfileData = () => {
+const ProfileData = ({searchTerm}) => {
   const [data, setData] = useState([]);
   const dispatch = useDispatch();
 
@@ -131,22 +24,26 @@ const ProfileData = () => {
     getAllDoctor();
   }, []);
 
+  const filteredData = data.filter((doctor) =>
+    doctor.fullName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="flex items-center justify-center relative">
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 mx-4 my-6 ">
-        {data?.map((userData) => (
+      <div className="grid grid-cols-1 gap-[2rem] xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 justify-center mx-[1rem] sm:mx-[2rem] md:mx-[3rem] my-[3rem]">
+        {filteredData?.map((userData) => (
           <div
-            className="flex flex-col sm:flex-row gap-4 p-4 shadow-md rounded-md"
+            className="flex flex-col sm:flex-row gap-[2rem] p-[1rem] shadow-md rounded-md"
             key={userData._id}
           >
-            <div className="flex flex-col gap-4 w-[16rem]">
+            <div className="flex flex-col gap-[1rem] w-[16rem]">
               <h1 className="font-bold">
                 Specialist:{" "}
-                <span className="text-blue-600">{userData.specialist}</span>
+                <span className="text-[blue]">{userData.specialist}</span>
               </h1>
-              <p className="flex gap-[0.5rem]">
+              <div className="flex gap-[0.5rem]">
                 Ratings: <ReviewComponent />
-              </p>
+              </div>
               <p>Address: {userData.address}</p>
               <ul className="text-gray-600 list-none">
                 <a className="list-none text-gray-600">
@@ -157,30 +54,33 @@ const ProfileData = () => {
                 </a>
               </ul>
             </div>
-            <div className="ml-auto flex flex-col items-end sm:items-center gap-2 w-full sm:w-auto">
-              <div className="w-22 h-22 rounded-full relative">
-                <div className="border-4 rounded-full w-22 h-22 border-[#0A8E8A] flex text-center justify-center p-[0.2rem] mx-auto">
+            <div className="ml-auto flex flex-col items-end sm:items-start relative gap-[0.8rem] w-[45%] xs:w-[100%] sm:w-auto">
+              <div className="w-[6rem] h-[6rem] rounded-full overflow-hidden items-end ml-auto relative">
+              {/* className={`${doctor?.status === false ? "" : 'border-[#0A8E8A] border-4 rounded-full w-[8.8rem] h-[8.8rem] flex text-center justify-center p-[0.2rem] mx-auto'}` */}
+                <div className={`${userData?.status === false ? "" : "border-4 rounded-full w-22 h-22 border-[#0A8E8A] flex text-center justify-center p-[0.2rem] mx-auto"}`}>
                   {userData?.avatar && (
                     <Image
                       src={userData?.avatar?.secure_url}
-                      alt={"image"}
-                      width={80}
-                      height={80}
-                      className="rounded-full"
+                      alt={"Doctor Avatar"}
+                      width={100}
+                      height={100}
+                      className="rounded-full object-cover"
                     />
                   )}
                 </div>
                 <div
-                className={`absolute right-2 w-[0.8rem] animate-ping rounded-full bottom-3 h-[0.8rem]`}
-                style={{
-                  backgroundColor: `${userData?.status === false ? "" : "#54FC05"}`,
-                }}
-              ></div>
+                  className={`absolute right-2 w-[0.8rem] animate-ping rounded-full bottom-3 h-[0.8rem]`}
+                  style={{
+                    backgroundColor: `${
+                      userData?.status === false ? "" : "#54FC05"
+                    }`,
+                  }}
+                ></div>
               </div>
-              <h1 className="text-teal-600 font-bold text-center sm:text-left">
+              <h1 className="text-[rgb(17_164_160_/_99%)] font-bold items-end ml-auto">
                 {userData.fullName}
               </h1>
-              <button className="bg-teal-600 hover:bg-teal-500 p-2 text-white rounded-md">
+              <button className="bg-[rgb(17_164_160_/_99%)] hover:bg-[rgba(17,164,159,0.89)] p-[0.3rem] text-white rounded-md">
                 <Link href={`/appointment/${userData._id}`}>
                   Book Appointment
                 </Link>
