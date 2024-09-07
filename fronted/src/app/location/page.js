@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+'use client';
 
+import React, { useState, useEffect } from 'react';
 
 const Location = ({ onPincodeSelect }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -11,7 +12,7 @@ const Location = ({ onPincodeSelect }) => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (searchTerm.length >= 3) {
+    if (searchTerm.length >= 1) {
       fetchPincodes(searchTerm);
     } else {
       setPincodes([]);
@@ -25,20 +26,21 @@ const Location = ({ onPincodeSelect }) => {
       const response = await fetch(`https://api.postalpincode.in/pincode/${search}`);
       const data = await response.json();
       if (data[0].Status === 'Success') {
-        const uniquePincodes = [...new Set(data[0].PostOffice.map(po => po.Pincode))];
+        const uniquePincodes = [...new Set(data[0].PostOffice.map((po) => po.Pincode))];
         setPincodes(uniquePincodes);
       } else {
         setPincodes([]);
       }
     } catch (error) {
       console.error('Error fetching pincodes:', error);
-      setError('Failed to fetch pincodes. Please try again.');
+      setError('Failed to fetch pincodes. Please try again.', error);
     } finally {
       setLoading(false);
     }
   };
 
   const handlePincodeSelect = async (pincode) => {
+    
     setSelectedPincode(pincode);
     setSearchTerm(pincode);
     setShowSuggestions(false);
@@ -50,12 +52,12 @@ const Location = ({ onPincodeSelect }) => {
       const data = await response.json();
       if (data[0].Status === 'Success') {
         const postOffice = data[0].PostOffice[0];
-        const locationString = `${postOffice.Name}, ${postOffice.District}, ${postOffice.State}`;
+        const locationString = `${postOffice.Name}, ${postOffice.District}`;
         setLocation(locationString);
-        
-        localStorage.setItem('location',locationString)
-        localStorage.setItem('pincode',pincode)
-        
+
+        localStorage.setItem('location', locationString);
+        localStorage.setItem('pincode', pincode);
+
         onPincodeSelect(pincode, locationString);
       } else {
         setLocation('Location not found');
@@ -67,11 +69,12 @@ const Location = ({ onPincodeSelect }) => {
     } finally {
       setLoading(false);
     }
+    // Validation: Check if the pincode is 6 digits
+    (!/^\d{6}$/.test(pincode)) && console.log('Invalid Pincode. Please enter a 6-digit pincode.')
   };
-
-
+  
   return (
-    <div className="relative max-w-md mx-auto mt-10">
+    <div className="relative max-w-2xl mx-auto">
       <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden">
         <div className="flex-grow flex items-center px-4 py-2 relative">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -85,19 +88,19 @@ const Location = ({ onPincodeSelect }) => {
             className="focus:outline-none w-full"
             onClick={() => setShowSuggestions(true)}
           />
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5 text-gray-400 absolute right-4 cursor-pointer"
-            viewBox="0 0 20 20" 
+            viewBox="0 0 20 20"
             fill="currentColor"
             onClick={() => setShowSuggestions(!showSuggestions)}
           >
             <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
           </svg>
         </div>
-        <button 
+        <button
           className="bg-teal-500 text-white px-4 py-2"
-          onClick={() => console.log(`Selected pincode: ${selectedPincode}, Location: ${location}`)}
+          onClick={() => setShowSuggestions(true)}
         >
           Done
         </button>

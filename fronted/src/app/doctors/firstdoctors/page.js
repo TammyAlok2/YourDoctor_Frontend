@@ -25,11 +25,12 @@ const FirstDoctorsSection = ({ setData, filteredData }) => {
         // Step 2: If no data in localStorage, fetch it using the dispatcher
         const response = await dispatch(getAllDoctors());
         const doctorsData = response?.payload?.data;
+        setData(doctorsData)
 
-        if (doctorsData) {
+        if (filteredData) {
           // Step 3: Store the fetched data in localStorage for future use
-          localStorage.setItem('doctors', JSON.stringify(doctorsData));
-          setData(doctorsData.slice(0, 3)); // Use the fetched data
+          localStorage.setItem('doctors', JSON.stringify(filteredData));
+          setData(filteredData.slice(0, 3)); // Use the fetched data
         }
       }
     } catch (error) {
@@ -70,7 +71,7 @@ const FirstDoctorsSection = ({ setData, filteredData }) => {
   return (
     <div className="flex items-center justify-center relative">
       <div className="grid grid-cols-1 gap-[2rem] xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 justify-center mx-[1rem] sm:mx-[2rem] md:mx-[3rem] my-[3rem]">
-        {doctorData?.map((userData) => (
+        {filteredData?.map((userData) => (
           <div
             className="flex flex-col sm:flex-row gap-[2rem] p-[1rem] shadow-md rounded-md"
             key={userData._id}

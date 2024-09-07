@@ -18,7 +18,7 @@ const ProfileData = ({searchTerm}) => {
       
       if (storedDoctors) {
         const parsedDoctors = JSON.parse(storedDoctors);
-        setData(parsedDoctors.slice(0, 3)); // Use the locally stored data
+        setData(parsedDoctors); // Use the locally stored data
       } else {
         // Step 2: If no data in localStorage, fetch it using the dispatcher
         const response = await dispatch(getAllDoctors());
@@ -45,10 +45,12 @@ const ProfileData = ({searchTerm}) => {
     doctor.fullName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Limit the displayed data to 3 cards
+  const displayedData = filteredData.slice(0, 3);
   return (
     <div className="flex items-center justify-center relative">
       <div className="grid grid-cols-1 gap-[2rem] xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 justify-center mx-[1rem] sm:mx-[2rem] md:mx-[3rem] my-[3rem]">
-        {filteredData?.map((userData) => (
+        {displayedData?.map((userData) => (
           <div
             className="flex flex-col sm:flex-row gap-[2rem] p-[1rem] shadow-md rounded-md"
             key={userData._id}

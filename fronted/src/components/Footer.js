@@ -1,3 +1,6 @@
+'use client';
+
+import Image from 'next/image';
 import Link from 'next/link';
 
 const Footer = () => {
@@ -25,7 +28,18 @@ const Footer = () => {
           </div>
           <div>
             <h3 className="font-semibold mb-4 text-[1.5rem]">Follow us on</h3>
+            <div className='flex gap-3 items-center'>
+            <Link href="https://www.instagram.com/yourlab_in/">
+            <Image width="25" height="25" src="https://img.icons8.com/ios/50/instagram-new--v1.png" alt="instagram-new--v1"/>
+            </Link>
+            <Link href="https://www.youtube.com/@YourLab-v4f" target="_blank" rel="noopener noreferrer">
+            <Image width="30" height="30" src="https://img.icons8.com/ios/50/youtube-play.png" alt="youtube-play"/>
+            </Link>
+            <Link href="https://www.linkedin.com/company/yourlab-in/">
+            <Image width="25" height="25" src="https://img.icons8.com/ios/50/linkedin.png" alt="linkedin"/>
+            </Link>
             {/* Add social media links here */}
+            </div>
           </div>
         </div>
         <div className="mt-8 border-t border-gray-300 opacity-50"></div>
