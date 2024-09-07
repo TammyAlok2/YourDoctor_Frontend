@@ -17,13 +17,29 @@ const ThirdDoctorSection = ({ setData2, filteredThirdData }) => {
 
   const getAllDoctor = async () => {
     try {
-      const response = await dispatch(getAllDoctors());
-      // console.log(response);
-      setData2(response?.payload?.data.slice(3));
+      // Step 1: Check if doctor data is available in localStorage
+      const storedDoctors = localStorage.getItem('doctors');
+  
+      if (storedDoctors) {
+        const parsedDoctors = JSON.parse(storedDoctors);
+        setData2(parsedDoctors.slice(3)); // Use data from localStorage starting from index 3
+      } else {
+        // Step 2: If no data is found in localStorage, dispatch to fetch it from the API
+        const response = await dispatch(getAllDoctors());
+        const doctorsData = response?.payload?.data;
+  
+        if (doctorsData) {
+          // Step 3: Store the fetched data in localStorage
+          localStorage.setItem('doctors', JSON.stringify(doctorsData));
+          setData2(doctorsData.slice(3)); // Set data starting from index 3
+        }
+      }
     } catch (error) {
-      throw error;
+      console.error('Error fetching doctor data:', error);
+      throw error; // Handle the error as needed
     }
   };
+  
   useEffect(() => {
     getAllDoctor();
   }, []);
@@ -47,9 +63,10 @@ const ThirdDoctorSection = ({ setData2, filteredThirdData }) => {
                 Ratings: <ReviewComponent />
               </p>
               <p>Address: {userData.address}</p>
+              <p>Pincode: {userData.pincode}</p>
               <ul className="text-gray-600 list-none">
                 <a className="list-none text-gray-600">
-                  First Visit Fees:{" "}
+                   Fees:{" "}
                   <span className="text-teal-700">
                     {userData?.fees && userData?.fees?.firstVisitFee + "rs"}
                   </span>

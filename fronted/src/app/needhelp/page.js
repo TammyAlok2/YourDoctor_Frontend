@@ -2,9 +2,13 @@
 
 // components/Form.js
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { postEnquiry } from '../GlobalRedux/slice/DoctorSlice';
+import {toast,Toaster} from 'react-hot-toast'
 
 export default function NeedHelp() {
     const [name, setName] = useState('');
+    const dispatch = useDispatch()
   const [mobile, setMobile] = useState('');
   const [errors, setErrors] = useState({ name: '', mobile: '' });
 
@@ -30,19 +34,38 @@ export default function NeedHelp() {
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
 
-    const isValid = validate();
 
-    if (isValid) {
+
+    const isValid = await validate();
+
+    if (!isValid) {
       // Clear errors and proceed with form submission logic
+      return;
       setErrors({ name: '', mobile: '' });
-      alert('Form submitted successfully');
+      
+    }
+
+    const data ={
+name :name,
+number:mobile
+    }
+const response = await dispatch(postEnquiry(data))
+console.log(response)
+if(response?.payload?.success){
+  toast.success('Enquiry send successfully')
+  
       // Reset form fields
       setName('');
       setMobile('');
-    }
+}
+if(!response?.payload?.success){
+  toast.error('Enquiry send failed')
+
+}
+
   };
   return (
     <div className="flex justify-center items-center">
@@ -86,6 +109,7 @@ export default function NeedHelp() {
           >
             Submit
           </button>
+          <Toaster/>
         </form>
       </div>
     </div>

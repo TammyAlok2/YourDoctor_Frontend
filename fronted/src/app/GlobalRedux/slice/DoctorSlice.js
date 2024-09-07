@@ -48,6 +48,19 @@ export const getAllDoctors = createAsyncThunk(
   }
 );
 
+export const postEnquiry = createAsyncThunk("user/postEnquiry",
+  async(data)=>{
+    try{
+      const res = axiosInstance.post("user/postEnquiry",data);
+      console.log(res);
+      return (await res).data;
+    }
+    catch(error){
+      toast.error(error?.response?.data?.message);
+    }
+  }
+)
+
 const doctorSlice = createSlice({
   name: "doctor",
   initialState,

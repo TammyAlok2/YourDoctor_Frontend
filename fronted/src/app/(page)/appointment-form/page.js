@@ -18,8 +18,12 @@ const DocForm = () => {
   const slotId = searchParams.get("slotId");
   const todayDate = searchParams.get("todayDate");
 
-  const now = new Date();
-  const isoTimeString = now.toISOString().split("T")[1].split(".")[0];
+  const time = new Date()
+
+  const isoTimeString = time.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+});
 
   const [formData, setFormData] = useState({
     patientName: "",

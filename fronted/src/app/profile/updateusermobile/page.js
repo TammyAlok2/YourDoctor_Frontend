@@ -8,13 +8,10 @@ import {
   updateUserProfile,
   getUserData,
 } from "../../GlobalRedux/slice/AuthSlice";
-import { BsPersonCircle } from "react-icons/bs";
 import toast from "react-hot-toast";
 // import { useRouter } from "next/navigation";
-import Image from "next/image";
 
 const UpdateUserImage = () => {
-  // const router = useRouter();
   const userId = useSelector((state) => state?.auth?.data?._id);
   const dispatch = useDispatch();
   const [data, setData] = useState({
@@ -31,8 +28,6 @@ const UpdateUserImage = () => {
     }
   }, [userId]);
 
-  console.log(dispatch(updateUserProfile([data.userId])))
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setData({
@@ -40,35 +35,44 @@ const UpdateUserImage = () => {
       [name]: value,
     });
   };
+
   useEffect(() => {
     dispatch(getUserData([]));
   }, []);
-  // console.log(data.previewImage)
+
+  const validateMobileNumber = (mobile) => {
+    const mobilePattern = /^[6-9]\d{9}$/;
+     
+    return mobilePattern.test(mobile);
+  };
 
   const onFormSubmit = async (e) => {
     e.preventDefault();
-    if (!data.mobile) {
-      toast.error("All fields are mandatory");
+    const { mobile } = data;
+
+    if (!mobile) {
+      toast.error("Mobile number is required");
       return;
     }
-    // if (data.fullName > 5) {
-    //   toast.error("name cannot be of less than 5 characters");
-    //   return;
-    // }
-    const formData = new FormData();
-    formData.append("mobile", data.mobile);
-    // formData.append("avatar", data.avatar);
-    // console.log(formData.entries().next())
-    // console.log(formData.entries().next())
-    await dispatch(updateUserProfile([data.userId, formData]));
 
+    if (!validateMobileNumber(mobile)) {
+      toast.error(
+        "Mobile number should have 10 digits and start with a digit between 6 and 9"
+      );
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("mobile", mobile);
+
+    await dispatch(updateUserProfile([data.userId, formData]));
     await dispatch(getUserData());
+    toast.success("Mobile number updated successfully!");
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-4">
       <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
-        {/* Profile Picture */}
         <form onSubmit={onFormSubmit}>
           <div className="flex flex-col items-center">
             <div className="relative">
@@ -78,7 +82,7 @@ const UpdateUserImage = () => {
                 type="text"
                 name="mobile"
                 id="mobile"
-                placeholder="Enter your name"
+                placeholder="Enter your mobile number"
                 className="block w-full p-3 pl-5 pr-10 text-gray-700 border rounded-xl focus:outline-none border-teal-500"
                 value={data.mobile}
                 onChange={handleInputChange}
@@ -94,7 +98,6 @@ const UpdateUserImage = () => {
             </div>
           </div>
 
-          {/* Settings Button */}
           <Link href="/profile">
             <p className="link mt-3 text-accent cursor-pointer flex items-center justify-center w-full gap-2 font-semibold">
               <AiOutlineArrowLeft /> Go back to profile

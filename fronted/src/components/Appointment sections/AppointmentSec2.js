@@ -31,6 +31,7 @@ const AppointmentSec2 = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState(null); // Track selected date index
   const [slot, setSlot] = useState(null);
+  
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false); // Loader state
   const [timeSchedulingData, setTimeSchedulingData] = useState(
@@ -74,6 +75,7 @@ const AppointmentSec2 = () => {
         const response = schedule?.payload?.data;
         toast.success(schedule?.payload?.message);
         setSlot(response);
+   
       } else {
         setSlot(null);
         setMessage(schedule?.payload?.message || "No schedules available.");
@@ -139,7 +141,7 @@ const AppointmentSec2 = () => {
                 onClick={() => handleDateClick(index)}
               >
                 <h2 className="text-xl font-bold mb-2">{item.day}</h2>
-                <p className="text-lg">{item.slot} slots</p>
+              
               </div>
             )
           })}

@@ -10,22 +10,35 @@ const AppointmentSec3 = ({ allSlot }) => {
     return `${hour12}:${minute} ${period}`;
   };
 
-  // Ensure allSlot and slots are defined, if not, default to an empty array
-// Ensure allSlot and slots are defined, if not, default to an empty array
-const slots = allSlot?.slots || [];
-  
-// Fix: Ensure todayDate is always a valid date string
-const todayDate = allSlot?.date ? new Date(allSlot.date) : new Date();
-const date = todayDate.toISOString().split('T')[0];
-
-const doctorId = allSlot?.doctorId || '';
+  const slots = allSlot?.slots || [];
+  const todayDate = allSlot?.date ? new Date(allSlot.date) : new Date();
+  const date = todayDate.toISOString().split('T')[0];
+  const doctorId = allSlot?.doctorId || '';
 
   const morningSlots = slots.filter(slot => parseInt(slot.startTime.split(':')[0]) < 12);
   const eveningSlots = slots.filter(slot => parseInt(slot.startTime.split(':')[0]) >= 12);
 
+  const isSlotRunning = (slot) => {
+    const currentTime = new Date();
+    const slotStartTime = new Date(`${todayDate.toISOString().split('T')[0]}T${slot.startTime}`);
+    const slotEndTime = new Date(`${todayDate.toISOString().split('T')[0]}T${slot.endTime}`);
+    return currentTime >= slotStartTime && currentTime <= slotEndTime;
+  };
+
+  const isSlotInPast = (slot) => {
+    const currentTime = new Date();
+    const slotEndTime = new Date(`${todayDate.toISOString().split('T')[0]}T${slot.endTime}`);
+    return currentTime > slotEndTime;
+  };
+
   const handleSlotClick = (e, slot) => {
+    if (isSlotInPast(slot)) {
+      e.preventDefault();
+      toast.error('Cannot book an appointment for a past slot');
+      return;
+    }
     if (slot.availableSlot === 0) {
-      e.preventDefault(); // Prevent the default link behavior
+      e.preventDefault();
       toast.error('Appointment is full');
     }
   };
@@ -42,20 +55,27 @@ const doctorId = allSlot?.doctorId || '';
                   href={{
                     pathname: '/appointment-form',
                     query: {
-                      todayDate:date,
-                      slotId:slot._id,
-                      doctorId:doctorId
-
+                      todayDate: date,
+                      slotId: slot._id,
+                      doctorId: doctorId,
                     },
                   }}
                   key={index}
                   onClick={(e) => handleSlotClick(e, slot)}
                 >
                   <div
-                    className={`p-[0.5rem] border-gray-300 border-[0.1rem] rounded-md shadow-sm cursor-pointer ${
-                      slot.availableSlot === 0 ? 'bg-gray-200 cursor-not-allowed' : 'hover:bg-green-100'
+                    className={`relative p-[0.5rem] border-gray-300 border-[0.1rem] rounded-md shadow-sm cursor-pointer ${
+                      isSlotInPast(slot) || slot.availableSlot === 0
+                        ? 'bg-gray-200 cursor-not-allowed'
+                        : 'hover:bg-green-100'
                     }`}
                   >
+                    {/* Show "Running" label and make sure it's above the slot */}
+                    {isSlotRunning(slot) && (
+                      <div className="absolute -top-4 left-0 bg-yellow-500 text-white text-xs px-2 py-1 rounded-bl-md rounded-tr-md">
+                        Running
+                      </div>
+                    )}
                     {convertTo12HourFormat(slot.startTime)} to {convertTo12HourFormat(slot.endTime)}
                     <p className="text-xs text-gray-600 mt-1">Available slots: {slot.availableSlot}</p>
                   </div>
@@ -77,19 +97,26 @@ const doctorId = allSlot?.doctorId || '';
                     pathname: '/appointment-form',
                     query: {
                       todayDate: date,
-                      slotId:slot._id,
-                    doctorId:doctorId
+                      slotId: slot._id,
+                      doctorId: doctorId,
                     },
-
                   }}
                   key={index}
                   onClick={(e) => handleSlotClick(e, slot)}
                 >
                   <div
-                    className={`p-[0.5rem] w-[12rem] space-x-3 border-gray-300 border-[0.1rem] rounded-md shadow-sm cursor-pointer ${
-                      slot.availableSlot === 0 ? 'bg-gray-200 cursor-not-allowed' : 'hover:bg-green-100'
+                    className={`relative p-[0.5rem] w-[12rem] space-x-3 border-gray-300 border-[0.1rem] rounded-md shadow-sm cursor-pointer ${
+                      isSlotInPast(slot) || slot.availableSlot === 0
+                        ? 'bg-gray-200 cursor-not-allowed'
+                        : 'hover:bg-green-100'
                     }`}
                   >
+                    {/* Show "Running" label and make sure it's above the slot */}
+                    {isSlotRunning(slot) && (
+                      <div className="absolute -top-4 left-0 bg-yellow-500 text-white text-xs px-2 py-1 rounded-bl-md rounded-tr-md">
+                        Running
+                      </div>
+                    )}
                     {convertTo12HourFormat(slot.startTime)} to {convertTo12HourFormat(slot.endTime)}
                     <p className="text-xs text-gray-600 mt-1">Available slots: {slot.availableSlot}</p>
                   </div>

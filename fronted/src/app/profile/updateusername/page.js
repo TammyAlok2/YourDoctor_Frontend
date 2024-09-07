@@ -4,22 +4,15 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  updateUserProfile,
-  getUserData,
-} from "../../GlobalRedux/slice/AuthSlice";
-import { BsPersonCircle } from "react-icons/bs";
+import { updateUserProfile, getUserData } from "../../GlobalRedux/slice/AuthSlice";
 import toast from "react-hot-toast";
-// import { useRouter } from "next/navigation";
-import Image from "next/image";
 
 const UpdateUserImage = () => {
-  // const router = useRouter();
   const userId = useSelector((state) => state?.auth?.data?._id);
   const dispatch = useDispatch();
   const [data, setData] = useState({
     fullName: "",
-    userId: userId
+    userId: userId,
   });
 
   useEffect(() => {
@@ -31,7 +24,9 @@ const UpdateUserImage = () => {
     }
   }, [userId]);
 
-  // console.log(dispatch(updateUserProfile([data.userId])))
+  useEffect(() => {
+    dispatch(getUserData([]));
+  }, [dispatch]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -40,30 +35,39 @@ const UpdateUserImage = () => {
       [name]: value,
     });
   };
-  useEffect(() => {
-    dispatch(getUserData([]));
-  }, []);
-  // console.log(data.previewImage)
 
   const onFormSubmit = async (e) => {
     e.preventDefault();
-    if (data.fullName === "") {
-      toast.error("All fields are mandatory");
+
+    // Full name validation: letters only and at least 5 characters long
+    const nameRegex = /^[A-Za-z\s]+$/;
+
+    if (!data.fullName) {
+      toast.error("Full name is required");
       return;
     }
-    if (data.fullName > 5) {
-      toast.error("name cannot be of less than 5 characters");
+
+    if (data.fullName.length < 5) {
+      toast.error("Full name cannot be less than 5 characters");
       return;
     }
+
+    if (!nameRegex.test(data.fullName)) {
+      toast.error("Full name should only contain letters");
+      return;
+    }
+
     const formData = new FormData();
-    formData.append("fullName", data?.fullName);
-    // formData.append("avatar", data.avatar);
-    // console.log(formData.entries().next())
-    // console.log(formData.entries().next())
-    const updateData = await dispatch(updateUserProfile([data?.userId, formData]));
-    
+    formData.append("fullName", data.fullName);
+
+    const updateData = await dispatch(updateUserProfile([data.userId, formData]));
     await dispatch(getUserData());
-    console.log(updateData)
+
+    if (updateData.payload) {
+      toast.success("Profile updated successfully");
+    } else {
+      toast.error("Failed to update profile");
+    }
   };
 
   return (
@@ -73,21 +77,21 @@ const UpdateUserImage = () => {
         <form onSubmit={onFormSubmit}>
           <div className="flex flex-col items-center">
             <div className="relative">
-            <label className="block text-gray-700">Username</label>
-                <input
-                  required
-                  type="text"
-                  name="fullName"
-                  id="fullName"
-                  placeholder="Enter your name"
-                  className="block w-full p-3 pl-5 pr-10 text-gray-700 border rounded-xl focus:outline-none border-teal-500"
-                  value={data.fullName}
-                  onChange={handleInputChange}
-                />
+              <label className="block text-gray-700">Full Name</label>
+              <input
+                required
+                type="text"
+                name="fullName"
+                id="fullName"
+                placeholder="Enter your name"
+                className="block w-full p-3 pl-5 pr-10 text-gray-700 border rounded-xl focus:outline-none border-teal-500"
+                value={data.fullName}
+                onChange={handleInputChange}
+              />
             </div>
             <div className="flex items-center space-x-1 mt-2">
               <button
-              type="submit"
+                type="submit"
                 className="mt-3 p-3 bg-gradient-to-r from-[#0CEDE6] text-white rounded-full to-[#0A8E8A]"
               >
                 Update Profile Name
@@ -97,10 +101,10 @@ const UpdateUserImage = () => {
 
           {/* Settings Button */}
           <Link href="/profile">
-              <p className="link mt-3 text-accent cursor-pointer flex items-center justify-center w-full gap-2 font-semibold">
-                <AiOutlineArrowLeft /> Go back to profile
-              </p>
-            </Link>
+            <p className="link mt-3 text-accent cursor-pointer flex items-center justify-center w-full gap-2 font-semibold">
+              <AiOutlineArrowLeft /> Go back to profile
+            </p>
+          </Link>
         </form>
       </div>
     </div>

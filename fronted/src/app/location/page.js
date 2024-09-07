@@ -1,57 +1,132 @@
-'use client';
+import React, { useState, useEffect } from 'react';
 
-import React, { useState } from 'react';
-import { FiMapPin, FiChevronDown } from 'react-icons/fi'; // Importing icons from react-icons
 
-export default function Location() {
+const Location = ({ onPincodeSelect }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [pincodeSuggestions, setPincodeSuggestions] = useState([
-    '110001',
-    '110002',
-    '110003',
-    '110004',
-    '110005',
-  ]);
+  const [pincodes, setPincodes] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedPincode, setSelectedPincode] = useState('');
+  const [location, setLocation] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  // Toggles the visibility of the pincode suggestions
-  const toggleSuggestions = () => {
-    setShowSuggestions(!showSuggestions);
+  useEffect(() => {
+    if (searchTerm.length >= 3) {
+      fetchPincodes(searchTerm);
+    } else {
+      setPincodes([]);
+    }
+  }, [searchTerm]);
+
+  const fetchPincodes = async (search) => {
+    setLoading(true);
+    setError('');
+    try {
+      const response = await fetch(`https://api.postalpincode.in/pincode/${search}`);
+      const data = await response.json();
+      if (data[0].Status === 'Success') {
+        const uniquePincodes = [...new Set(data[0].PostOffice.map(po => po.Pincode))];
+        setPincodes(uniquePincodes);
+      } else {
+        setPincodes([]);
+      }
+    } catch (error) {
+      console.error('Error fetching pincodes:', error);
+      setError('Failed to fetch pincodes. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
+  const handlePincodeSelect = async (pincode) => {
+    setSelectedPincode(pincode);
+    setSearchTerm(pincode);
+    setShowSuggestions(false);
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch(`https://api.postalpincode.in/pincode/${pincode}`);
+      const data = await response.json();
+      if (data[0].Status === 'Success') {
+        const postOffice = data[0].PostOffice[0];
+        const locationString = `${postOffice.Name}, ${postOffice.District}, ${postOffice.State}`;
+        setLocation(locationString);
+        
+        localStorage.setItem('location',locationString)
+        localStorage.setItem('pincode',pincode)
+        
+        onPincodeSelect(pincode, locationString);
+      } else {
+        setLocation('Location not found');
+        onPincodeSelect(pincode, 'Location not found');
+      }
+    } catch (error) {
+      console.error('Error fetching pincode information:', error);
+      setError('Failed to fetch location information. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
   return (
-    <div className="relative flex items-center border border-gray-300 rounded-lg overflow-hidden">
-      <div
-        className="flex items-center px-[1rem] relative w-[23rem]"
-        onClick={toggleSuggestions} // Show suggestions when clicking on input or icon
-      >
-        <FiMapPin className="text-gray-500 mr-2 cursor-pointer" />
-        <input
-          type="text"
-          placeholder="Find your location"
-          className="focus:outline-none w-full"
-          onClick={toggleSuggestions} // Show suggestions when input is clicked
-        />
-        <FiChevronDown className="text-gray-500 absolute right-4 text-[2rem] cursor-pointer" />
+    <div className="relative max-w-md mx-auto mt-10">
+      <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden">
+        <div className="flex-grow flex items-center px-4 py-2 relative">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+          </svg>
+          <input
+            type="number"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Enter pincode"
+            className="focus:outline-none w-full"
+            onClick={() => setShowSuggestions(true)}
+          />
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            className="h-5 w-5 text-gray-400 absolute right-4 cursor-pointer"
+            viewBox="0 0 20 20" 
+            fill="currentColor"
+            onClick={() => setShowSuggestions(!showSuggestions)}
+          >
+            <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+          </svg>
+        </div>
+        <button 
+          className="bg-teal-500 text-white px-4 py-2"
+          onClick={() => console.log(`Selected pincode: ${selectedPincode}, Location: ${location}`)}
+        >
+          Done
+        </button>
       </div>
-      <button className="bg-teal-500 text-white px-4 py-2">Done</button>
 
       {showSuggestions && (
-        <div className="absolute top-[3.5rem] left-0 bg-white border border-gray-300 w-[23rem] max-h-[10rem] overflow-auto z-10 rounded-lg">
-          {pincodeSuggestions.map((pincode, index) => (
+        <div className="absolute top-full left-0 right-0 bg-white border border-gray-300 mt-1 max-h-60 overflow-auto z-10 rounded-lg">
+          {loading && <div className="px-4 py-2 text-gray-500">Loading...</div>}
+          {error && <div className="px-4 py-2 text-red-500">{error}</div>}
+          {!loading && !error && pincodes.map((pincode, index) => (
             <div
               key={index}
-              className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
-              onClick={() => {
-                // Optionally, you can update the input with the selected pincode
-                console.log(`Selected pincode: ${pincode}`);
-                setShowSuggestions(false); // Hide suggestions after selecting
-              }}
+              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+              onClick={() => handlePincodeSelect(pincode)}
             >
               {pincode}
             </div>
           ))}
         </div>
       )}
+
+      {selectedPincode && (
+        <div className="mt-4 p-4 bg-gray-100 rounded-lg">
+          <p className="font-semibold">Selected Pincode: {selectedPincode}</p>
+          <p>Location: {location}</p>
+        </div>
+      )}
     </div>
   );
-}
+};
+
+export default Location;
