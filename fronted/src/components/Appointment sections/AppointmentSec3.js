@@ -31,6 +31,17 @@ const AppointmentSec3 = ({ allSlot }) => {
     return currentTime > slotEndTime;
   };
 
+  // Check if the slot is within 30 minutes from the end time
+  const isWithin30MinutesOfEnd = (slot) => {
+    const currentTime = new Date();
+    const slotEndTime = new Date(`${todayDate.toISOString().split('T')[0]}T${slot.endTime}`);
+    
+    // Get the time 30 minutes before the slot end time
+    const timeBeforeEnd = new Date(slotEndTime.getTime() - 30 * 60 * 1000);
+    
+    return currentTime >= timeBeforeEnd && currentTime < slotEndTime;
+  };
+
   const handleSlotClick = (e, slot) => {
     if (isSlotInPast(slot)) {
       e.preventDefault();
@@ -40,6 +51,12 @@ const AppointmentSec3 = ({ allSlot }) => {
     if (slot.availableSlot === 0) {
       e.preventDefault();
       toast.error('Appointment is full');
+      return;
+    }
+    if (isWithin30MinutesOfEnd(slot)) {
+      e.preventDefault();
+      toast.error('Cannot book an appointment within 30 minutes of the slot ending');
+      return;
     }
   };
 

@@ -226,7 +226,7 @@ const DocForm = () => {
               type="submit"
               className="text-[1.2rem] font-bold py-[0.5rem] px-[3rem] bg-[aqua] font-sans tracking-tighter"
             >
-                SUMMIT
+                Submit
             </button>
           </div>
         </form>

@@ -39,9 +39,34 @@ const ThirdDoctorSection = ({ setData2, filteredThirdData }) => {
       throw error; // Handle the error as needed
     }
   };
+
+  const pollDoctorStatus = async () => {
+    try {
+      const response = await dispatch(getAllDoctors());
+      const updatedDoctorsData = response?.payload?.data;
+      if (updatedDoctorsData) {
+        // Update the state with the latest doctor data
+        setDoctorData(updatedDoctorsData.slice(0, 3));
+        // Update local storage with the new data
+        localStorage.setItem("doctors", JSON.stringify(updatedDoctorsData));
+      }
+    } catch (error) {
+      console.error("Error polling doctor status:", error);
+    }
+  };
   
+
   useEffect(() => {
+    // Initial fetch
     getAllDoctor();
+
+    // Poll every 30 seconds
+    const intervalId = setInterval(() => {
+      pollDoctorStatus();
+    }, 30000); // 30 seconds
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(intervalId);
   }, []);
 
   // console.log("our data: ",filteredThirdData)

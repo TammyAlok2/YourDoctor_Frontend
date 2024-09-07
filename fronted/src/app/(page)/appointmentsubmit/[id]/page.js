@@ -12,15 +12,37 @@ const AppointmentSubmitted = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const [doctor, setDoctor] = useState(null);
-
   const getDoctorData = async () => {
     try {
-      const response = await dispatch(getAllDoctor());
-      const doctors = response?.payload?.data;
+      // Step 1: Check if doctor data is available in localStorage
+      const storedDoctors = localStorage.getItem('doctors');
+      let doctors;
+  
+      if (storedDoctors) {
+        doctors = JSON.parse(storedDoctors);
+      } else {
+        // Step 2: If no data is found in localStorage, dispatch to fetch it from the API
+        const response = await dispatch(getAllDoctor());
+        doctors = response?.payload?.data;
+  
+        if (doctors) {
+          // Step 3: Store the fetched data in localStorage
+          localStorage.setItem('doctors', JSON.stringify(doctors));
+        }
+      }
+  
+      // Step 4: Find the specific doctor by ID
       const foundDoctor = doctors?.find((doctor) => doctor._id === params.id);
-      setDoctor(foundDoctor);
+      
+      if (foundDoctor) {
+        setDoctor(foundDoctor);
+      } else {
+        toast.error("Doctor not found");
+      }
+  
     } catch (error) {
-      toast.error("Doctor data fetch Error: ", error);
+      console.error('Error fetching doctor data:', error);
+      toast.error(`Doctor data fetch Error: ${error.message}`);
     }
   };
   useEffect(() => {
