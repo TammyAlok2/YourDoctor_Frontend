@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 
-const Location = ({ onPincodeSelect }) => {
+const Location = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [pincodes, setPincodes] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -33,14 +33,13 @@ const Location = ({ onPincodeSelect }) => {
       }
     } catch (error) {
       console.error('Error fetching pincodes:', error);
-      setError('Failed to fetch pincodes. Please try again.', error);
+      setError('Failed to fetch pincodes. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   const handlePincodeSelect = async (pincode) => {
-    
     setSelectedPincode(pincode);
     setSearchTerm(pincode);
     setShowSuggestions(false);
@@ -58,10 +57,12 @@ const Location = ({ onPincodeSelect }) => {
         localStorage.setItem('location', locationString);
         localStorage.setItem('pincode', pincode);
 
-        onPincodeSelect(pincode, locationString);
+        // Instead of calling onPincodeSelect, we're just setting local state
+        // and localStorage values
       } else {
         setLocation('Location not found');
-        onPincodeSelect(pincode, 'Location not found');
+        localStorage.setItem('location', 'Location not found');
+        localStorage.setItem('pincode', pincode);
       }
     } catch (error) {
       console.error('Error fetching pincode information:', error);
@@ -70,7 +71,9 @@ const Location = ({ onPincodeSelect }) => {
       setLoading(false);
     }
     // Validation: Check if the pincode is 6 digits
-    (!/^\d{6}$/.test(pincode)) && console.log('Invalid Pincode. Please enter a 6-digit pincode.')
+    if (!/^\d{6}$/.test(pincode)) {
+      setError('Invalid Pincode. Please enter a 6-digit pincode.');
+    }
   };
   
   return (
