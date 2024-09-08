@@ -8,14 +8,9 @@ import { isEmail, isValidPassword } from "../Helpers/regexMatcher";
 import { toast } from "react-hot-toast";
 import Image from 'next/image';
 
-interface LoginData {
-  email: string;
-  password: string;
-}
-
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const [loginData, setLoginData] = useState<LoginData>({
+  const [loginData, setLoginData] = useState({
     email: "",
     password: "",
   });
@@ -23,19 +18,19 @@ export default function Login() {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  function handleUserInput(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleUserInput(e) {
     const { name, value } = e.target;
-    setLoginData((prev) => ({
+    setLoginData(prev => ({
       ...prev,
       [name]: value,
     }));
   }
 
   const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
+    setShowPassword(prev => !prev);
   };
 
-  async function onLogin(event: React.FormEvent) {
+  async function onLogin(event) {
     event.preventDefault();
     if (!loginData.email || !loginData.password) {
       toast.error("Please fill all the details");
