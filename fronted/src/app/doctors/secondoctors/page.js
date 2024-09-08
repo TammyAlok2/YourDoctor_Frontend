@@ -1,4 +1,6 @@
 // pages/Boxes.js
+
+"use client";
 import Image from "next/image";
 import { useEffect } from "react";
 
