@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL = 'https://api.yourlab.in/api/v1/' ;
+const BASE_URL = 'http://localhost:5000' ;
      //http://localhost:5000 , https://your-lab-userpage-backend.onrender.com
 const axiosInstance = axios.create();
 
