@@ -1,6 +1,6 @@
 'use client';
 
-import Signup from './signup/page'
+import Signup from './page'
 import { useDispatch } from "react-redux";
 const SignupData = () => {
     const dispatch = useDispatch();
