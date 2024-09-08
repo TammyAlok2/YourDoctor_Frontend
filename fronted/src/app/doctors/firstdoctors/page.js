@@ -8,7 +8,7 @@ import Image from "next/image";
 import ReviewComponent from "@/components/HomePage/ratings/page";
 import { useParams } from "next/navigation";
 
-const FirstDoctorsSection = ({ setData, filteredData }) => {
+const FirstDoctorsSection = ({ setData:any, filteredData:any }) => {
   const dispatch = useDispatch();
   const params = useParams();
   const [doctorData, setDoctorData] = useState([]);
