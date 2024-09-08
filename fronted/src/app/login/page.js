@@ -1,14 +1,21 @@
 "use client";
+
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../GlobalRedux/slice/AuthSlice";
 import { useRouter } from "next/navigation";
 import { isEmail, isValidPassword } from "../Helpers/regexMatcher";
 import { toast } from "react-hot-toast";
+import Image from 'next/image';
+
+interface LoginData {
+  email: string;
+  password: string;
+}
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const [loginData, setLoginData] = useState({
+  const [loginData, setLoginData] = useState<LoginData>({
     email: "",
     password: "",
   });
@@ -17,16 +24,15 @@ export default function Login() {
   const router = useRouter();
 
   function handleUserInput(e: React.ChangeEvent<HTMLInputElement>) {
-    e.preventDefault();
     const { name, value } = e.target;
-    setLoginData({
-      ...loginData,
+    setLoginData((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
   }
 
   const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+    setShowPassword((prev) => !prev);
   };
 
   async function onLogin(event: React.FormEvent) {
@@ -46,15 +52,19 @@ export default function Login() {
       return;
     }
 
-    // Dispatch login action
-    const response = await dispatch(login(loginData));
-    if (response?.payload?.success) {
-      console.log(response);
-      router.push("/");
-      setLoginData({
-        email: "",
-        password: "",
-      });
+    try {
+      const response = await dispatch(login(loginData));
+      if (response?.payload?.success) {
+        console.log(response);
+        router.push("/");
+        setLoginData({
+          email: "",
+          password: "",
+        });
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+      toast.error("Login failed. Please try again.");
     }
   }
 
@@ -66,8 +76,9 @@ export default function Login() {
         </h1>
         <form noValidate onSubmit={onLogin}>
           <div className="mb-4">
-            <label className="font-bold mb-2 text-gray-950">Email</label>
+            <label htmlFor="email" className="font-bold mb-2 text-gray-950">Email</label>
             <input
+              id="email"
               type="email"
               name="email"
               placeholder="example@gmail.com"
@@ -77,8 +88,9 @@ export default function Login() {
             />
           </div>
           <div className="mb-4 relative">
-            <label className="font-bold mb-2 text-gray-950">Password</label>
+            <label htmlFor="password" className="font-bold mb-2 text-gray-950">Password</label>
             <input
+              id="password"
               type={showPassword ? "text" : "password"}
               name="password"
               placeholder="Enter Your Password"
@@ -91,17 +103,16 @@ export default function Login() {
               onClick={togglePasswordVisibility}
               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 mt-3"
             >
-              <img
-                src={
-                  showPassword ? "/eye-open-icon.png" : "/eye-closed-icon.png"
-                }
-                width="20"
-                height="20"
+              <Image
+                src={showPassword ? "/eye-open-icon.png" : "/eye-closed-icon.png"}
+                width={20}
+                height={20}
+                alt={showPassword ? "Hide password" : "Show password"}
               />
             </button>
           </div>
-          <div className="flex justify-end mb-4 cursor-pointer">
-            <a className="text-red-600 text-sm">
+          <div className="flex justify-end mb-4">
+            <a href="#" className="text-red-600 text-sm cursor-pointer">
               Forgot Password?
             </a>
           </div>
@@ -114,13 +125,13 @@ export default function Login() {
           <div className="text-center text-gray-500 mb-6">
             _____________or With_____________
           </div>
-          <button className="w-full p-2 bg-white text-gray-500 border rounded-lg flex items-center justify-center mb-6 relative">
-            <img
+          <button type="button" className="w-full p-2 bg-white text-gray-500 border rounded-lg flex items-center justify-center mb-6 relative">
+            <Image
               src="/google-logo.png"
               alt="Google Logo"
+              width={20}
+              height={20}
               className="mr-4"
-              width="20"
-              height="20"
             />
             Login with Google
           </button>
