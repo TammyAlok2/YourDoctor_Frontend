@@ -8,10 +8,11 @@ import Image from "next/image";
 import ReviewComponent from "@/components/HomePage/ratings/page";
 import { useParams } from "next/navigation";
 
-const FirstDoctorsSection = ({ setData, filteredData }) => {
+const FirstDoctorsSection = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const [doctorData, setDoctorData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
 
   const getAllDoctor = async () => {
     try {
@@ -20,22 +21,20 @@ const FirstDoctorsSection = ({ setData, filteredData }) => {
 
       if (storedDoctors) {
         const parsedDoctors = JSON.parse(storedDoctors);
-        setData(parsedDoctors.slice(0, 3)); // Use the locally stored data
+        setFilteredData(parsedDoctors.slice(0, 3)); // Use the locally stored data
       } else {
         // Step 2: If no data in localStorage, fetch it using the dispatcher
         const response = await dispatch(getAllDoctors());
         const doctorsData = response?.payload?.data;
-        setData(doctorsData)
+        setFilteredData(doctorsData?.slice(0, 3));
 
-        if (filteredData) {
+        if (doctorsData) {
           // Step 3: Store the fetched data in localStorage for future use
-          localStorage.setItem('doctors', JSON.stringify(filteredData));
-          setData(filteredData.slice(0, 3)); // Use the fetched data
+          localStorage.setItem('doctors', JSON.stringify(doctorsData));
         }
       }
     } catch (error) {
       console.error("Error fetching doctor data:", error);
-      return error;
     }
   };
 
@@ -46,7 +45,8 @@ const FirstDoctorsSection = ({ setData, filteredData }) => {
       const updatedDoctorsData = response?.payload?.data;
       if (updatedDoctorsData) {
         // Update the state with the latest doctor data
-        setDoctorData(updatedDoctorsData.slice(0, 3));
+        setDoctorData(updatedDoctorsData);
+        setFilteredData(updatedDoctorsData.slice(0, 3));
         // Update local storage with the new data
         localStorage.setItem("doctors", JSON.stringify(updatedDoctorsData));
       }
@@ -139,4 +139,4 @@ const FirstDoctorsSection = ({ setData, filteredData }) => {
   );
 };
 
-export default FirstDoctorsSection;
+export default FirstDoctorsSection
