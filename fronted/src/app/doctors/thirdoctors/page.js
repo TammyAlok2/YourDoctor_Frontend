@@ -8,35 +8,29 @@ import Image from "next/image";
 import ReviewComponent from "@/components/HomePage/ratings/page";
 import { useParams } from "next/navigation";
 
-const ThirdDoctorSection = ({ setData2, filteredThirdData }) => {
-  // const [data, setData] = useState([]);
+const ThirdDoctorSection = () => {
+  const [filteredThirdData, setFilteredThirdData] = useState([]);
   const dispatch = useDispatch();
-  // const response = useSelector((state) => state?.doctor?.doctors);
-  // console.log("doctor data : ", response);
   const params = useParams();
 
   const getAllDoctor = async () => {
     try {
-      // Step 1: Check if doctor data is available in localStorage
       const storedDoctors = localStorage.getItem('doctors');
   
       if (storedDoctors) {
         const parsedDoctors = JSON.parse(storedDoctors);
-        setData2(parsedDoctors.slice(3)); // Use data from localStorage starting from index 3
+        setFilteredThirdData(parsedDoctors.slice(3));
       } else {
-        // Step 2: If no data is found in localStorage, dispatch to fetch it from the API
         const response = await dispatch(getAllDoctors());
         const doctorsData = response?.payload?.data;
   
         if (doctorsData) {
-          // Step 3: Store the fetched data in localStorage
           localStorage.setItem('doctors', JSON.stringify(doctorsData));
-          setData2(doctorsData.slice(3)); // Set data starting from index 3
+          setFilteredThirdData(doctorsData.slice(3));
         }
       }
     } catch (error) {
       console.error('Error fetching doctor data:', error);
-      throw error; // Handle the error as needed
     }
   };
 
@@ -45,31 +39,23 @@ const ThirdDoctorSection = ({ setData2, filteredThirdData }) => {
       const response = await dispatch(getAllDoctors());
       const updatedDoctorsData = response?.payload?.data;
       if (updatedDoctorsData) {
-        // Update the state with the latest doctor data
-        setDoctorData(updatedDoctorsData.slice(0, 3));
-        // Update local storage with the new data
+        setFilteredThirdData(updatedDoctorsData.slice(3));
         localStorage.setItem("doctors", JSON.stringify(updatedDoctorsData));
       }
     } catch (error) {
       console.error("Error polling doctor status:", error);
     }
   };
-  
 
   useEffect(() => {
-    // Initial fetch
     getAllDoctor();
 
-    // Poll every 30 seconds
     const intervalId = setInterval(() => {
       pollDoctorStatus();
-    }, 30000); // 30 seconds
+    }, 30000);
 
-    // Cleanup interval on component unmount
     return () => clearInterval(intervalId);
   }, []);
-
-  // console.log("our data: ",filteredThirdData)
 
   return (
     <div className="flex items-center justify-center relative">

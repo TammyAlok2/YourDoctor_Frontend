@@ -1,10 +1,10 @@
-// pages/Boxes.js
-
 "use client";
-import Image from "next/image";
-import { useEffect } from "react";
 
-export default function SecondDoctorsSection({setData1, filteredSecondData}) {
+import Image from "next/image";
+import { useState, useEffect } from "react";
+
+export default function SecondDoctorsSection() {
+  const [filteredSecondData, setFilteredSecondData] = useState([]);
 
   const boxes = [
     {
@@ -33,9 +33,10 @@ export default function SecondDoctorsSection({setData1, filteredSecondData}) {
       description: "Depression or anxiety.",
     },
   ];
-  useEffect(()=>{
-    setData1(boxes)
-  },[])
+
+  useEffect(() => {
+    setFilteredSecondData(boxes);
+  }, []);
 
   return (
     <div className="container mx-auto px-4 py-8">
