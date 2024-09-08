@@ -3,16 +3,11 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createAccount } from "../GlobalRedux/slice/AuthSlice";
 import { useRouter } from "next/navigation";
-import {
-  isEmail,
-  isValidPassword,
-  // isValidPhone,
-} from "../Helpers/regexMatcher";
-
+import { isEmail, isValidPassword } from "../Helpers/regexMatcher";
 import { toast } from "react-hot-toast";
 import { BsPersonCircle } from "react-icons/bs";
 
-export default function Signup({ onBack, setVisibleComponent, setSignupVisible }) {
+export default function Signup() {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -103,8 +98,6 @@ export default function Signup({ onBack, setVisibleComponent, setSignupVisible }
         avatar: null,
       });
       setPreviewImage("");
-      setVisibleComponent(null);
-      setSignupVisible(false);
     }
   }
 
@@ -207,11 +200,11 @@ export default function Signup({ onBack, setVisibleComponent, setSignupVisible }
             />
             <span className="mx-auto">Sign up with Google</span>
           </button>
-          <div className="text-center cursor-pointer" onClick={onBack}>
-            <span className="text-black cursor-pointer">
-              Already have an account?{" "}
+          <div className="text-center">
+            <span className="text-black">Already have an account? </span>
+            <span className="text-blue-500 cursor-pointer" onClick={() => router.push("/login")}>
+              Log In
             </span>
-            Log In
           </div>
         </form>
       </div>
