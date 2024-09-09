@@ -60,7 +60,7 @@ const Location: React.FC<LocationProps> = ({ onPincodeSelect }) => {
         const locationString = `${postOffice.Name}, ${postOffice.District}`;
         setLocation(locationString);
 
-        // Check if localStorage is available (i.e., we are in the browser)
+        // Save in localStorage if available
         if (typeof window !== 'undefined') {
           localStorage.setItem('location', locationString);
           localStorage.setItem('pincode', pincode);
@@ -78,7 +78,7 @@ const Location: React.FC<LocationProps> = ({ onPincodeSelect }) => {
       setLoading(false);
     }
 
-    // Validation: Check if the pincode is 6 digits
+    // Validate pincode
     if (!/^\d{6}$/.test(pincode)) {
       console.log('Invalid Pincode. Please enter a 6-digit pincode.');
     }
