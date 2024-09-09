@@ -6,7 +6,7 @@ interface LocationProps {
   onPincodeSelect: (pincode: string, location: string) => void;
 }
 
-const Location:React.FC<LocationProps> = ({ onPincodeSelect }) => {
+const Location: React.FC<LocationProps> = ({ onPincodeSelect }) => {
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
   const [pincodes, setPincodes] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -30,17 +30,14 @@ const Location:React.FC<LocationProps> = ({ onPincodeSelect }) => {
       const response = await fetch(`https://api.postalpincode.in/pincode/${search}`);
       const data = await response.json();
       if (data[0].Status === 'Success') {
-        // const uniquePincodes = Array.from(new Set(data[0].PostOffice.map((po: { Pincode: string }) => po.Pincode)));
-        // setPincodes(uniquePincodes);
-
-        const postOffices = data[0].PostOffice as { Pincode: string }[];
-      const pincodesArray: string[] = postOffices.map((po) => po.Pincode);
-      const uniquePincodes: string[] = Array.from(new Set(pincodesArray));
-      setPincodes(uniquePincodes);
+        const uniquePincodes: string[] = Array.from(
+          new Set(data[0].PostOffice.map((po: { Pincode: string }) => po.Pincode))
+        );
+        setPincodes(uniquePincodes);
       } else {
         setPincodes([]);
       }
-    } catch (error:any) {
+    } catch (error: any) {
       console.error('Error fetching pincodes:', error);
       setError('Failed to fetch pincodes. Please try again.');
     } finally {
@@ -49,7 +46,6 @@ const Location:React.FC<LocationProps> = ({ onPincodeSelect }) => {
   };
 
   const handlePincodeSelect = async (pincode: string) => {
-    
     setSelectedPincode(pincode);
     setSearchTerm(pincode);
     setShowSuggestions(false);
@@ -64,8 +60,11 @@ const Location:React.FC<LocationProps> = ({ onPincodeSelect }) => {
         const locationString = `${postOffice.Name}, ${postOffice.District}`;
         setLocation(locationString);
 
-        localStorage.setItem('location', locationString);
-        localStorage.setItem('pincode', pincode);
+        // Check if localStorage is available (i.e., we are in the browser)
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('location', locationString);
+          localStorage.setItem('pincode', pincode);
+        }
 
         onPincodeSelect(pincode, locationString);
       } else {
@@ -78,16 +77,28 @@ const Location:React.FC<LocationProps> = ({ onPincodeSelect }) => {
     } finally {
       setLoading(false);
     }
+
     // Validation: Check if the pincode is 6 digits
-    (!/^\d{6}$/.test(pincode)) && console.log('Invalid Pincode. Please enter a 6-digit pincode.')
+    if (!/^\d{6}$/.test(pincode)) {
+      console.log('Invalid Pincode. Please enter a 6-digit pincode.');
+    }
   };
-  
+
   return (
     <div className="relative max-w-2xl mx-auto">
       <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden">
         <div className="flex-grow flex items-center px-4 py-2 relative">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400 mr-2" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5 text-gray-400 mr-2"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+              clipRule="evenodd"
+            />
           </svg>
           <input
             type="number"
@@ -104,7 +115,11 @@ const Location:React.FC<LocationProps> = ({ onPincodeSelect }) => {
             fill="currentColor"
             onClick={() => setShowSuggestions(!showSuggestions)}
           >
-            <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+            <path
+              fillRule="evenodd"
+              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+              clipRule="evenodd"
+            />
           </svg>
         </div>
         <button

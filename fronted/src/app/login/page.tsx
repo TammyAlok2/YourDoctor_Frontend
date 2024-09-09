@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../GlobalRedux/slice/AuthSlice";
 import { useRouter } from "next/navigation";
@@ -10,8 +10,6 @@ import { AppDispatch } from "../GlobalRedux/store";
 interface LoginProps {
   onBack: () => void;
   onBack1: () => void;
-  setVisibleComponent: (component: string | null) => void;
-  setSignupVisible: (visible: boolean) => void;
 }
 
 interface LoginData {
@@ -19,8 +17,10 @@ interface LoginData {
   password: string;
 }
 
-
-const Login: React.FC<LoginProps> = ({onBack, onBack1, setVisibleComponent, setSignupVisible}) => {
+const Login: React.FC<LoginProps> = ({
+  onBack,
+  onBack1,
+}) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loginData, setLoginData] = useState<LoginData>({
     email: "",
@@ -30,24 +30,19 @@ const Login: React.FC<LoginProps> = ({onBack, onBack1, setVisibleComponent, setS
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
-  // const userData = useSelector((state) => state.data);
-  // console.log(userData);
-
-  function handleUserInput(e:any) {
-    e.preventDefault();
+  function handleUserInput(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
-    setLoginData({
-      ...loginData,
+    setLoginData((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
   }
-  // console.log(loginData);
 
-  const togglePasswordVisibility = (e:any) => {
-    setShowPassword(!showPassword);
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
   };
 
-  async function onLogin(event:any) {
+  async function onLogin(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!loginData.email || !loginData.password) {
       toast.error("Please fill all the details");
@@ -57,25 +52,26 @@ const Login: React.FC<LoginProps> = ({onBack, onBack1, setVisibleComponent, setS
       toast.error("Invalid email id");
       return;
     }
-    // checking password validation
     if (!isValidPassword(loginData.password)) {
       toast.error(
-        "Password should be 6 - 16 character long with atleast a number and special character"
+        "Password should be 6 - 16 characters long with at least a number and special character"
       );
       return;
     }
 
-    // dispatch create account action
-    const response = await dispatch(login(loginData));
-    if (response?.payload?.success) {
-      console.log(response);
-      router.push("/");
-      setLoginData({
-        email: "",
-        password: "",
-      });
-      setVisibleComponent(null)
-      setSignupVisible(false)
+    try {
+      const response = await dispatch(login(loginData));
+      if (response?.payload?.success) {
+        console.log(response);
+        router.push("/");
+        setLoginData({
+          email: "",
+          password: "",
+        });
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      toast.error("An error occurred during login");
     }
   }
 
@@ -109,7 +105,7 @@ const Login: React.FC<LoginProps> = ({onBack, onBack1, setVisibleComponent, setS
             />
             <button
               type="button"
-              onClick={() => setShowPassword(!showPassword)}
+              onClick={togglePasswordVisibility}
               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 mt-3"
             >
               <img
@@ -118,6 +114,7 @@ const Login: React.FC<LoginProps> = ({onBack, onBack1, setVisibleComponent, setS
                 }
                 width="20"
                 height="20"
+                alt={showPassword ? "Hide password" : "Show password"}
               />
             </button>
           </div>
@@ -135,7 +132,10 @@ const Login: React.FC<LoginProps> = ({onBack, onBack1, setVisibleComponent, setS
           <div className="text-center text-gray-500 mb-6">
             _____________or With_____________
           </div>
-          <button className="w-full p-2 bg-white text-gray-500 border rounded-lg flex items-center justify-center mb-6 relative">
+          <button 
+            type="button"
+            className="w-full p-2 bg-white text-gray-500 border rounded-lg flex items-center justify-center mb-6 relative"
+          >
             <img
               src="/google-logo.png"
               alt="Google Logo"
@@ -145,8 +145,8 @@ const Login: React.FC<LoginProps> = ({onBack, onBack1, setVisibleComponent, setS
             />
             Login with Google
           </button>
-          <div className="text-center cursor-pointer" onClick={onBack}>
-              {"Don’t"} have an account? Sign Up
+          <div className="text-center cursor-pointer"  onClick={() => router.push("/signup")}>
+            Don&apos;t have an account? Sign Up
           </div>
         </form>
       </div>

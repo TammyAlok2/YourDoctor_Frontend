@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
@@ -17,12 +18,9 @@ export default function Forget() {
     email: "",
   });
 
-  const handleInputChange = (e:any) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setData({
-      ...data,
-      [name]: value,
-    });
+    setData({ ...data, [name]: value });
   };
 
   const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -31,10 +29,12 @@ export default function Forget() {
       toast.error("All fields are mandatory");
       return;
     }
-    const response = await dispatch(forgotPassword(data));
-    // console.log(response);
-    if (response) {
-      router.push("/login");
+    
+    // Modified dispatch call
+    const response = await dispatch(forgotPassword([data.email, null]));
+    
+    if (response.payload) {
+      router.push("/");
     }
     setData({ email: "" });
   };

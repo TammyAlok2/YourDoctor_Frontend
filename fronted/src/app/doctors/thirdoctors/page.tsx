@@ -30,34 +30,40 @@ interface ThirdDoctorSectionProps {
   filteredThirdData: Doctor[];
 }
 
-const ThirdDoctorSection:React.FC<ThirdDoctorSectionProps> = ({ setData2, filteredThirdData }) => {
-  // const [data, setData] = useState([]);
+const ThirdDoctorSection: React.FC<ThirdDoctorSectionProps> = ({
+  setData2,
+  filteredThirdData,
+}) => {
   const dispatch = useDispatch<AppDispatch>();
-  // const response = useSelector((state) => state?.doctor?.doctors);
-  // console.log("doctor data : ", response);
   const params = useParams();
+  const isBrowser = typeof window !== "undefined"; // Check if running on client
 
   const getAllDoctor = async () => {
     try {
-      // Step 1: Check if doctor data is available in localStorage
-      const storedDoctors = localStorage.getItem('doctors');
-  
-      if (storedDoctors) {
-        const parsedDoctors = JSON.parse(storedDoctors);
-        setData2(parsedDoctors.slice(3)); // Use data from localStorage starting from index 3
-      } else {
-        // Step 2: If no data is found in localStorage, dispatch to fetch it from the API
-        const response = await dispatch(getAllDoctors({}));
-        const doctorsData = response?.payload?.data;
-  
-        if (doctorsData) {
-          // Step 3: Store the fetched data in localStorage
-          localStorage.setItem('doctors', JSON.stringify(doctorsData));
-          setData2(doctorsData.slice(3)); // Set data starting from index 3
+      if (isBrowser) {
+        // Step 1: Check if doctor data is available in localStorage
+        const storedDoctors = localStorage.getItem("doctors");
+
+        if (storedDoctors) {
+          const parsedDoctors = JSON.parse(storedDoctors);
+          setData2(parsedDoctors.slice(3)); // Use data from localStorage starting from index 3
+          return;
         }
       }
+
+      // Step 2: Fetch data from API if not in localStorage
+      const response = await dispatch(getAllDoctors({}));
+      const doctorsData = response?.payload?.data;
+
+      if (doctorsData) {
+        if (isBrowser) {
+          // Step 3: Store fetched data in localStorage
+          localStorage.setItem("doctors", JSON.stringify(doctorsData));
+        }
+        setData2(doctorsData.slice(3)); // Set data starting from index 3
+      }
     } catch (error) {
-      console.error('Error fetching doctor data:', error);
+      console.error("Error fetching doctor data:", error);
       throw error; // Handle the error as needed
     }
   };
@@ -66,17 +72,14 @@ const ThirdDoctorSection:React.FC<ThirdDoctorSectionProps> = ({ setData2, filter
     try {
       const response = await dispatch(getAllDoctors({}));
       const updatedDoctorsData = response?.payload?.data;
-      if (updatedDoctorsData) {
-        // Update the state with the latest doctor data
-        // setDoctorData(updatedDoctorsData.slice(0, 3));
-        // Update local storage with the new data
+      if (updatedDoctorsData && isBrowser) {
+        // Update localStorage with new data
         localStorage.setItem("doctors", JSON.stringify(updatedDoctorsData));
       }
     } catch (error) {
       console.error("Error polling doctor status:", error);
     }
   };
-  
 
   useEffect(() => {
     // Initial fetch
@@ -90,8 +93,6 @@ const ThirdDoctorSection:React.FC<ThirdDoctorSectionProps> = ({ setData2, filter
     // Cleanup interval on component unmount
     return () => clearInterval(intervalId);
   }, []);
-
-  // console.log("our data: ",filteredThirdData)
 
   return (
     <div className="flex items-center justify-center relative">
@@ -113,7 +114,7 @@ const ThirdDoctorSection:React.FC<ThirdDoctorSectionProps> = ({ setData2, filter
               <p>Pincode: {userData.pincode}</p>
               <ul className="text-gray-600 list-none">
                 <a className="list-none text-gray-600">
-                   Fees:{" "}
+                  Fees:{" "}
                   <span className="text-teal-700">
                     {userData?.fees && userData?.fees?.firstVisitFee + "rs"}
                   </span>
@@ -122,7 +123,13 @@ const ThirdDoctorSection:React.FC<ThirdDoctorSectionProps> = ({ setData2, filter
             </div>
             <div className="ml-auto flex flex-col items-end sm:items-start relative gap-[0.8rem] w-[45%] xs:w-[100%] sm:w-auto">
               <div className="w-[6rem] h-[6rem] rounded-full bg-[rgb(206_206_206_/_71%)] overflow-hidden items-end ml-auto relative">
-              <div className={`${userData?.status === false ? "" : "border-4 rounded-full w-22 h-22 border-[#0A8E8A] flex text-center justify-center p-[0.2rem] mx-auto"}`}>
+                <div
+                  className={`${
+                    userData?.status === false
+                      ? ""
+                      : "border-4 rounded-full w-22 h-22 border-[#0A8E8A] flex text-center justify-center p-[0.2rem] mx-auto"
+                  }`}
+                >
                   {userData?.avatar && (
                     <Image
                       src={userData?.avatar?.secure_url}

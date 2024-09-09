@@ -20,9 +20,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/GlobalRedux/store";
 
-const Navbar:FC = () => {
-  const pincode1 = localStorage.getItem("pincode");
-  const locationString1 = localStorage.getItem("location");
+const Navbar: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -30,8 +28,8 @@ const Navbar:FC = () => {
   const [isSignupVisible, setSignupVisible] = useState<boolean>(false);
   const [isNeedVisible, setNeedVisible] = useState<boolean>(false);
   const [isLocationVisible, setLocationVisible] = useState<boolean>(false);
-  const [selectedPincode, setSelectedPincode] = useState<string>(pincode1 || "");
-  const [location, setLocation] = useState(locationString1 || "");
+  const [selectedPincode, setSelectedPincode] = useState<string>("");
+  const [location, setLocation] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
@@ -39,6 +37,13 @@ const Navbar:FC = () => {
 
   useEffect(() => {
     dispatch(getUserData());
+
+    // Using localStorage safely in useEffect
+    const pincode1 = typeof window !== 'undefined' ? localStorage.getItem("pincode") : null;
+    const locationString1 = typeof window !== 'undefined' ? localStorage.getItem("location") : null;
+    
+    if (pincode1) setSelectedPincode(pincode1);
+    if (locationString1) setLocation(locationString1);
   }, [dispatch]);
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -258,9 +263,10 @@ const Navbar:FC = () => {
         <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto">
           <div
             className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer"
-            onClick={() =>
-              setVisibleComponent(null) || setSignupVisible(!isSignupVisible)
-            }
+            onClick={() => {
+              setVisibleComponent(null);
+              setSignupVisible(!isSignupVisible);
+            }}
           >
             <img
               width="30"
@@ -281,9 +287,10 @@ const Navbar:FC = () => {
         <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto">
           <div
             className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer"
-            onClick={() =>
-              setVisibleComponent(null) || setSignupVisible(!isSignupVisible)
-            }
+            onClick={() => {
+              setVisibleComponent(null);
+              setSignupVisible(!isSignupVisible);
+            }}
           >
             <img
               width="30"
@@ -305,9 +312,10 @@ const Navbar:FC = () => {
         <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto">
           <div
             className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer"
-            onClick={() =>
-              setVisibleComponent(null) || setSignupVisible(!isSignupVisible)
-            }
+            onClick={() => {
+              setVisibleComponent(null);
+              setSignupVisible(!isSignupVisible);
+            }}
           >
             <img
               width="30"

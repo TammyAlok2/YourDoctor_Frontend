@@ -9,7 +9,6 @@ import ReviewComponent from "@/components/HomePage/ratings/page";
 import { useParams } from "next/navigation";
 import { AppDispatch } from "@/app/GlobalRedux/store";
 
-
 // Define the shape of the doctor data
 interface Doctor {
   _id: string;
@@ -27,31 +26,35 @@ interface FirstDoctorsSectionProps {
   filteredData: Doctor[];
 }
 
-
 const FirstDoctorsSection: React.FC<FirstDoctorsSectionProps> = ({ setData, filteredData }) => {
   const dispatch = useDispatch<AppDispatch>();
   const params = useParams();
   const [doctorData, setDoctorData] = useState<Doctor[]>([]);
 
+  const isBrowser = typeof window !== "undefined"; // Check if the code is running in the browser
+
   const getAllDoctor = async () => {
     try {
-      // Step 1: Try to get doctor data from localStorage
-      const storedDoctors = localStorage.getItem('doctors');
+      // Step 1: Try to get doctor data from localStorage (only if on the client-side)
+      if (isBrowser) {
+        const storedDoctors = localStorage.getItem('doctors');
 
-      if (storedDoctors) {
-        const parsedDoctors: Doctor[] = JSON.parse(storedDoctors);
-        setData(parsedDoctors.slice(0, 3)); // Use the locally stored data
-      } else {
-        // Step 2: If no data in localStorage, fetch it using the dispatcher
-        const response = await dispatch(getAllDoctors({}));
-        const doctorsData = response?.payload?.data;
-        setData(doctorsData)
-
-        if (filteredData) {
-          // Step 3: Store the fetched data in localStorage for future use
-          localStorage.setItem('doctors', JSON.stringify(filteredData));
-          setData(filteredData.slice(0, 3)); // Use the fetched data
+        if (storedDoctors) {
+          const parsedDoctors: Doctor[] = JSON.parse(storedDoctors);
+          setData(parsedDoctors.slice(0, 3)); // Use the locally stored data
+          return;
         }
+      }
+
+      // Step 2: If no data in localStorage, fetch it using the dispatcher
+      const response = await dispatch(getAllDoctors({}));
+      const doctorsData = response?.payload?.data;
+      setData(doctorsData);
+
+      if (filteredData && isBrowser) {
+        // Step 3: Store the fetched data in localStorage for future use
+        localStorage.setItem('doctors', JSON.stringify(filteredData));
+        setData(filteredData.slice(0, 3)); // Use the fetched data
       }
     } catch (error) {
       console.error("Error fetching doctor data:", error);
@@ -67,8 +70,11 @@ const FirstDoctorsSection: React.FC<FirstDoctorsSectionProps> = ({ setData, filt
       if (updatedDoctorsData) {
         // Update the state with the latest doctor data
         setDoctorData(updatedDoctorsData.slice(0, 3));
-        // Update local storage with the new data
-        localStorage.setItem("doctors", JSON.stringify(updatedDoctorsData));
+
+        // Update local storage with the new data (only on client-side)
+        if (isBrowser) {
+          localStorage.setItem("doctors", JSON.stringify(updatedDoctorsData));
+        }
       }
     } catch (error) {
       console.error("Error polling doctor status:", error);
