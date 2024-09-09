@@ -8,10 +8,6 @@ import { toast } from "react-hot-toast";
 import { BsPersonCircle } from "react-icons/bs";
 import { AppDispatch } from "../GlobalRedux/store";
 
-interface SignupProps {
-  onBack: () => void;
-}
-
 interface SignupData {
   fullName: string;
   email: string;
@@ -20,7 +16,7 @@ interface SignupData {
   avatar: File | string;
 }
 
-export default function Signup({ onBack }: SignupProps) {
+const Signup: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [previewImage, setPreviewImage] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -89,7 +85,7 @@ export default function Signup({ onBack }: SignupProps) {
       return;
     }
 
-    // Create a plain object matching the RegisterData type
+    // Create a plain object matching the SignupData type
     const registerData = {
       fullName: signupData.fullName,
       email: signupData.email,
@@ -98,18 +94,22 @@ export default function Signup({ onBack }: SignupProps) {
       avatar: signupData.avatar, // You may need to handle avatar upload separately
     };
 
-    const response = await dispatch(createAccount(registerData));
-
-    if (response?.payload?.success) {
-      router.push("/login");
-      setSignupData({
-        fullName: "",
-        email: "",
-        password: "",
-        mobile: "",
-        avatar: "",
-      });
-      setPreviewImage("");
+    try {
+      const response = await dispatch(createAccount(registerData));
+      if (response?.payload?.success) {
+        router.push("/login");
+        setSignupData({
+          fullName: "",
+          email: "",
+          password: "",
+          mobile: "",
+          avatar: "",
+        });
+        setPreviewImage("");
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      toast.error("An error occurred during signup");
     }
   }
 

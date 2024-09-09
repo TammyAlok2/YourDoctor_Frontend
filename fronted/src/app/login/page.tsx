@@ -7,20 +7,12 @@ import { isEmail, isValidPassword } from "../Helpers/regexMatcher";
 import { toast } from "react-hot-toast";
 import { AppDispatch } from "../GlobalRedux/store";
 
-interface LoginProps {
-  onBack: () => void;
-  onBack1: () => void;
-}
-
 interface LoginData {
   email: string;
   password: string;
 }
 
-const Login: React.FC<LoginProps> = ({
-  onBack,
-  onBack1,
-}) => {
+const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loginData, setLoginData] = useState<LoginData>({
     email: "",
