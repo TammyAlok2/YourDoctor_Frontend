@@ -16,7 +16,7 @@ interface SignupData {
   avatar: File | string;
 }
 
-const Signup: React.FC = () => {
+export  const Signup: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [previewImage, setPreviewImage] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
