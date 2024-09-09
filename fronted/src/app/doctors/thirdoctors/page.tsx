@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { getAllDoctors } from "@/app/GlobalRedux/slice/DoctorSlice";
 import { useDispatch } from "react-redux";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import ReviewComponent from "@/components/HomePage/ratings/page";
 import { useParams } from "next/navigation";
@@ -36,62 +36,70 @@ const ThirdDoctorSection: React.FC<ThirdDoctorSectionProps> = ({
 }) => {
   const dispatch = useDispatch<AppDispatch>();
   const params = useParams();
-  const isBrowser = typeof window !== "undefined"; // Check if running on client
+  const [doctorData, setDoctorData] = useState<Doctor[]>([]);
 
-  const getAllDoctor = useCallback(async () => {
+  const isBrowser = typeof window !== "undefined"; // Check if the code is running in the browser
+
+  const getAllDoctor = async () => {
     try {
+      // Step 1: Try to get doctor data from localStorage (only if on the client-side)
       if (isBrowser) {
-        // Step 1: Check if doctor data is available in localStorage
-        const storedDoctors = localStorage.getItem("doctors");
+        const storedDoctors = localStorage.getItem('doctors');
 
         if (storedDoctors) {
           const parsedDoctors: Doctor[] = JSON.parse(storedDoctors);
-          setData2(parsedDoctors.slice(3)); // Use data from localStorage starting from index 3
+          setData2(parsedDoctors.slice(3)); // Use the locally stored data starting from index 3
           return;
         }
       }
 
-      // Step 2: Fetch data from API if not in localStorage
+      // Step 2: If no data in localStorage, fetch it using the dispatcher
       const response = await dispatch(getAllDoctors({}));
-      const doctorsData: Doctor[] = response?.payload?.data;
+      const doctorsData = response?.payload?.data;
+      setData2(doctorsData);
 
-      if (doctorsData) {
-        if (isBrowser) {
-          // Step 3: Store fetched data in localStorage
-          localStorage.setItem("doctors", JSON.stringify(doctorsData));
-        }
-        setData2(doctorsData.slice(3)); // Set data starting from index 3
+      if (doctorsData && isBrowser) {
+        // Step 3: Store the fetched data in localStorage for future use
+        localStorage.setItem('doctors', JSON.stringify(doctorsData));
+        setData2(doctorsData.slice(3)); // Use the fetched data starting from index 3
       }
     } catch (error) {
       console.error("Error fetching doctor data:", error);
-      // Handle the error as needed
+      return error;
     }
-  }, [dispatch, isBrowser, setData2]);
+  };
 
-  const pollDoctorStatus = useCallback(async () => {
+  // Polling function to fetch updated doctor status
+  const pollDoctorStatus = async () => {
     try {
       const response = await dispatch(getAllDoctors({}));
-      const updatedDoctorsData: Doctor[] = response?.payload?.data;
-      if (updatedDoctorsData && isBrowser) {
-        // Update localStorage with new data
-        localStorage.setItem("doctors", JSON.stringify(updatedDoctorsData));
-        setData2(updatedDoctorsData.slice(3)); // Update state with new data
+      const updatedDoctorsData = response?.payload?.data;
+      if (updatedDoctorsData) {
+        // Update the state with the latest doctor data
+        setDoctorData(updatedDoctorsData.slice(3));
+
+        // Update local storage with the new data (only on client-side)
+        if (isBrowser) {
+          localStorage.setItem("doctors", JSON.stringify(updatedDoctorsData));
+        }
       }
     } catch (error) {
       console.error("Error polling doctor status:", error);
     }
-  }, [dispatch, isBrowser, setData2]);
+  };
 
   useEffect(() => {
     // Initial fetch
     getAllDoctor();
 
     // Poll every 30 seconds
-    const intervalId = setInterval(pollDoctorStatus, 30000); // 30 seconds
+    const intervalId = setInterval(() => {
+      pollDoctorStatus();
+    }, 30000); // 30 seconds
 
     // Cleanup interval on component unmount
     return () => clearInterval(intervalId);
-  }, [getAllDoctor, pollDoctorStatus]);
+  }, []);
 
   return (
     <div className="flex items-center justify-center relative">
@@ -162,4 +170,9 @@ const ThirdDoctorSection: React.FC<ThirdDoctorSectionProps> = ({
   );
 };
 
-export default ThirdDoctorSection;
+export default function Page() {
+  const [data2, setData2] = useState<Doctor[]>([]);
+  const filteredThirdData = data2.slice(3); // Show only doctors from index 3
+
+  return <ThirdDoctorSection setData2={setData2} filteredThirdData={filteredThirdData} />;
+}
