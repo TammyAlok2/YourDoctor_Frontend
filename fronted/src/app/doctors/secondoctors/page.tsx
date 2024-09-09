@@ -1,5 +1,5 @@
-// pages/Boxes.js
 "use client";
+
 import Image from "next/image";
 import { useEffect } from "react";
 
@@ -15,8 +15,10 @@ interface SecondDoctorsSectionProps {
   filteredSecondData: Box[];
 }
 
-const SecondDoctorsSection: React.FC<SecondDoctorsSectionProps> = ({setData1, filteredSecondData}) => {
-
+const SecondDoctorsSection: React.FC<SecondDoctorsSectionProps> = ({
+  setData1,
+  filteredSecondData,
+}) => {
   const boxes: Box[] = [
     {
       title: "Consult Now",
@@ -26,7 +28,7 @@ const SecondDoctorsSection: React.FC<SecondDoctorsSectionProps> = ({setData1, fi
     {
       title: "Consult Now",
       imageSrc: "https://thumbs.dreamstime.com/z/fears-doubts-difficulties-pregnancy-concept-banner-question-marks-around-pregnant-woman-single-mother-modern-card-flat-279007372.jpg",
-      description: "Acne, pimple or skin issues, ",
+      description: "Acne, pimple or skin issues,",
     },
     {
       title: "Consult Now",
@@ -44,9 +46,10 @@ const SecondDoctorsSection: React.FC<SecondDoctorsSectionProps> = ({setData1, fi
       description: "Depression or anxiety.",
     },
   ];
-  useEffect(()=>{
-    setData1(boxes)
-  },[])
+
+  useEffect(() => {
+    setData1(boxes);
+  }, [setData1]);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -70,6 +73,6 @@ const SecondDoctorsSection: React.FC<SecondDoctorsSectionProps> = ({setData1, fi
       </div>
     </div>
   );
-}
+};
 
 export default SecondDoctorsSection;
