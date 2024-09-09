@@ -1,3 +1,4 @@
+"use client";
 import AppointmentSec1 from "@/components/Appointment sections/AppointmentSec1"
 import AppointmentSec2 from "@/components/Appointment sections/AppointmentSec2"
 

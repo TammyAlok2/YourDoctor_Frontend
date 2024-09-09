@@ -1,6 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
-import Link from "next/link";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createAccount } from "../GlobalRedux/slice/AuthSlice";
 import { useRouter } from "next/navigation";
@@ -90,14 +89,16 @@ export default function Signup({ onBack }: SignupProps) {
       return;
     }
 
-    const formData = new FormData();
-    formData.append("fullName", signupData.fullName);
-    formData.append("email", signupData.email);
-    formData.append("password", signupData.password);
-    formData.append("mobile", signupData.mobile);
-    formData.append("avatar", signupData.avatar as Blob);
+    // Create a plain object matching the RegisterData type
+    const registerData = {
+      fullName: signupData.fullName,
+      email: signupData.email,
+      password: signupData.password,
+      mobile: signupData.mobile,
+      avatar: signupData.avatar, // You may need to handle avatar upload separately
+    };
 
-    const response = await dispatch(createAccount(formData));
+    const response = await dispatch(createAccount(registerData));
 
     if (response?.payload?.success) {
       router.push("/login");
