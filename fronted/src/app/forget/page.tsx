@@ -2,17 +2,22 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { forgotPassword, getUserData } from "../GlobalRedux/slice/AuthSlice";
 import { useRouter } from "next/navigation";
+import { forgotPassword } from "../GlobalRedux/slice/AuthSlice";
+import { AppDispatch } from "../GlobalRedux/store";
+
+interface ForgetData {
+  email: string;
+}
 
 export default function Forget() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const [data, setData] = useState({
+  const [data, setData] = useState<ForgetData>({
     email: "",
   });
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e:any) => {
     const { name, value } = e.target;
     setData({
       ...data,
@@ -20,7 +25,7 @@ export default function Forget() {
     });
   };
 
-  const onFormSubmit = async (e) => {
+  const onFormSubmit = async (e:any) => {
     e.preventDefault();
     if (!data.email) {
       toast.error("All fields are mandatory");

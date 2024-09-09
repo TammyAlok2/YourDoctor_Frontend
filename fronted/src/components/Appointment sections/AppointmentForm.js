@@ -10,16 +10,6 @@ import { useRouter } from "next/navigation";
 
 
 const DocForm = () => {
-  // const formik = useFormik({
-  //   initialValues: { name: "", phone: "+91", age: "", message: '' },
-  //   validationSchema: ValidationSchema,
-  //   onSubmit: (values, { setSubmitting }) => {
-  //     console.log('Form submitted:', values);
-  //     setSubmitting(false)
-  //   },
-  // });
-
-  // const isFormValid = Object.values(formik).every((field)=>field !== '')
 
   const dispatch = useDispatch();
   const router = useRouter();

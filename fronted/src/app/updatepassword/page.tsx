@@ -5,10 +5,16 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { getUserData, updatePassword } from "../GlobalRedux/slice/AuthSlice";
 import { useRouter } from "next/navigation";
+import { AppDispatch } from "../GlobalRedux/store";
+
+interface ResetFormData {
+  oldPassword: string;
+  newPassword: string;
+}
 
 export default function Reset() {
-  const [showPassword, setShowPassword] = useState(false);
-  const dispatch = useDispatch();
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
   // const dispatch = useDispatch();
@@ -16,7 +22,7 @@ export default function Reset() {
     oldPassword: "",
     newPassword: "",
   });
-  const handleInputChange = (e) => {
+  const handleInputChange = (e:any) => {
     const { name, value } = e.target;
     setData({
       ...data,
@@ -24,11 +30,11 @@ export default function Reset() {
     });
   };
 
-  const togglePasswordVisibility = (e) => {
+  const togglePasswordVisibility = (e:any) => {
     setShowPassword(!showPassword);
   };
 
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = async (e:any) => {
     e.preventDefault();
     if (!data.oldPassword || !data.newPassword) {
       toast.error("All fields are mandatory");

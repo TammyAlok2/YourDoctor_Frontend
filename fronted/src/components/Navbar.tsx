@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FC } from "react";
 import { getUserData } from "@/app/GlobalRedux/slice/AuthSlice";
 import Login from "@/app/login/page";
 import NeedHelp from "@/app/needhelp/page";
@@ -18,23 +18,24 @@ import {
   FaBars,
 } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/app/GlobalRedux/store";
 
-const Navbar = () => {
+const Navbar:FC = () => {
   const pincode1 = localStorage.getItem("pincode");
   const locationString1 = localStorage.getItem("location");
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const [isOpen, setIsOpen] = useState(false);
-  const [visibleComponent, setVisibleComponent] = useState(null);
-  const [isSignupVisible, setSignupVisible] = useState(false);
-  const [isNeedVisible, setNeedVisible] = useState(false);
-  const [isLocationVisible, setLocationVisible] = useState(false);
-  const [selectedPincode, setSelectedPincode] = useState(pincode1 || "");
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [visibleComponent, setVisibleComponent] = useState<string | null>(null);
+  const [isSignupVisible, setSignupVisible] = useState<boolean>(false);
+  const [isNeedVisible, setNeedVisible] = useState<boolean>(false);
+  const [isLocationVisible, setLocationVisible] = useState<boolean>(false);
+  const [selectedPincode, setSelectedPincode] = useState<string>(pincode1 || "");
   const [location, setLocation] = useState(locationString1 || "");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
-  const { isLoggedIn } = useSelector((state) => state.auth);
+  const { isLoggedIn } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     dispatch(getUserData());
@@ -42,10 +43,10 @@ const Navbar = () => {
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
-  const showComponent = (component) => setVisibleComponent(component);
+  const showComponent = (component: string) => setVisibleComponent(component);
   const hideComponent = () => setVisibleComponent(null);
 
-  const handlePincodeSelect = (pincode, locationString) => {
+  const handlePincodeSelect = (pincode: string, locationString: string) => {
     setSelectedPincode(pincode);
     setLocation(locationString);
     setLocationVisible(false);

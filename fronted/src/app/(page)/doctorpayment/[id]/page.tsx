@@ -4,10 +4,18 @@ import React from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 
-const DoctorPayment = () => {
+interface Doctor {
+  _id: string;
+  fees: {
+    firstVisitFee: number;
+    emergencyFee1: number;
+  };
+}
+
+const DoctorPayment:React.FC = () => {
   const params = useParams();
   const doctors = localStorage.getItem("doctors");
-  const doctor = JSON.parse(doctors).find((doctor) => doctor._id === params.id);
+  const doctor: Doctor | undefined = JSON.parse(doctors).find((doctor:Doctor) => doctor._id === params.id);
   const fees = doctor?.fees;
 
   // Get the current time
@@ -19,7 +27,7 @@ const DoctorPayment = () => {
 
   // Determine which fee to display
   const feeToDisplay = isEmergencyTime
-    ? (!fees?.emergencyFee1 !== "" ? fees?.firstVisitFee : fees?.emergencyFee1)
+    ? (!fees?.emergencyFee1 !== undefined && fees?.emergencyFee1 !== 0 ? fees?.firstVisitFee : fees?.emergencyFee1)
     : fees?.firstVisitFee;
 
   // Calculate discount and total

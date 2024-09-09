@@ -8,9 +8,24 @@ import { useRouter } from "next/navigation";
 import FormSelectedButton from "./AppointmentForm components/FormSelectButton";
 import FormHead from "./AppointmentForm components/FormHead";
 import toast from "react-hot-toast";
+import { AppDispatch } from "@/app/GlobalRedux/store";
+
+interface FormData {
+  patientName: string;
+  patientPhone: string;
+  age: string;
+  gender: string;
+  description: string;
+  date: string | null;
+  time: string;
+  bloodPressure: string;
+  diabetes: string;
+  weight: string;
+  slotId: string | null;
+}
 
 const DocForm = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const params = useParams();
   const searchParams = useSearchParams();
@@ -25,7 +40,9 @@ const DocForm = () => {
     minute: '2-digit',
 });
 
-  const [formData, setFormData] = useState({
+
+
+  const [formData, setFormData] = useState<FormData>({
     patientName: "",
     patientPhone: "",
     age: "",
@@ -39,23 +56,23 @@ const DocForm = () => {
     slotId: slotId,
   });
 
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isDiabetesSelectOpen, setIsDiabetesSelectOpen] = useState(false);
 
   const validateForm = () => {
-    let newErrors = {};
+    let newErrors: { [key: string]: string } = {};
 
     if (!formData.patientName || /[^a-zA-Z\s]/.test(formData.patientName))
-      newErrors.patientName = "Patient name is should be valid";
+      newErrors.patientName = "Patient name should be valid";
     if (!/^[6-9]\d{9}$/.test(formData.patientPhone))
       newErrors.patientPhone =
         "Phone number must be 10 digits and start with 6-9";
-    if (formData.age < 0 || formData.age > 100)
+    if (+formData.age < 0 || +formData.age > 100)
       newErrors.age = "Age must be between 0 and 100";
     if (!formData.gender) newErrors.gender = "Gender is required";
     if (!formData.description)
       newErrors.description = "Description is required";
-    if (formData.weight <= 0 || formData.weight > 300)
+    if (+formData.weight <= 0 || +formData.weight > 300)
       newErrors.weight = "Weight must be between 0 and 300 kg";
     if (!/^\d{2,3}\/\d{2,3}$/.test(formData.bloodPressure))
       newErrors.bloodPressure = "BP must be in format 120/80";
@@ -66,12 +83,12 @@ const DocForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e:any) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleBPInput = (e) => {
+  const handleBPInput = (e: any) => {
     let value = e.target.value.replace(/\D/g, "");
     if (value.length > 3) {
       value = value.slice(0, 3) + "/" + value.slice(3);
@@ -79,11 +96,11 @@ const DocForm = () => {
     setFormData((prev) => ({ ...prev, bloodPressure: value }));
   };
 
-  const handleDiabetesSelect = (value) => {
+  const handleDiabetesSelect = (value: string) => {
     setFormData((prev) => ({ ...prev, diabetes: value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:any) => {
     e.preventDefault();
     if (validateForm()) {
       try {

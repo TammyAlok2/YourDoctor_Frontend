@@ -1,20 +1,20 @@
 "use client";
 
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../GlobalRedux/slice/AuthSlice";
+import { logout } from "../GlobalRedux/slice/DoctorSlice";
 import { login } from "../GlobalRedux/slice/AuthSlice";
 import { useRouter } from "next/navigation";
+import { AppDispatch } from "../GlobalRedux/store";
 
 const Logout = () => {
 
   const router = useRouter();
 
-  const dispatch = useDispatch();
-  const { isLoggedIn, isSignedIn } = useSelector((state) => state.auth);
+  const dispatch = useDispatch<AppDispatch>();
 
   const onLogout = async function () {
-    (await dispatch(logout())) || (await dispatch(login())) ? router.push("/") : 'Failed to logout...';
-  }
+    (await dispatch(logout(undefined))) || (await dispatch(login())) ? router.push("/") : 'Failed to logout...';
+  } 
 
   return (
     <div>

@@ -6,13 +6,19 @@ import { AiOutlineArrowLeft } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserProfile, getUserData } from "../../GlobalRedux/slice/AuthSlice";
 import toast from "react-hot-toast";
+import { AppDispatch, RootState } from "../../GlobalRedux/store";
+
+interface UpdateUserImageState {
+  fullName: string;
+  userId: string | null;
+}
 
 const UpdateUserImage = () => {
-  const userId = useSelector((state) => state?.auth?.data?._id);
-  const dispatch = useDispatch();
-  const [data, setData] = useState({
+  const userId = useSelector((state: RootState) => state?.auth?.data?._id);
+  const dispatch = useDispatch<AppDispatch>();
+  const [data, setData] = useState<UpdateUserImageState>({
     fullName: "",
-    userId: userId,
+    userId: userId || "",
   });
 
   useEffect(() => {
@@ -28,7 +34,7 @@ const UpdateUserImage = () => {
     dispatch(getUserData([]));
   }, [dispatch]);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e:any) => {
     const { name, value } = e.target;
     setData({
       ...data,
@@ -36,7 +42,7 @@ const UpdateUserImage = () => {
     });
   };
 
-  const onFormSubmit = async (e) => {
+  const onFormSubmit = async (e:any) => {
     e.preventDefault();
 
     // Full name validation: letters only and at least 5 characters long

@@ -12,16 +12,32 @@ import {
 
 import { toast } from "react-hot-toast";
 import { BsPersonCircle } from "react-icons/bs";
+import { AppDispatch } from "../GlobalRedux/store";
 
-export default function Signup({onBack, setVisibleComponent, setSignupVisible}) {
-  const dispatch = useDispatch();
+interface SignupProps {
+  onBack: () => void;
+  setVisibleComponent: (component: string | null) => void;
+  setSignupVisible: (visible: boolean) => void;
+}
+
+// Define types for signup data state
+interface SignupData {
+  fullName: string;
+  email: string;
+  password: string;
+  mobile: string;
+  avatar: File | string;
+}
+
+export default function Signup({onBack, setVisibleComponent, setSignupVisible}:SignupProps) {
+  const dispatch = useDispatch<AppDispatch>();
 
   // const userData = useSelector((state)=>state.data)
   // console.log(userData)
   const [previewImage, setPreviewImage] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
-  const [signupData, setSignupData] = useState({
+  const [signupData, setSignupData] = useState<SignupData>({
     fullName: "",
     email: "",
     password: "",
@@ -32,7 +48,7 @@ export default function Signup({onBack, setVisibleComponent, setSignupVisible}) 
 
   const router = useRouter();
 
-  function handleUserInput(e) {
+  function handleUserInput(e:any) {
     const { name, value } = e.target;
     setSignupData({
       ...signupData,
@@ -42,11 +58,11 @@ export default function Signup({onBack, setVisibleComponent, setSignupVisible}) 
 
   // console.log(signupData)
 
-  const togglePasswordVisibility = (e) => {
+  const togglePasswordVisibility = (e:any) => {
     setShowPassword(!showPassword);
   };
 
-  const getImage = (e) => {
+  const getImage = (e:any) => {
     e.preventDefault();
     const uploadedImage = e.target.files[0];
     if (uploadedImage) {
@@ -58,13 +74,13 @@ export default function Signup({onBack, setVisibleComponent, setSignupVisible}) 
           ...signupData,
           avatar: uploadedImage,
         });
-        setPreviewImage(fileReader?.result);
+        setPreviewImage(fileReader?.result as string);
       });
     }
   };
 
   console.log(signupData.avatar);
-  async function createNewAccount(event) {
+  async function createNewAccount(event: any) {
     event.preventDefault();
     if (
       !signupData.email ||
@@ -107,7 +123,7 @@ export default function Signup({onBack, setVisibleComponent, setSignupVisible}) 
     formData.append("email", signupData.email);
     formData.append("password", signupData.password);
     formData.append("mobile", signupData.mobile);
-    formData.append("avatar", signupData.avatar);
+    formData.append("avatar", signupData.avatar as Blob);
 
     // dispatch create account action
     const response = await dispatch(createAccount(formData));
