@@ -9,12 +9,19 @@ import {
   getUserData,
 } from "../../GlobalRedux/slice/AuthSlice";
 import toast from "react-hot-toast";
+import { AppDispatch, RootState } from "@/app/GlobalRedux/store";
 // import { useRouter } from "next/navigation";
 
-const UpdateUserImage = () => {
-  const userId = useSelector((state) => state?.auth?.data?._id);
-  const dispatch = useDispatch();
-  const [data, setData] = useState({
+// Define the shape of the form data
+interface FormData {
+  mobile: string;
+  userId: string;
+}
+
+const UpdateUserImage:React.FC = () => {
+  const userId = useSelector((state:RootState) => state?.auth?.data?._id);
+  const dispatch = useDispatch<AppDispatch>();
+  const [data, setData] = useState<FormData>({
     mobile: "",
     userId: userId,
   });
@@ -28,7 +35,7 @@ const UpdateUserImage = () => {
     }
   }, [userId]);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e:any) => {
     const { name, value } = e.target;
     setData({
       ...data,
@@ -37,16 +44,16 @@ const UpdateUserImage = () => {
   };
 
   useEffect(() => {
-    dispatch(getUserData([]));
+    dispatch(getUserData());
   }, []);
 
-  const validateMobileNumber = (mobile) => {
+  const validateMobileNumber = (mobile:string) => {
     const mobilePattern = /^[6-9]\d{9}$/;
      
     return mobilePattern.test(mobile);
   };
 
-  const onFormSubmit = async (e) => {
+  const onFormSubmit = async (e:any) => {
     e.preventDefault();
     const { mobile } = data;
 

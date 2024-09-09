@@ -12,11 +12,19 @@ import { BsPersonCircle } from "react-icons/bs";
 import toast from "react-hot-toast";
 // import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { AppDispatch, RootState } from "@/app/GlobalRedux/store";
 
-const UpdateUserImage = () => {
+// Define the shape of the form data
+interface FormData {
+  previewImage: string;
+  avatar?: File;
+  userId: string;
+}
+
+const UpdateUserImage:React.FC = () => {
   // const router = useRouter();
-  const userId = useSelector((state) => state?.auth?.data?._id);
-  const dispatch = useDispatch();
+  const userId = useSelector((state: RootState) => state?.auth?.data?._id || "");
+  const dispatch = useDispatch<AppDispatch>();
   const [data, setData] = useState({
     previewImage: "",
     avatar: undefined,
@@ -34,7 +42,7 @@ const UpdateUserImage = () => {
 
   // console.log(dispatch(updateUserProfile([data.userId])))
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e:any) => {
     const { name, value } = e.target;
     setData({
       ...data,
@@ -42,11 +50,11 @@ const UpdateUserImage = () => {
     });
   };
   useEffect(() => {
-    dispatch(getUserData([]));
+    dispatch(getUserData());
   }, []);
   // console.log(data?.userId)
 
-  const handleInputUpload = (e) => {
+  const handleInputUpload = (e:any) => {
     e.preventDefault();
     const uploadImage = e.target.files[0];
     if (uploadImage) {
@@ -55,7 +63,7 @@ const UpdateUserImage = () => {
       fileReader.addEventListener("load", function () {
         setData({
           ...data,
-          previewImage: fileReader.result,
+          previewImage: fileReader.result as string,
           avatar: uploadImage,
         });
       });
@@ -63,7 +71,7 @@ const UpdateUserImage = () => {
   };
   // console.log(data.previewImage)
 
-  const onFormSubmit = async (e) => {
+  const onFormSubmit = async (e:any) => {
     e.preventDefault();
     if (!data.avatar) {
       toast.error("All fields are mandatory");

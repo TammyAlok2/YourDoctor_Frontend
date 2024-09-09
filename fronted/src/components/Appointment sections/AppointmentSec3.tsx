@@ -1,8 +1,28 @@
+'use client';
+
 import Link from 'next/link';
 import { toast } from 'react-hot-toast';
+import React from 'react';
 
-const AppointmentSec3 = ({ allSlot }) => {
-  const convertTo12HourFormat = (time24) => {
+interface Slot {
+  _id: string;
+  startTime: string;
+  endTime: string;
+  availableSlot: number;
+}
+
+interface AllSlot {
+  slots: Slot[];
+  date: string;
+  doctorId: string;
+}
+
+interface AppointmentSec3Props {
+  allSlot: AllSlot;
+}
+
+const AppointmentSec3: React.FC<AppointmentSec3Props> = ({ allSlot }) => {
+  const convertTo12HourFormat = (time24: string) => {
     const [hour, minute] = time24.split(':');
     const hourInt = parseInt(hour);
     const period = hourInt >= 12 ? 'PM' : 'AM';
@@ -10,7 +30,7 @@ const AppointmentSec3 = ({ allSlot }) => {
     return `${hour12}:${minute} ${period}`;
   };
 
-  const slots = allSlot?.slots || [];
+  const slots: Slot[] = allSlot?.slots || [];
   const todayDate = allSlot?.date ? new Date(allSlot.date) : new Date();
   const date = todayDate.toISOString().split('T')[0];
   const doctorId = allSlot?.doctorId || '';
@@ -18,21 +38,21 @@ const AppointmentSec3 = ({ allSlot }) => {
   const morningSlots = slots.filter(slot => parseInt(slot.startTime.split(':')[0]) < 12);
   const eveningSlots = slots.filter(slot => parseInt(slot.startTime.split(':')[0]) >= 12);
 
-  const isSlotRunning = (slot) => {
+  const isSlotRunning = (slot: Slot) => {
     const currentTime = new Date();
     const slotStartTime = new Date(`${todayDate.toISOString().split('T')[0]}T${slot.startTime}`);
     const slotEndTime = new Date(`${todayDate.toISOString().split('T')[0]}T${slot.endTime}`);
     return currentTime >= slotStartTime && currentTime <= slotEndTime;
   };
 
-  const isSlotInPast = (slot) => {
+  const isSlotInPast = (slot: Slot) => {
     const currentTime = new Date();
     const slotEndTime = new Date(`${todayDate.toISOString().split('T')[0]}T${slot.endTime}`);
     return currentTime > slotEndTime;
   };
 
   // Check if the slot is within 30 minutes from the end time
-  const isWithin30MinutesOfEnd = (slot) => {
+  const isWithin30MinutesOfEnd = (slot: Slot) => {
     const currentTime = new Date();
     const slotEndTime = new Date(`${todayDate.toISOString().split('T')[0]}T${slot.endTime}`);
     
@@ -42,7 +62,7 @@ const AppointmentSec3 = ({ allSlot }) => {
     return currentTime >= timeBeforeEnd && currentTime < slotEndTime;
   };
 
-  const handleSlotClick = (e, slot) => {
+  const handleSlotClick = (e:any, slot: Slot) => {
     if (isSlotInPast(slot)) {
       e.preventDefault();
       toast.error('Cannot book an appointment for a past slot');

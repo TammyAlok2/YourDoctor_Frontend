@@ -25,14 +25,14 @@ export default function Forget() {
     });
   };
 
-  const onFormSubmit = async (e:any) => {
+  const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!data.email) {
       toast.error("All fields are mandatory");
       return;
     }
     const response = await dispatch(forgotPassword(data));
-    console.log(response);
+    // console.log(response);
     if (response) {
       router.push("/login");
     }

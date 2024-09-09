@@ -6,12 +6,20 @@ import { getUserData } from "../GlobalRedux/slice/AuthSlice";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Logout from "../logout/page";
+import { AppDispatch } from "../GlobalRedux/store";
 
-const ProfileSettings = () => {
+interface UserData {
+  avatar?: { secure_url?: string };
+  fullName?: string;
+  email?: string;
+  mobile?: string;
+}
+
+const ProfileSettings:React.FC = () => {
   const router = useRouter();
-  const [userData, setUserData] = useState(null); // State to hold user data
+  const [userData, setUserData] = useState<UserData | null>(null); // State to hold user data
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     const storedData = localStorage.getItem('data');

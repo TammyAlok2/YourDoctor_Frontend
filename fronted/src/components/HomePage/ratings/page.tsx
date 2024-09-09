@@ -4,10 +4,10 @@
 
 import { useState } from 'react';
 
-const ReviewComponent = () => {
+const ReviewComponent:React.FC = () => {
   const [rating, setRating] = useState(0);
   
-  const handleRating = (rate) => {
+  const handleRating = (rate:any) => {
     setRating(rate);
   };
 

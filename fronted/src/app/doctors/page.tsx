@@ -6,13 +6,35 @@ import SecondDoctorsSection from "./secondoctors/page";
 import ThirdDoctorsSection from "./thirdoctors/page";
 import Image from "next/image";
 
-const Doctors = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [data, setData] = useState([]);
-  const [data1, setData1] = useState([]);
-  const [data2, setData2] = useState([]);
+interface DoctorData {
+  specialist?: string;
+  address?: string;
+  fullName?: string;
+  pincode?: number | string;
+  title?: string;
+  description?: string;
+}
 
-  const handleSearch = (event) => {
+// Define the shape of the doctor data
+interface Doctor {
+  _id: string;
+  specialist: string;
+  address: string;
+  pincode: string;
+  fees?: { firstVisitFee?: number };
+  avatar?: { secure_url: string };
+  status?: boolean;
+  fullName: string;
+}
+
+
+const Doctors:React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [data, setData] = useState<DoctorData[]>([]);
+  const [data1, setData1] = useState<DoctorData[]>([]);
+  const [data2, setData2] = useState<DoctorData[]>([]);
+
+  const handleSearch = (event:any) => {
     setSearchTerm(event.target.value.toLowerCase());
   };
 

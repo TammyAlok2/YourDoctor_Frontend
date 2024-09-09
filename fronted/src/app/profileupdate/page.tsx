@@ -9,16 +9,25 @@ import { BsPersonCircle } from "react-icons/bs";
 import toast from "react-hot-toast";
 // import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { AppDispatch, RootState } from "../GlobalRedux/store";
 
-const UpdateProfile = () => {
+// Define the shape of the data state
+interface DataState {
+  previewImage: string;
+  fullName: string;
+  avatar: File | undefined;
+  userId: string | null;
+}
+
+const UpdateProfile:React.FC = () => {
   // const router = useRouter();
-  const userId = useSelector((state) => state?.auth?.data?._id);
-  const dispatch = useDispatch();
-  const [data, setData] = useState({
+  const userId = useSelector((state: RootState) => state?.auth?.data?._id || "");
+  const dispatch = useDispatch<AppDispatch>();
+  const [data, setData] = useState<DataState>({
     previewImage: "",
     fullName: "",
     avatar: undefined,
-    userId: userId
+    userId: userId || null
   });
 
   useEffect(() => {
@@ -32,7 +41,7 @@ const UpdateProfile = () => {
 
   // console.log(dispatch(updateUserProfile([data.userId])))
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e:any) => {
     const { name, value } = e.target;
     setData({
       ...data,
@@ -44,7 +53,7 @@ const UpdateProfile = () => {
   }, []);
   // console.log(data?.userId)
 
-  const handleInputUpload = (e) => {
+  const handleInputUpload = (e:any) => {
     e.preventDefault();
     const uploadImage = e.target.files[0];
     if (uploadImage) {
@@ -53,7 +62,7 @@ const UpdateProfile = () => {
       fileReader.addEventListener("load", function () {
         setData({
           ...data,
-          previewImage: fileReader.result,
+          previewImage: fileReader.result as string,
           avatar: uploadImage,
         });
       });
@@ -61,14 +70,14 @@ const UpdateProfile = () => {
   };
   // console.log(data.previewImage)
 
-  const onFormSubmit = async (e) => {
+  const onFormSubmit = async (e:any) => {
     e.preventDefault();
     if (!data.fullName || !data.avatar) {
       toast.error("All fields are mandatory");
       return;
     }
-    if (data.fullName > 5) {
-      toast.error("name cannot be of less than 5 characters");
+    if (data.fullName.length > 5) {
+      toast.error("Name cannot be of less than 5 characters long");
       return;
     }
     const formData = new FormData();

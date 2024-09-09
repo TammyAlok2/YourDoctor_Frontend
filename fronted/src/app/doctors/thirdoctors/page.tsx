@@ -7,46 +7,68 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import ReviewComponent from "@/components/HomePage/ratings/page";
 import { useParams } from "next/navigation";
+import { AppDispatch } from "@/app/GlobalRedux/store";
 
-const FirstDoctorsSection = ({ setData, filteredData }) => {
-  const dispatch = useDispatch();
+// Define the shape of the doctor data
+interface Doctor {
+  _id: string;
+  specialist: string;
+  address: string;
+  pincode: string;
+  fees?: {
+    firstVisitFee?: number;
+  };
+  avatar?: {
+    secure_url: string;
+  };
+  status?: boolean;
+  fullName: string;
+}
+
+interface ThirdDoctorSectionProps {
+  setData2: (data: Doctor[]) => void;
+  filteredThirdData: Doctor[];
+}
+
+const ThirdDoctorSection:React.FC<ThirdDoctorSectionProps> = ({ setData2, filteredThirdData }) => {
+  // const [data, setData] = useState([]);
+  const dispatch = useDispatch<AppDispatch>();
+  // const response = useSelector((state) => state?.doctor?.doctors);
+  // console.log("doctor data : ", response);
   const params = useParams();
-  const [doctorData, setDoctorData] = useState([]);
 
   const getAllDoctor = async () => {
     try {
-      // Step 1: Try to get doctor data from localStorage
+      // Step 1: Check if doctor data is available in localStorage
       const storedDoctors = localStorage.getItem('doctors');
-
+  
       if (storedDoctors) {
         const parsedDoctors = JSON.parse(storedDoctors);
-        setData(parsedDoctors.slice(0, 3)); // Use the locally stored data
+        setData2(parsedDoctors.slice(3)); // Use data from localStorage starting from index 3
       } else {
-        // Step 2: If no data in localStorage, fetch it using the dispatcher
-        const response = await dispatch(getAllDoctors());
+        // Step 2: If no data is found in localStorage, dispatch to fetch it from the API
+        const response = await dispatch(getAllDoctors({}));
         const doctorsData = response?.payload?.data;
-        setData(doctorsData)
-
-        if (filteredData) {
-          // Step 3: Store the fetched data in localStorage for future use
-          localStorage.setItem('doctors', JSON.stringify(filteredData));
-          setData(filteredData.slice(0, 3)); // Use the fetched data
+  
+        if (doctorsData) {
+          // Step 3: Store the fetched data in localStorage
+          localStorage.setItem('doctors', JSON.stringify(doctorsData));
+          setData2(doctorsData.slice(3)); // Set data starting from index 3
         }
       }
     } catch (error) {
-      console.error("Error fetching doctor data:", error);
-      return error;
+      console.error('Error fetching doctor data:', error);
+      throw error; // Handle the error as needed
     }
   };
 
-  // Polling function to fetch updated doctor status
   const pollDoctorStatus = async () => {
     try {
-      const response = await dispatch(getAllDoctors());
+      const response = await dispatch(getAllDoctors({}));
       const updatedDoctorsData = response?.payload?.data;
       if (updatedDoctorsData) {
         // Update the state with the latest doctor data
-        setDoctorData(updatedDoctorsData.slice(0, 3));
+        // setDoctorData(updatedDoctorsData.slice(0, 3));
         // Update local storage with the new data
         localStorage.setItem("doctors", JSON.stringify(updatedDoctorsData));
       }
@@ -54,6 +76,7 @@ const FirstDoctorsSection = ({ setData, filteredData }) => {
       console.error("Error polling doctor status:", error);
     }
   };
+  
 
   useEffect(() => {
     // Initial fetch
@@ -68,10 +91,12 @@ const FirstDoctorsSection = ({ setData, filteredData }) => {
     return () => clearInterval(intervalId);
   }, []);
 
+  // console.log("our data: ",filteredThirdData)
+
   return (
     <div className="flex items-center justify-center relative">
       <div className="grid grid-cols-1 gap-[2rem] xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 justify-center mx-[1rem] sm:mx-[2rem] md:mx-[3rem] my-[3rem]">
-        {filteredData?.map((userData) => (
+        {filteredThirdData?.map((userData) => (
           <div
             className="flex flex-col sm:flex-row gap-[2rem] p-[1rem] shadow-md rounded-md"
             key={userData._id}
@@ -88,7 +113,7 @@ const FirstDoctorsSection = ({ setData, filteredData }) => {
               <p>Pincode: {userData.pincode}</p>
               <ul className="text-gray-600 list-none">
                 <a className="list-none text-gray-600">
-                  Fees:{" "}
+                   Fees:{" "}
                   <span className="text-teal-700">
                     {userData?.fees && userData?.fees?.firstVisitFee + "rs"}
                   </span>
@@ -96,14 +121,8 @@ const FirstDoctorsSection = ({ setData, filteredData }) => {
               </ul>
             </div>
             <div className="ml-auto flex flex-col items-end sm:items-start relative gap-[0.8rem] w-[45%] xs:w-[100%] sm:w-auto">
-              <div className="w-[6rem] h-[6rem] rounded-full overflow-hidden items-end ml-auto relative">
-                <div
-                  className={`${
-                    userData?.status === false
-                      ? ""
-                      : "border-4 rounded-full w-22 h-22 border-[#0A8E8A] flex text-center justify-center p-[0.2rem] mx-auto"
-                  }`}
-                >
+              <div className="w-[6rem] h-[6rem] rounded-full bg-[rgb(206_206_206_/_71%)] overflow-hidden items-end ml-auto relative">
+              <div className={`${userData?.status === false ? "" : "border-4 rounded-full w-22 h-22 border-[#0A8E8A] flex text-center justify-center p-[0.2rem] mx-auto"}`}>
                   {userData?.avatar && (
                     <Image
                       src={userData?.avatar?.secure_url}
@@ -139,4 +158,4 @@ const FirstDoctorsSection = ({ setData, filteredData }) => {
   );
 };
 
-export default FirstDoctorsSection;
+export default ThirdDoctorSection;

@@ -2,55 +2,96 @@
 
 import Link from "next/link";
 import { getAllDoctors } from "@/app/GlobalRedux/slice/DoctorSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import ReviewComponent from "./ratings/page";
+import ReviewComponent from "@/components/HomePage/ratings/page";
+import { useParams } from "next/navigation";
+import { AppDispatch } from "@/app/GlobalRedux/store";
 
-const ProfileData = ({searchTerm}) => {
-  const [data, setData] = useState([]);
-  const dispatch = useDispatch();
+
+// Define the shape of the doctor data
+interface Doctor {
+  _id: string;
+  specialist: string;
+  address: string;
+  pincode: string;
+  fees?: { firstVisitFee?: number };
+  avatar?: { secure_url: string };
+  status?: boolean;
+  fullName: string;
+}
+
+interface FirstDoctorsSectionProps {
+  setData: (data: Doctor[]) => void;
+  filteredData: Doctor[];
+}
+
+
+const FirstDoctorsSection: React.FC<FirstDoctorsSectionProps> = ({ setData, filteredData }) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const params = useParams();
+  const [doctorData, setDoctorData] = useState<Doctor[]>([]);
 
   const getAllDoctor = async () => {
     try {
       // Step 1: Try to get doctor data from localStorage
       const storedDoctors = localStorage.getItem('doctors');
-      
+
       if (storedDoctors) {
-        const parsedDoctors = JSON.parse(storedDoctors);
-        setData(parsedDoctors); // Use the locally stored data
+        const parsedDoctors: Doctor[] = JSON.parse(storedDoctors);
+        setData(parsedDoctors.slice(0, 3)); // Use the locally stored data
       } else {
         // Step 2: If no data in localStorage, fetch it using the dispatcher
-        const response = await dispatch(getAllDoctors());
+        const response = await dispatch(getAllDoctors({}));
         const doctorsData = response?.payload?.data;
-  
-        if (doctorsData) {
+        setData(doctorsData)
+
+        if (filteredData) {
           // Step 3: Store the fetched data in localStorage for future use
-          localStorage.setItem('doctors', JSON.stringify(doctorsData));
-          setData(doctorsData.slice(0, 3)); // Use the fetched data
+          localStorage.setItem('doctors', JSON.stringify(filteredData));
+          setData(filteredData.slice(0, 3)); // Use the fetched data
         }
       }
     } catch (error) {
-      console.error('Error fetching doctor data:', error);
+      console.error("Error fetching doctor data:", error);
       return error;
     }
   };
-  
+
+  // Polling function to fetch updated doctor status
+  const pollDoctorStatus = async () => {
+    try {
+      const response = await dispatch(getAllDoctors({}));
+      const updatedDoctorsData = response?.payload?.data;
+      if (updatedDoctorsData) {
+        // Update the state with the latest doctor data
+        setDoctorData(updatedDoctorsData.slice(0, 3));
+        // Update local storage with the new data
+        localStorage.setItem("doctors", JSON.stringify(updatedDoctorsData));
+      }
+    } catch (error) {
+      console.error("Error polling doctor status:", error);
+    }
+  };
 
   useEffect(() => {
+    // Initial fetch
     getAllDoctor();
+
+    // Poll every 30 seconds
+    const intervalId = setInterval(() => {
+      pollDoctorStatus();
+    }, 30000); // 30 seconds
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(intervalId);
   }, []);
 
-  const filteredData = data.filter((doctor) =>
-    doctor.fullName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  // Limit the displayed data to 3 cards
-  const displayedData = filteredData.slice(0, 3);
   return (
     <div className="flex items-center justify-center relative">
       <div className="grid grid-cols-1 gap-[2rem] xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 justify-center mx-[1rem] sm:mx-[2rem] md:mx-[3rem] my-[3rem]">
-        {displayedData?.map((userData) => (
+        {filteredData?.map((userData) => (
           <div
             className="flex flex-col sm:flex-row gap-[2rem] p-[1rem] shadow-md rounded-md"
             key={userData._id}
@@ -60,14 +101,14 @@ const ProfileData = ({searchTerm}) => {
                 Specialist:{" "}
                 <span className="text-[blue]">{userData.specialist}</span>
               </h1>
-              <div className="flex gap-[0.5rem]">
+              <p className="flex gap-[0.5rem]">
                 Ratings: <ReviewComponent />
-              </div>
+              </p>
               <p>Address: {userData.address}</p>
               <p>Pincode: {userData.pincode}</p>
               <ul className="text-gray-600 list-none">
                 <a className="list-none text-gray-600">
-                   Fees:{" "}
+                  Fees:{" "}
                   <span className="text-teal-700">
                     {userData?.fees && userData?.fees?.firstVisitFee + "rs"}
                   </span>
@@ -76,8 +117,13 @@ const ProfileData = ({searchTerm}) => {
             </div>
             <div className="ml-auto flex flex-col items-end sm:items-start relative gap-[0.8rem] w-[45%] xs:w-[100%] sm:w-auto">
               <div className="w-[6rem] h-[6rem] rounded-full overflow-hidden items-end ml-auto relative">
-              {/* className={`${doctor?.status === false ? "" : 'border-[#0A8E8A] border-4 rounded-full w-[8.8rem] h-[8.8rem] flex text-center justify-center p-[0.2rem] mx-auto'}` */}
-                <div className={`${userData?.status === false ? "" : "border-4 rounded-full w-22 h-22 border-[#0A8E8A] flex text-center justify-center p-[0.2rem] mx-auto"}`}>
+                <div
+                  className={`${
+                    userData?.status === false
+                      ? ""
+                      : "border-4 rounded-full w-22 h-22 border-[#0A8E8A] flex text-center justify-center p-[0.2rem] mx-auto"
+                  }`}
+                >
                   {userData?.avatar && (
                     <Image
                       src={userData?.avatar?.secure_url}
@@ -113,4 +159,4 @@ const ProfileData = ({searchTerm}) => {
   );
 };
 
-export default ProfileData;
+export default FirstDoctorsSection;

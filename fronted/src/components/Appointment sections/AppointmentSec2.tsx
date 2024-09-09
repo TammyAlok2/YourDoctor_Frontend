@@ -9,9 +9,31 @@ import { useDispatch } from "react-redux";
 import { allScheduleByDate } from "@/app/GlobalRedux/slice/AuthSlice";
 import { useParams } from "next/navigation";
 import { toast, Toaster } from "react-hot-toast";
+import { AppDispatch } from "@/app/GlobalRedux/store";
+import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
+
+type Slot = {
+  _id: string;
+  startTime: string;
+  endTime: string;
+  availableSlot: number;
+};
+
+type Schedule = {
+  slots: Slot[];
+  date: string;
+  doctorId: string;
+};
+
+type TimeSchedulingData = {
+  day: string;
+  date: string;
+  slot: number;
+  isToday: boolean;
+};
 
 // Generate dates for the next 7 days
-const generateNextWeekDates = () => {
+const generateNextWeekDates = ():TimeSchedulingData[] => {
   const dates = [];
   const today = new Date();
   for (let i = 0; i < 7; i++) {
@@ -28,17 +50,17 @@ const generateNextWeekDates = () => {
 };
 
 const AppointmentSec2 = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedIndex, setSelectedIndex] = useState(null); // Track selected date index
-  const [slot, setSlot] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null); // Track selected date index
+  const [slot, setSlot] = useState<Schedule | null>(null);
   
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false); // Loader state
-  const [timeSchedulingData, setTimeSchedulingData] = useState(
+  const [message, setMessage] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false); // Loader state
+  const [timeSchedulingData, setTimeSchedulingData] = useState<TimeSchedulingData[]>(
     generateNextWeekDates()
   );
-  const dispatch = useDispatch();
-  const params = useParams();
+  const dispatch = useDispatch<AppDispatch>();
+  const params: Params = useParams();
 
   // Function to go to the previous slide
   const prevSlide = () => {
@@ -55,8 +77,8 @@ const AppointmentSec2 = () => {
   };
 
   // Get the visible items (3 dates) based on the current index
-  const getVisibleItems = () => {
-    const visibleItems = [];
+  const getVisibleItems = (): TimeSchedulingData[] => {
+    const visibleItems: TimeSchedulingData[] = [];
     for (let i = 0; i < 3; i++) {
       visibleItems.push(
         timeSchedulingData[(currentIndex + i) % timeSchedulingData.length]
@@ -66,13 +88,13 @@ const AppointmentSec2 = () => {
   };
 
   // Fetch schedules based on the selected date
-  const fetchSchedules = async (date) => {
+  const fetchSchedules = async (date: string) => {
     try {
       setLoading(true); // Start loader
       const schedule = await dispatch(allScheduleByDate([params.id, date]));
 
       if (schedule?.payload?.success) {
-        const response = schedule?.payload?.data;
+        const response = schedule?.payload?.data as Schedule;
         toast.success(schedule?.payload?.message);
         setSlot(response);
    
@@ -104,7 +126,7 @@ const AppointmentSec2 = () => {
   }, []);
 
   // Handle date click to fetch schedules for the selected date
-  const handleDateClick = (index) => {
+  const handleDateClick = (index:number) => {
     setSelectedIndex((currentIndex + index) % timeSchedulingData.length);
   };
 

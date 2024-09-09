@@ -10,15 +10,36 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import ReviewComponent from '@/components/HomePage/ratings/page'
+import { AppDispatch } from "@/app/GlobalRedux/store";
 // import { useEffect, useState } from "react";
+
+interface Doctor {
+  _id: string;
+  specialist?: string;
+  address?: string;
+  pincode?: string;
+  fees?: {
+    emergencyFee1?: number;
+    emergencyFee2?: number;
+    firstVisitFee?: number;
+    secondVisitFee?: number;
+    visitUnder7DaysFee?: number;
+  };
+  status?: boolean;
+  avatar?: {
+    secure_url: string;
+  };
+  fullName?: string;
+  description?: string;
+}
 
 const DoctorPage = () => {
   
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const params = useParams();
   // console.log(params.id)
   
-  const [doctor, setDoctor] = useState(null);
+  const [doctor, setDoctor] = useState<Doctor | null>(null);
   
   const fetchDoctors = async () =>{
     try {
@@ -27,11 +48,11 @@ const DoctorPage = () => {
         const doctors = response?.payload?.data;
 
         // Find the doctor with the matching ID
-        const foundDoctor = doctors?.find((doc) => doc._id === params.id);
+        const foundDoctor = doctors?.find((doc:Doctor) => doc._id === params.id);
         setDoctor(foundDoctor);
       }
     } catch (error) {
-      toast.error("doctor data fetch error:", error)
+      toast.error("doctor data fetch error:")
     }
   }
 useEffect(()=>{

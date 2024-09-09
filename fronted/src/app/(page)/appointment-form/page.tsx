@@ -29,18 +29,16 @@ const DocForm = () => {
   const router = useRouter();
   const params = useParams();
   const searchParams = useSearchParams();
-  const doctorId = searchParams.get("doctorId");
+  const doctorId: string | null = searchParams.get("doctorId");
   const slotId = searchParams.get("slotId");
   const todayDate = searchParams.get("todayDate");
 
-  const time = new Date()
+  const time = new Date();
 
   const isoTimeString = time.toLocaleTimeString([], {
-    hour: '2-digit',
-    minute: '2-digit',
-});
-
-
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
   const [formData, setFormData] = useState<FormData>({
     patientName: "",
@@ -83,7 +81,7 @@ const DocForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleChange = (e:any) => {
+  const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -100,205 +98,204 @@ const DocForm = () => {
     setFormData((prev) => ({ ...prev, diabetes: value }));
   };
 
-  const handleSubmit = async (e:any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (validateForm()) {
-      try {
-        const response = await dispatch(
-          createAppointment([doctorId, formData])
-        );
-        if (response?.payload?.success) {
-          router.push(`/doctorpayment/${doctorId}`);
+    if (doctorId) {
+      // Ensure doctorId is not null
+      if (validateForm()) {
+        try {
+          const response = await dispatch(
+            createAppointment([doctorId, formData])
+          );
+          if (response?.payload?.success) {
+            router.push(`/doctorpayment/${doctorId}`);
+          }
+        } catch (error) {
+          toast.error("Failed to create appointment");
         }
-      } catch (error) {
-        toast.error("Failed to create appointment");
       }
+    } else {
+      toast.error("Doctor ID is not available");
     }
   };
 
   return (
     <div className="flex justify-center items-center h-full my-[2rem]">
-  <div className="w-full max-w-[60rem] h-[85%] bg-white p-[2rem] border-x-[0.1rem] border-gray-200 mx-auto">
-    <FormHead />
+      <div className="w-full max-w-[60rem] h-[85%] bg-white p-[2rem] border-x-[0.1rem] border-gray-200 mx-auto">
+        <FormHead />
 
-    <form
-      className="font-bold flex flex-col gap-4"
-      onSubmit={handleSubmit}
-    >
-      <div className="flex flex-col gap-2">
-        <label htmlFor="patientName">Patient Name*</label>
-        <input
-          type="text"
-          id="patientName"
-          name="patientName"
-          value={formData.patientName}
-          onChange={handleChange}
-          className="p-2 border-[0.1rem] shadow-md border-black py-3 px-2"
-        />
-        {errors.patientName && (
-          <div className="text-red-500">{errors.patientName}</div>
-        )}
-      </div>
-
-      <div className="flex flex-wrap gap-[8rem] xs:gap-[2rem]">
-        <div className="flex flex-col gap-2 w-full sm:w-[calc(100%-7rem)] lg:w-[22rem]">
-          <label htmlFor="patientPhone">Mobile No.*</label>
-          <input
-            type="number"
-            name="patientPhone"
-            id="patientPhone"
-            value={formData.patientPhone}
-            onChange={handleChange}
-            className="p-2 border-[0.1rem] shadow-md border-black py-3 px-2"
-          />
-          {errors.patientPhone && (
-            <div className="text-red-500">{errors.patientPhone}</div>
-          )}
-        </div>
-        <div className="flex flex-col gap-2 w-full sm:w-[6rem] lg:w-[6rem]">
-          <label htmlFor="age">Age.*</label>
-          <input
-            type="number"
-            name="age"
-            id="age"
-            value={formData.age}
-            onChange={handleChange}
-            className="p-2 border-[0.1rem] shadow-md border-black py-3 px-2"
-          />
-          {errors.age && <div className="text-red-500">{errors.age}</div>}
-        </div>
-        <div className="flex flex-col gap-2 w-[21%] xs:w-[70%]">
-          <label htmlFor="weight">Weight.*</label>
-          <input
-            type="number"
-            name="weight"
-            id="weight"
-            value={formData.weight}
-            onChange={handleChange}
-            className="p-2 border-[0.1rem] shadow-md border-black py-3 px-2 sm:w-[6rem] lg:w-[6rem] xs:w-[46%]"
-          />
-          {errors.weight && (
-            <div className="text-red-500">{errors.weight}</div>
-          )}
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-2 mb-4">
-        <label htmlFor="gender">Gender*</label>
-        <div className="flex gap-4 flex-wrap">
-          <div className="flex items-center gap-2">
+        <form className="font-bold flex flex-col gap-4" onSubmit={handleSubmit}>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="patientName">Patient Name*</label>
             <input
-              type="radio"
-              name="gender"
-              id="gender-male"
-              value="male"
-              checked={formData.gender === "male"}
+              type="text"
+              id="patientName"
+              name="patientName"
+              value={formData.patientName}
               onChange={handleChange}
-              className="w-[1.2rem] h-[1.2rem]"
+              className="p-2 border-[0.1rem] shadow-md border-black py-3 px-2"
             />
-            <label htmlFor="gender-male">Male</label>
-          </div>
-          <div className="flex items-center gap-2">
-            <input
-              type="radio"
-              name="gender"
-              id="gender-female"
-              value="female"
-              checked={formData.gender === "female"}
-              onChange={handleChange}
-              className="w-[1.2rem] h-[1.2rem]"
-            />
-            <label htmlFor="gender-female">Female</label>
-          </div>
-          <div className="flex items-center gap-2">
-            <input
-              type="radio"
-              name="gender"
-              id="gender-other"
-              value="other"
-              checked={formData.gender === "other"}
-              onChange={handleChange}
-              className="w-[1.2rem] h-[1.2rem]"
-            />
-            <label htmlFor="gender-other">Other</label>
-          </div>
-        </div>
-        {errors.gender && (
-          <div className="text-red-500">{errors.gender}</div>
-        )}
-      </div>
-
-      <div className="flex flex-wrap gap-4 mb-8">
-        <div className="flex gap-4 items-start w-full lg:w-[calc(50%-1rem)]">
-          <h1>Diabetes</h1>
-          <div className="flex flex-col items-start">
-            <div
-              className="select relative"
-              onClick={() =>
-                setIsDiabetesSelectOpen(!isDiabetesSelectOpen)
-              }
-            >
-              <FormSelectedButton
-                first="Yes"
-                second="No"
-                onSelect={handleDiabetesSelect}
-              />
-            </div>
-            {errors.diabetes && (
-              <div
-                className={`text-red-500 transition-all duration-300 ${
-                  isDiabetesSelectOpen ? "mt-16" : "mt-2"
-                }`}
-              >
-                {errors.diabetes}
-              </div>
+            {errors.patientName && (
+              <div className="text-red-500">{errors.patientName}</div>
             )}
           </div>
-        </div>
-        <div className="flex flex-col w-[30%]">
-          <label htmlFor="bloodPressure">BP.*</label>
-          <input
-            type="text"
-            name="bloodPressure"
-            id="bloodPressure"
-            value={formData.bloodPressure}
-            onChange={handleBPInput}
-            maxLength={7}
-            className="p-2 border-[0.1rem] shadow-md border-black py-3 px-2 sm:w-[6rem] lg:w-[6rem]"
-          />
-          {errors.bloodPressure && (
-            <div className="text-red-500">{errors.bloodPressure}</div>
-          )}
-        </div>
-      </div>
 
-      <div className="flex flex-col gap-2 mt-2">
-        <label htmlFor="description">Description</label>
-        <textarea
-          name="description"
-          id="description"
-          value={formData.description}
-          onChange={handleChange}
-          className="p-2 border-[0.1rem] shadow-md border-black py-3 px-2 placeholder:font-light"
-          placeholder="Mention your disease and symptoms...."
-        />
-        {errors.description && (
-          <div className="text-red-500">{errors.description}</div>
-        )}
-      </div>
+          <div className="flex flex-wrap gap-[8rem] xs:gap-[2rem]">
+            <div className="flex flex-col gap-2 w-full sm:w-[calc(100%-7rem)] lg:w-[22rem]">
+              <label htmlFor="patientPhone">Mobile No.*</label>
+              <input
+                type="number"
+                name="patientPhone"
+                id="patientPhone"
+                value={formData.patientPhone}
+                onChange={handleChange}
+                className="p-2 border-[0.1rem] shadow-md border-black py-3 px-2"
+              />
+              {errors.patientPhone && (
+                <div className="text-red-500">{errors.patientPhone}</div>
+              )}
+            </div>
+            <div className="flex flex-col gap-2 w-full sm:w-[6rem] lg:w-[6rem]">
+              <label htmlFor="age">Age.*</label>
+              <input
+                type="number"
+                name="age"
+                id="age"
+                value={formData.age}
+                onChange={handleChange}
+                className="p-2 border-[0.1rem] shadow-md border-black py-3 px-2"
+              />
+              {errors.age && <div className="text-red-500">{errors.age}</div>}
+            </div>
+            <div className="flex flex-col gap-2 w-[21%] xs:w-[70%]">
+              <label htmlFor="weight">Weight.*</label>
+              <input
+                type="number"
+                name="weight"
+                id="weight"
+                value={formData.weight}
+                onChange={handleChange}
+                className="p-2 border-[0.1rem] shadow-md border-black py-3 px-2 sm:w-[6rem] lg:w-[6rem] xs:w-[46%]"
+              />
+              {errors.weight && (
+                <div className="text-red-500">{errors.weight}</div>
+              )}
+            </div>
+          </div>
 
-      <div className="flex items-center justify-center mt-6">
-        <button
-          type="submit"
-          className="text-[1.2rem] text-white font-bold py-[0.5rem] px-[4rem] bg-[#0A8E8A] font-sans tracking-tighter"
-        >
-          SUBMIT
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
+          <div className="flex flex-col gap-2 mb-4">
+            <label htmlFor="gender">Gender*</label>
+            <div className="flex gap-4 flex-wrap">
+              <div className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="gender"
+                  id="gender-male"
+                  value="male"
+                  checked={formData.gender === "male"}
+                  onChange={handleChange}
+                  className="w-[1.2rem] h-[1.2rem]"
+                />
+                <label htmlFor="gender-male">Male</label>
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="gender"
+                  id="gender-female"
+                  value="female"
+                  checked={formData.gender === "female"}
+                  onChange={handleChange}
+                  className="w-[1.2rem] h-[1.2rem]"
+                />
+                <label htmlFor="gender-female">Female</label>
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="gender"
+                  id="gender-other"
+                  value="other"
+                  checked={formData.gender === "other"}
+                  onChange={handleChange}
+                  className="w-[1.2rem] h-[1.2rem]"
+                />
+                <label htmlFor="gender-other">Other</label>
+              </div>
+            </div>
+            {errors.gender && (
+              <div className="text-red-500">{errors.gender}</div>
+            )}
+          </div>
 
+          <div className="flex flex-wrap gap-4 mb-8">
+            <div className="flex gap-4 items-start w-full lg:w-[calc(50%-1rem)]">
+              <h1>Diabetes</h1>
+              <div className="flex flex-col items-start">
+                <div
+                  className="select relative"
+                  onClick={() => setIsDiabetesSelectOpen(!isDiabetesSelectOpen)}
+                >
+                  <FormSelectedButton
+                    first="Yes"
+                    second="No"
+                    onSelect={handleDiabetesSelect}
+                  />
+                </div>
+                {errors.diabetes && (
+                  <div
+                    className={`text-red-500 transition-all duration-300 ${
+                      isDiabetesSelectOpen ? "mt-16" : "mt-2"
+                    }`}
+                  >
+                    {errors.diabetes}
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="flex flex-col w-[30%]">
+              <label htmlFor="bloodPressure">BP.*</label>
+              <input
+                type="text"
+                name="bloodPressure"
+                id="bloodPressure"
+                value={formData.bloodPressure}
+                onChange={handleBPInput}
+                maxLength={7}
+                className="p-2 border-[0.1rem] shadow-md border-black py-3 px-2 sm:w-[6rem] lg:w-[6rem]"
+              />
+              {errors.bloodPressure && (
+                <div className="text-red-500">{errors.bloodPressure}</div>
+              )}
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 mt-2">
+            <label htmlFor="description">Description</label>
+            <textarea
+              name="description"
+              id="description"
+              value={formData.description}
+              onChange={handleChange}
+              className="p-2 border-[0.1rem] shadow-md border-black py-3 px-2 placeholder:font-light"
+              placeholder="Mention your disease and symptoms...."
+            />
+            {errors.description && (
+              <div className="text-red-500">{errors.description}</div>
+            )}
+          </div>
+
+          <div className="flex items-center justify-center mt-6">
+            <button
+              type="submit"
+              className="text-[1.2rem] text-white font-bold py-[0.5rem] px-[4rem] bg-[#0A8E8A] font-sans tracking-tighter"
+            >
+              SUBMIT
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 };
 

@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-const Footer = () => {
+const Footer:React.FC = () => {
     return (
       <footer className="bg-gradient-to-b from-teal-500 to-teal-700 text-white py-10 px-[3rem]">
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">

@@ -63,7 +63,7 @@ export const postEnquiry = createAsyncThunk(
       console.log(res);
       return (await res).data;
     } catch (error: any) {
-      toast.error(error?.response?.data?.message);
+      console.log(error)
     }
   }
 );

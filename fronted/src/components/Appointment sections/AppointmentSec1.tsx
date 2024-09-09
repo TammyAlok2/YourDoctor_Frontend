@@ -8,24 +8,44 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import ReviewComponent from "@/components/HomePage/ratings/page";
+import { AppDispatch } from "@/app/GlobalRedux/store";
 
-const AppointmentSec1 = () => {
-  const dispatch = useDispatch();
+
+interface Doctor {
+  _id: string;
+  avatar: {
+    secure_url: string;
+  };
+  fullName: string;
+  specialist: string;
+  address: string;
+  fees: {
+    emergencyFee1: number;
+    emergencyFee2: number;
+    firstVisitFee: number;
+    secondVisitFee: number;
+    visitUnder7DaysFee: number;
+  };
+  status: boolean;
+}
+
+const AppointmentSec1:React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const params = useParams();
-  const [doctor, setDoctor] = useState(null);
+  const [doctor, setDoctor] = useState<Doctor | null>(null);
 
   // console.log(params.id)
   const getDoctorData = async () => {
     try {
       // Step 1: Check if doctor data is available in localStorage
       const storedDoctors = localStorage.getItem('doctors');
-      let doctors;
+      let doctors: Doctor[] | undefined;
   
       if (storedDoctors) {
         doctors = JSON.parse(storedDoctors);
       } else {
         // Step 2: If no data is found in localStorage, dispatch to fetch it from the API
-        const response = await dispatch(getAllDoctor());
+        const response = await dispatch(getAllDoctor()) as any;
         doctors = response?.payload?.data;
   
         if (doctors) {
@@ -43,13 +63,10 @@ const AppointmentSec1 = () => {
         toast.error("Doctor not found");
       }
   
-    } catch (error) {
-      console.error('Error fetching doctor data:', error);
+    } catch (error:any) {
       toast.error(`Doctor data fetch Error: ${error.message}`);
     }
   };
-
-
   
   useEffect(() => {
     getDoctorData();

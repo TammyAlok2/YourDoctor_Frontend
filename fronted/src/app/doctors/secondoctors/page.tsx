@@ -2,9 +2,21 @@
 import Image from "next/image";
 import { useEffect } from "react";
 
-export default function SecondDoctorsSection({setData1, filteredSecondData}) {
+// Define the shape of the box data
+interface Box {
+  title: string;
+  imageSrc: string;
+  description: string;
+}
 
-  const boxes = [
+interface SecondDoctorsSectionProps {
+  setData1: (data: Box[]) => void;
+  filteredSecondData: Box[];
+}
+
+const SecondDoctorsSection: React.FC<SecondDoctorsSectionProps> = ({setData1, filteredSecondData}) => {
+
+  const boxes: Box[] = [
     {
       title: "Consult Now",
       imageSrc: "https://thumbs.dreamstime.com/z/fears-doubts-difficulties-pregnancy-concept-banner-question-marks-around-pregnant-woman-single-mother-modern-card-flat-279007372.jpg",
@@ -58,3 +70,5 @@ export default function SecondDoctorsSection({setData1, filteredSecondData}) {
     </div>
   );
 }
+
+export default SecondDoctorsSection;

@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import React from 'react';
 
-export default function Settings() {
+const Settings:React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <div className="w-full max-w-md">
@@ -36,3 +37,5 @@ export default function Settings() {
     </div>
   );
 }
+
+export default Settings;

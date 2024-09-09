@@ -2,79 +2,71 @@
 
 import Link from "next/link";
 import { getAllDoctors } from "@/app/GlobalRedux/slice/DoctorSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import ReviewComponent from "@/components/HomePage/ratings/page";
-import { useParams } from "next/navigation";
+import ReviewComponent from "./ratings/page";
+import { AppDispatch } from "@/app/GlobalRedux/store";
 
-const ThirdDoctorSection = ({ setData2, filteredThirdData }) => {
-  // const [data, setData] = useState([]);
-  const dispatch = useDispatch();
-  // const response = useSelector((state) => state?.doctor?.doctors);
-  // console.log("doctor data : ", response);
-  const params = useParams();
+interface DoctorData {
+  _id: string;
+  fullName: string;
+  avatar?: { secure_url: string };
+  specialist: string;
+  address: string;
+  pincode: string;
+  fees?: { firstVisitFee: number };
+  status?: boolean;
+}
+
+interface ProfileDataProps {
+  searchTerm: string;
+}
+
+const ProfileData: React.FC<ProfileDataProps> = ({searchTerm}) => {
+  const [data, setData] = useState<DoctorData[]>([]);
+  const dispatch = useDispatch<AppDispatch>();
 
   const getAllDoctor = async () => {
     try {
-      // Step 1: Check if doctor data is available in localStorage
+      // Step 1: Try to get doctor data from localStorage
       const storedDoctors = localStorage.getItem('doctors');
-  
+      
       if (storedDoctors) {
         const parsedDoctors = JSON.parse(storedDoctors);
-        setData2(parsedDoctors.slice(3)); // Use data from localStorage starting from index 3
+        setData(parsedDoctors); // Use the locally stored data
       } else {
-        // Step 2: If no data is found in localStorage, dispatch to fetch it from the API
-        const response = await dispatch(getAllDoctors());
-        const doctorsData = response?.payload?.data;
+        // Step 2: If no data in localStorage, fetch it using the dispatcher
+        const response = await dispatch(getAllDoctors({}));
+        const doctorsData = response?.payload?.data as DoctorData[];
   
         if (doctorsData) {
-          // Step 3: Store the fetched data in localStorage
+          // Step 3: Store the fetched data in localStorage for future use
           localStorage.setItem('doctors', JSON.stringify(doctorsData));
-          setData2(doctorsData.slice(3)); // Set data starting from index 3
+          setData(doctorsData.slice(0, 3)); // Use the fetched data
         }
       }
     } catch (error) {
       console.error('Error fetching doctor data:', error);
-      throw error; // Handle the error as needed
-    }
-  };
-
-  const pollDoctorStatus = async () => {
-    try {
-      const response = await dispatch(getAllDoctors());
-      const updatedDoctorsData = response?.payload?.data;
-      if (updatedDoctorsData) {
-        // Update the state with the latest doctor data
-        setDoctorData(updatedDoctorsData.slice(0, 3));
-        // Update local storage with the new data
-        localStorage.setItem("doctors", JSON.stringify(updatedDoctorsData));
-      }
-    } catch (error) {
-      console.error("Error polling doctor status:", error);
+      return error;
     }
   };
   
 
   useEffect(() => {
-    // Initial fetch
     getAllDoctor();
-
-    // Poll every 30 seconds
-    const intervalId = setInterval(() => {
-      pollDoctorStatus();
-    }, 30000); // 30 seconds
-
-    // Cleanup interval on component unmount
-    return () => clearInterval(intervalId);
   }, []);
 
-  // console.log("our data: ",filteredThirdData)
+  const filteredData = data.filter((doctor) =>
+    doctor.fullName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
+  // Limit the displayed data to 3 cards
+  const displayedData = filteredData.slice(0, 3);
   return (
     <div className="flex items-center justify-center relative">
       <div className="grid grid-cols-1 gap-[2rem] xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 justify-center mx-[1rem] sm:mx-[2rem] md:mx-[3rem] my-[3rem]">
-        {filteredThirdData?.map((userData) => (
+        {displayedData?.map((userData) => (
           <div
             className="flex flex-col sm:flex-row gap-[2rem] p-[1rem] shadow-md rounded-md"
             key={userData._id}
@@ -84,9 +76,9 @@ const ThirdDoctorSection = ({ setData2, filteredThirdData }) => {
                 Specialist:{" "}
                 <span className="text-[blue]">{userData.specialist}</span>
               </h1>
-              <p className="flex gap-[0.5rem]">
+              <div className="flex gap-[0.5rem]">
                 Ratings: <ReviewComponent />
-              </p>
+              </div>
               <p>Address: {userData.address}</p>
               <p>Pincode: {userData.pincode}</p>
               <ul className="text-gray-600 list-none">
@@ -99,8 +91,9 @@ const ThirdDoctorSection = ({ setData2, filteredThirdData }) => {
               </ul>
             </div>
             <div className="ml-auto flex flex-col items-end sm:items-start relative gap-[0.8rem] w-[45%] xs:w-[100%] sm:w-auto">
-              <div className="w-[6rem] h-[6rem] rounded-full bg-[rgb(206_206_206_/_71%)] overflow-hidden items-end ml-auto relative">
-              <div className={`${userData?.status === false ? "" : "border-4 rounded-full w-22 h-22 border-[#0A8E8A] flex text-center justify-center p-[0.2rem] mx-auto"}`}>
+              <div className="w-[6rem] h-[6rem] rounded-full overflow-hidden items-end ml-auto relative">
+              {/* className={`${doctor?.status === false ? "" : 'border-[#0A8E8A] border-4 rounded-full w-[8.8rem] h-[8.8rem] flex text-center justify-center p-[0.2rem] mx-auto'}` */}
+                <div className={`${userData?.status === false ? "" : "border-4 rounded-full w-22 h-22 border-[#0A8E8A] flex text-center justify-center p-[0.2rem] mx-auto"}`}>
                   {userData?.avatar && (
                     <Image
                       src={userData?.avatar?.secure_url}
@@ -136,4 +129,4 @@ const ThirdDoctorSection = ({ setData2, filteredThirdData }) => {
   );
 };
 
-export default ThirdDoctorSection;
+export default ProfileData;

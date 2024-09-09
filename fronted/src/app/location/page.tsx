@@ -2,14 +2,18 @@
 
 import React, { useState, useEffect } from 'react';
 
-const Location = ({ onPincodeSelect }) => {
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const [pincodes, setPincodes] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedPincode, setSelectedPincode] = useState('');
-  const [location, setLocation] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+interface LocationProps {
+  onPincodeSelect: (pincode: string, location: string) => void;
+}
+
+const Location:React.FC<LocationProps> = ({ onPincodeSelect }) => {
+  const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
+  const [pincodes, setPincodes] = useState<string[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [selectedPincode, setSelectedPincode] = useState<string>('');
+  const [location, setLocation] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
 
   useEffect(() => {
     if (searchTerm.length >= 1) {
@@ -19,27 +23,32 @@ const Location = ({ onPincodeSelect }) => {
     }
   }, [searchTerm]);
 
-  const fetchPincodes = async (search) => {
+  const fetchPincodes = async (search: string) => {
     setLoading(true);
     setError('');
     try {
       const response = await fetch(`https://api.postalpincode.in/pincode/${search}`);
       const data = await response.json();
       if (data[0].Status === 'Success') {
-        const uniquePincodes = [...new Set(data[0].PostOffice.map((po) => po.Pincode))];
-        setPincodes(uniquePincodes);
+        // const uniquePincodes = Array.from(new Set(data[0].PostOffice.map((po: { Pincode: string }) => po.Pincode)));
+        // setPincodes(uniquePincodes);
+
+        const postOffices = data[0].PostOffice as { Pincode: string }[];
+      const pincodesArray: string[] = postOffices.map((po) => po.Pincode);
+      const uniquePincodes: string[] = Array.from(new Set(pincodesArray));
+      setPincodes(uniquePincodes);
       } else {
         setPincodes([]);
       }
-    } catch (error) {
+    } catch (error:any) {
       console.error('Error fetching pincodes:', error);
-      setError('Failed to fetch pincodes. Please try again.', error);
+      setError('Failed to fetch pincodes. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
-  const handlePincodeSelect = async (pincode) => {
+  const handlePincodeSelect = async (pincode: string) => {
     
     setSelectedPincode(pincode);
     setSearchTerm(pincode);

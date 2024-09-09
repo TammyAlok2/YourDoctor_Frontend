@@ -5,21 +5,35 @@ import { login } from "../GlobalRedux/slice/AuthSlice";
 import { useRouter } from "next/navigation";
 import { isEmail, isValidPassword } from "../Helpers/regexMatcher";
 import { toast } from "react-hot-toast";
+import { AppDispatch } from "../GlobalRedux/store";
 
-export default function Login({onBack, onBack1, setVisibleComponent, setSignupVisible}) {
-  const [showPassword, setShowPassword] = useState(false);
-  const [loginData, setLoginData] = useState({
+interface LoginProps {
+  onBack: () => void;
+  onBack1: () => void;
+  setVisibleComponent: (component: string | null) => void;
+  setSignupVisible: (visible: boolean) => void;
+}
+
+interface LoginData {
+  email: string;
+  password: string;
+}
+
+
+const Login: React.FC<LoginProps> = ({onBack, onBack1, setVisibleComponent, setSignupVisible}) => {
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [loginData, setLoginData] = useState<LoginData>({
     email: "",
     password: "",
   });
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
   // const userData = useSelector((state) => state.data);
   // console.log(userData);
 
-  function handleUserInput(e) {
+  function handleUserInput(e:any) {
     e.preventDefault();
     const { name, value } = e.target;
     setLoginData({
@@ -29,11 +43,11 @@ export default function Login({onBack, onBack1, setVisibleComponent, setSignupVi
   }
   // console.log(loginData);
 
-  const togglePasswordVisibility = (e) => {
+  const togglePasswordVisibility = (e:any) => {
     setShowPassword(!showPassword);
   };
 
-  async function onLogin(event) {
+  async function onLogin(event:any) {
     event.preventDefault();
     if (!loginData.email || !loginData.password) {
       toast.error("Please fill all the details");
@@ -139,3 +153,5 @@ export default function Login({onBack, onBack1, setVisibleComponent, setSignupVi
     </div>
   );
 }
+
+export default Login;

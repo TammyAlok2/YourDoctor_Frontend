@@ -2,7 +2,7 @@
 import React from 'react';
 import Image from 'next/image';
 
-export default function PaymentPage() {
+const PaymentPage:React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center py-10">
 
@@ -71,3 +71,5 @@ export default function PaymentPage() {
     </div>
   );
 }
+
+export default PaymentPage
