@@ -1,0 +1,243 @@
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import axiosInstance from "../../Helpers/axiosInstance";
+import { toast } from "react-hot-toast";
+import { logout } from "./DoctorSlice";
+
+// Define types for state and payload
+interface UserState {
+  isLoggedIn: boolean;
+  data: Record<string, any>;
+  doctors: Record<string, any>;
+  scheduleByData: Record<string, any>;
+}
+
+const initialState: UserState = {
+  isLoggedIn: false,
+  data: {},
+  doctors: {},
+  scheduleByData: {},
+};
+
+// Define types for `createAsyncThunk`
+interface RegisterData {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export const createAccount = createAsyncThunk(
+  "user/register",
+  async (data: RegisterData) => {
+    console.log(data);
+    try {
+      const res = axiosInstance.post("user/register", data, {
+        withCredentials: true,
+      });
+      toast.promise(res, {
+        loading: "Wait! creating your account",
+        success: (data) => data?.data?.message,
+        error: "Failed to create account",
+      });
+      return (await res).data;
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message);
+      throw error;
+    } finally {
+      console.log("finally");
+    }
+  }
+);
+
+export const login = createAsyncThunk(
+  "user/login",
+  async (data: { email: string; password: string }) => {
+    try {
+      const res = axiosInstance.post("user/login", data, {
+        withCredentials: true,
+      });
+      toast.promise(res, {
+        loading: "Wait! authentication in progress...",
+        success: (data) => data?.data?.message,
+        error: "Failed to login",
+      });
+      return (await res).data;
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message);
+      throw error;
+    }
+  }
+);
+
+export const getUserData = createAsyncThunk(
+  "user/details",
+  async () => {
+    try {
+      const res = axiosInstance.get("user/me");
+      return (await res).data;
+    } catch (error: any) {
+      toast.error(error.message);
+      throw error;
+    }
+  }
+);
+
+export const getAllDoctor = createAsyncThunk(
+  "user/getAllDoctors",
+  async () => {
+    try {
+      const res = axiosInstance.get("doctor/allDoctors");
+      return (await res).data;
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  }
+);
+
+export const allScheduleByDate = createAsyncThunk(
+  "user/getSchedule",
+  async (data: [string, string], { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.get(
+        `user/allScheduleByDate/${data[0]}/${data[1]}`
+      );
+      return response.data;
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || error.message);
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+export const createAppointment = createAsyncThunk(
+  "user/appointment/create",
+  async (data: [string, any]) => {
+    try {
+      const res = axiosInstance.post(`user/newAppointment/${data[0]}`, data[1]);
+      toast.promise(res, {
+        loading: "Please Wait! Appointment success in progress...",
+        success: (data) => data?.data?.message,
+        error: "Failed to send Appointment",
+      });
+      return (await res).data;
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message);
+    }
+  }
+);
+
+export const updatePassword = createAsyncThunk(
+  "user/update/password",
+  async (data: [string, any]) => {
+    try {
+      const res = axiosInstance.post("user/change-password", data);
+      toast.promise(res, {
+        loading: "Please Wait! Password update is in progress...",
+        success: (data) => {
+          return data?.data?.message;
+        },
+        error: "failed to update password"
+      });
+      return (await res).data;
+    } catch (error:any) {
+      toast.error(error?.response?.data?.message);
+      throw error;
+    }
+  }
+);
+
+export const updateUserProfile = createAsyncThunk(
+  "user/update/profile",
+  async (data: [string, any]) => {
+    // console.log(data: [string, any]);
+    try {
+      const res = axiosInstance.put(`user/update/${data[0]}`, data[1]);
+      toast.promise(res, {
+        loading: "Please Wait! Profile update in progress...",
+        success: (data) => {
+          return data?.data?.message;
+        },
+        error: "Failed to update user profile"
+      });
+      return (await res).data;
+    } catch (error:any) {
+      toast.error(error?.response?.data?.message);
+    }
+  }
+);
+
+export const forgotPassword = createAsyncThunk(
+  "user/forgot/password",
+  async (data: [string, any]) => {
+    try {
+      const res = axiosInstance.post("user/reset", data);
+      toast.promise(res, {
+        loading: "Please Wait! Password update is in progress...",
+        success: (data) => {
+          return data?.data?.message;
+        },
+        error: "error"
+      });
+      return (await res).data;
+    } catch (error:any) {
+      toast.error(error?.response?.data?.message);
+      throw error;
+    }
+  }
+);
+
+export const resetPassword = createAsyncThunk(
+  "user/reset/password",
+  async (data: [string, any]) => {
+    try {
+      const res =  axiosInstance.post(`user/reset/${data[0]}`, data[1], {
+        withCredentials: true,
+      });
+      // console.log(res)
+      toast.promise(res, {
+        loading: "Please Wait! Password update is in progress... ",
+        success: (data) => {
+          return data?.data?.message;
+        },
+        error: "Failed to reset password"
+      });
+      return (await res).data;
+    } catch (error:any) {
+      toast.error(error?.response?.data?.message);
+      // throw error;
+    }
+  }
+);
+
+export const authSlice = createSlice({
+  name: "auth",
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(createAccount.fulfilled, (state, action: PayloadAction<any>) => {
+        state.isLoggedIn = true;
+        state.data = action.payload.data;
+        localStorage.setItem("data", JSON.stringify(state.data));
+        localStorage.setItem("isLoggedIn", "true");
+      })
+      .addCase(login.fulfilled, (state, action: PayloadAction<any>) => {
+        state.isLoggedIn = true;
+        state.data = action.payload.data;
+        localStorage.setItem("data", JSON.stringify(state.data));
+        localStorage.setItem("isLoggedIn", "true");
+      })
+      .addCase(getUserData.fulfilled, (state, action: PayloadAction<any>) => {
+        if (!action.payload?.user) return;
+        state.isLoggedIn = true;
+        state.data = action.payload.user;
+        localStorage.setItem("data", JSON.stringify(action.payload.user));
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.isLoggedIn = false;
+        state.data = {};
+        localStorage.clear();
+      });
+  },
+});
+
+export default authSlice.reducer;

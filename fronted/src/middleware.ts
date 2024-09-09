@@ -3,12 +3,18 @@ import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
-  
+
   // Try to get the token from different sources
-  const token = 
-    request.cookies.get("token")?.value || 
-    request.headers.get("Authorization")?.split(" ")[1] ||
-    "";
+  let token = request.cookies.get("token")?.value;
+
+  // If token is not found in cookies, check headers
+  if (!token) {
+    const authHeader = request.headers.get("Authorization");
+    token = authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : "";
+  }
+
+  console.log('Path:', path);
+  console.log('Token:', token);
 
   // Public paths that do not require authentication
   const isPublicPath = ["/login", "/forget", "/signup", "/doctors"].includes(path);
