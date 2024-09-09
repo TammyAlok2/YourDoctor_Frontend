@@ -51,10 +51,10 @@ const FirstDoctorsSection: React.FC<FirstDoctorsSectionProps> = ({ setData, filt
       const doctorsData = response?.payload?.data;
       setData(doctorsData);
 
-      if (filteredData && isBrowser) {
+      if (doctorsData && isBrowser) {
         // Step 3: Store the fetched data in localStorage for future use
-        localStorage.setItem('doctors', JSON.stringify(filteredData));
-        setData(filteredData.slice(0, 3)); // Use the fetched data
+        localStorage.setItem('doctors', JSON.stringify(doctorsData));
+        setData(doctorsData.slice(0, 3)); // Use the fetched data
       }
     } catch (error) {
       console.error("Error fetching doctor data:", error);
@@ -165,4 +165,9 @@ const FirstDoctorsSection: React.FC<FirstDoctorsSectionProps> = ({ setData, filt
   );
 };
 
-export default FirstDoctorsSection;
+export default function Page() {
+  const [data, setData] = useState<Doctor[]>([]);
+  const filteredData = data.slice(0, 3); // Show only the first 3 doctors
+
+  return <FirstDoctorsSection setData={setData} filteredData={filteredData} />;
+}
