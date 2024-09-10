@@ -110,7 +110,7 @@ const Login: React.FC = () => {
               />
             </button>
           </div>
-          <div className="flex justify-end mb-4 cursor-pointer" onClick={onBack1}>
+          <div className="flex justify-end mb-4 cursor-pointer" >
             <a className="text-red-600 text-sm">
               Forgot Password?
             </a>

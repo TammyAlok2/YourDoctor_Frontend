@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateUserProfile, getUserData } from "../GlobalRedux/slice/AuthSlice";
 import { BsPersonCircle } from "react-icons/bs";
 import toast from "react-hot-toast";
-// import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { AppDispatch, RootState } from "../GlobalRedux/store";
 
@@ -16,18 +15,18 @@ interface DataState {
   previewImage: string;
   fullName: string;
   avatar: File | undefined;
-  userId: string | null;
+  userId: string;
 }
 
-const UpdateProfile:React.FC = () => {
-  // const router = useRouter();
+const UpdateProfile: React.FC = () => {
   const userId = useSelector((state: RootState) => state?.auth?.data?._id || "");
   const dispatch = useDispatch<AppDispatch>();
+
   const [data, setData] = useState<DataState>({
     previewImage: "",
     fullName: "",
     avatar: undefined,
-    userId: userId || null
+    userId: userId || "",
   });
 
   useEffect(() => {
@@ -39,21 +38,19 @@ const UpdateProfile:React.FC = () => {
     }
   }, [userId]);
 
-  // console.log(dispatch(updateUserProfile([data.userId])))
-
-  const handleInputChange = (e:any) => {
+  const handleInputChange = (e: any) => {
     const { name, value } = e.target;
     setData({
       ...data,
       [name]: value,
     });
   };
-  useEffect(() => {
-    dispatch(getUserData([]));
-  }, []);
-  // console.log(data?.userId)
 
-  const handleInputUpload = (e:any) => {
+  useEffect(() => {
+    dispatch(getUserData());
+  }, [dispatch]);
+
+  const handleInputUpload = (e: any) => {
     e.preventDefault();
     const uploadImage = e.target.files[0];
     if (uploadImage) {
@@ -68,25 +65,23 @@ const UpdateProfile:React.FC = () => {
       });
     }
   };
-  // console.log(data.previewImage)
 
-  const onFormSubmit = async (e:any) => {
+  const onFormSubmit = async (e: any) => {
     e.preventDefault();
     if (!data.fullName || !data.avatar) {
       toast.error("All fields are mandatory");
       return;
     }
-    if (data.fullName.length > 5) {
-      toast.error("Name cannot be of less than 5 characters long");
+    if (data.fullName.length < 5) {
+      toast.error("Name cannot be less than 5 characters long");
       return;
     }
+
     const formData = new FormData();
     formData.append("fullName", data.fullName);
     formData.append("avatar", data.avatar);
-    // console.log(formData.entries().next())
-    // console.log(formData.entries().next())
+
     await dispatch(updateUserProfile([data.userId, formData]));
-    
     await dispatch(getUserData());
   };
 
@@ -101,18 +96,17 @@ const UpdateProfile:React.FC = () => {
           >
             <div className="md:w-1/4 mb-6 md:mb-0">
               <div className="flex items-center">
-                <label className="cursor-pointer " htmlFor="image_uploads">
+                <label className="cursor-pointer" htmlFor="image_uploads">
                   {data?.previewImage ? (
                     <Image
                       src={data?.previewImage}
                       alt="Profile Update"
                       className="w-[12rem] h-[12rem] rounded-full mb-4"
-                      accept=".jpg, .png, .svg, .jpeg"
                       width={100}
                       height={100}
                     />
                   ) : (
-                    <BsPersonCircle className="w-28 h-28 rounded-full m-auto  text-gray-700 " />
+                    <BsPersonCircle className="w-28 h-28 rounded-full m-auto text-gray-700" />
                   )}
                 </label>
                 <input
@@ -145,7 +139,7 @@ const UpdateProfile:React.FC = () => {
               type="submit"
               className="w-full bg-teal-600 hover:bg-teal-500 transition-all ease-in-out duration-300 rounded-sm py-2 text-lg cursor-pointer"
             >
-              Update profile
+              Update Profile
             </button>
 
             <Link href="/profile">

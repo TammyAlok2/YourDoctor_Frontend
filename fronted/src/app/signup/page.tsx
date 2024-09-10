@@ -9,7 +9,7 @@ import { BsPersonCircle } from "react-icons/bs";
 import { AppDispatch } from "../GlobalRedux/store";
 
 interface SignupData {
-  fullName: string;
+  name: string;
   email: string;
   password: string;
   mobile: string;
@@ -21,7 +21,7 @@ const Signup: React.FC = () => {
   const [previewImage, setPreviewImage] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [signupData, setSignupData] = useState<SignupData>({
-    fullName: "",
+    name: "",
     email: "",
     password: "",
     mobile: "",
@@ -62,7 +62,7 @@ const Signup: React.FC = () => {
     if (
       !signupData.email ||
       !signupData.password ||
-      !signupData.fullName ||
+      !signupData.name ||
       !signupData.mobile ||
       !signupData.avatar
     ) {
@@ -70,7 +70,7 @@ const Signup: React.FC = () => {
       return;
     }
 
-    if (signupData.fullName.length < 5) {
+    if (signupData.name.length < 5) {
       toast.error("Name should be at least 5 characters");
       return;
     }
@@ -87,7 +87,8 @@ const Signup: React.FC = () => {
 
     // Create a plain object matching the SignupData type
     const registerData = {
-      fullName: signupData.fullName,
+      name:'yourlab',
+      fullName: signupData.name,
       email: signupData.email,
       password: signupData.password,
       mobile: signupData.mobile,
@@ -99,7 +100,7 @@ const Signup: React.FC = () => {
       if (response?.payload?.success) {
         router.push("/login");
         setSignupData({
-          fullName: "",
+          name: "",
           email: "",
           password: "",
           mobile: "",
@@ -144,10 +145,10 @@ const Signup: React.FC = () => {
           <div className="mb-6">
             <input
               type="text"
-              name="fullName"
+              name="name"
               placeholder="Enter Your Name"
               className="w-full p-2 border rounded-lg text-black"
-              value={signupData.fullName}
+              value={signupData.name}
               onChange={handleUserInput}
             />
           </div>

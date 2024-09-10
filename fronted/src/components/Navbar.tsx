@@ -4,7 +4,7 @@ import React, { useState, useEffect, FC } from "react";
 import { getUserData } from "@/app/GlobalRedux/slice/AuthSlice";
 import Login from "@/app/login/page";
 import NeedHelp from "@/app/needhelp/page";
-import Location from "@/app/location/page";
+import Location from "@/app/location/page"; // Make sure Location accepts onPincodeSelect
 import Signup from "@/app/signup/page";
 import Forget from "@/app/forget/page";
 import Image from "next/image";
@@ -227,14 +227,12 @@ const Navbar: FC = () => {
             </div>
             {!isLoggedIn ? (
               <div className="flex items-center space-x-4">
-                <FaUser className="text-xl" onClick={toggleSignup} />
-                <span>Register</span>
+                <FaUser className="text-xl" />
+                <span>Registration</span>
               </div>
             ) : (
               <div>
-                <button
-                  className={`w-full p-3 bg-gradient-to-r from-[#0CEDE6] text-white rounded-xl to-[#0A8E8A]`}
-                >
+                <button className="w-full p-3 bg-gradient-to-r from-[#0CEDE6] text-white rounded-xl to-[#0A8E8A]">
                   <Link href="/profile">Profile</Link>
                 </button>
               </div>
@@ -243,90 +241,14 @@ const Navbar: FC = () => {
         )}
       </nav>
 
-      {visibleComponent === "location" && isLocationVisible && (
-        <div className="absolute z-10 w-full h-[100vh] bg-[#0000004b]">
-          <div className="absolute left-[15%] top-[1.5rem] z-10 bg-white rounded-xl py-[0.5rem] px-[1rem] 2xl:w-[30rem]">
-            <Location onPincodeSelect={handlePincodeSelect} />
-          </div>
-        </div>
+      {/* Render the modals */}
+      {visibleComponent === "location" && (
+        <Location {... handlePincodeSelect} />
       )}
-
-      {visibleComponent === "need-help" && isNeedVisible && (
-        <div className="absolute z-10 w-full h-[100vh] bg-[#0000004b]">
-          <div className="absolute right-[15%] top-[1.5rem] z-10">
-            <NeedHelp />
-          </div>
-        </div>
-      )}
-
-      {visibleComponent === "signup" && (
-        <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto">
-          <div
-            className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer"
-            onClick={() => {
-              setVisibleComponent(null);
-              setSignupVisible(!isSignupVisible);
-            }}
-          >
-            <img
-              width="30"
-              height="30"
-              src="https://img.icons8.com/ios-glyphs/30/multiply.png"
-              alt="multiply"
-            />
-          </div>
-          <Signup
-            onBack={() => showComponent("login")}
-            setVisibleComponent={setVisibleComponent}
-            setSignupVisible={setSignupVisible}
-          />
-        </div>
-      )}
-
-      {visibleComponent === "login" && (
-        <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto">
-          <div
-            className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer"
-            onClick={() => {
-              setVisibleComponent(null);
-              setSignupVisible(!isSignupVisible);
-            }}
-          >
-            <img
-              width="30"
-              height="30"
-              src="https://img.icons8.com/ios-glyphs/30/multiply.png"
-              alt="multiply"
-            />
-          </div>
-          <Login
-            onBack={() => showComponent("signup")}
-            onBack1={() => showComponent("forgot")}
-            setVisibleComponent={setVisibleComponent}
-            setSignupVisible={setSignupVisible}
-          />
-        </div>
-      )}
-
-      {visibleComponent === "forgot" && (
-        <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto">
-          <div
-            className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer"
-            onClick={() => {
-              setVisibleComponent(null);
-              setSignupVisible(!isSignupVisible);
-            }}
-          >
-            <img
-              width="30"
-              height="30"
-              src="https://img.icons8.com/ios-glyphs/30/multiply.png"
-              alt="multiply"
-            />
-          </div>
-          <Forget />
-        </div>
-      )}
+      {visibleComponent === "need-help" && <NeedHelp />}
+      {visibleComponent === "signup" && <Signup />}
+      {visibleComponent === "login" && <Login />}
+      {visibleComponent === "forget" && <Forget />}
     </>
   );
 };
