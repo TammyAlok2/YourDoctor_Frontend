@@ -1,4 +1,5 @@
-"use client";
+'use client';
+
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createAccount } from "../GlobalRedux/slice/AuthSlice";
@@ -16,7 +17,7 @@ interface SignupData {
   avatar: File | string;
 }
 
-const Signup: React.FC = () => {
+const SignupPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [previewImage, setPreviewImage] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -59,6 +60,7 @@ const Signup: React.FC = () => {
 
   async function createNewAccount(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
     if (
       !signupData.email ||
       !signupData.password ||
@@ -74,10 +76,12 @@ const Signup: React.FC = () => {
       toast.error("Name should be at least 5 characters");
       return;
     }
+
     if (!isEmail(signupData.email)) {
       toast.error("Invalid email id");
       return;
     }
+
     if (!isValidPassword(signupData.password)) {
       toast.error(
         "Password should be 6 - 16 characters long with at least a number and special character"
@@ -85,14 +89,14 @@ const Signup: React.FC = () => {
       return;
     }
 
-    // Create a plain object matching the SignupData type
+    // Convert FormData to plain object if needed
     const registerData = {
       name:'yourlab',
       fullName: signupData.name,
       email: signupData.email,
       password: signupData.password,
       mobile: signupData.mobile,
-      avatar: signupData.avatar, // You may need to handle avatar upload separately
+      avatar: signupData.avatar instanceof File ? signupData.avatar : null,
     };
 
     try {
@@ -227,6 +231,6 @@ const Signup: React.FC = () => {
       </div>
     </div>
   );
-}
+};
 
-export default Signup;
+export default SignupPage;
