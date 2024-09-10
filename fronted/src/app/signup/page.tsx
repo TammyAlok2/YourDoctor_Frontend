@@ -17,7 +17,9 @@ interface SignupData {
   avatar: File | string;
 }
 
-const SignupPage: React.FC = () => {
+const SignupPage: React.FC = ({
+  onBack
+}) => {
   const dispatch = useDispatch<AppDispatch>();
   const [previewImage, setPreviewImage] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -221,7 +223,7 @@ const SignupPage: React.FC = () => {
             />
             <span className="mx-auto">Sign up with Google</span>
           </button>
-          <div className="text-center cursor-pointer" onClick={() => router.push("/login")}>
+          <div className="text-center cursor-pointer" onClick={onBack}>
             <span className="text-black cursor-pointer">
               Already have an account?{" "}
             </span>

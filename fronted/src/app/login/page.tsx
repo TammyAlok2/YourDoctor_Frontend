@@ -12,7 +12,10 @@ interface LoginData {
   password: string;
 }
 
-const Login: React.FC = () => {
+const Login: React.FC = ({
+  onBack,
+  onBack1,
+}) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loginData, setLoginData] = useState<LoginData>({
     email: "",
@@ -111,7 +114,7 @@ const Login: React.FC = () => {
             </button>
           </div>
           <div className="flex justify-end mb-4 cursor-pointer" >
-            <a className="text-red-600 text-sm">
+            <a className="text-red-600 text-sm" onClick={onBack1}>
               Forgot Password?
             </a>
           </div>
@@ -137,7 +140,7 @@ const Login: React.FC = () => {
             />
             Login with Google
           </button>
-          <div className="text-center cursor-pointer"  onClick={() => router.push("/signup")}>
+          <div className="text-center cursor-pointer"  onClick={onBack}>
             Don&apos;t have an account? Sign Up
           </div>
         </form>
