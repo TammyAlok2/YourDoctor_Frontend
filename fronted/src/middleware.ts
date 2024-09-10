@@ -25,7 +25,9 @@ export function middleware(request: NextRequest) {
   }
 
   // If the user is not logged in and tries to access a protected path, redirect to the login page
-
+  if (!isPublicPath && !token) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
 
   // Allow the request to proceed if none of the above conditions are met
   return NextResponse.next();
@@ -41,6 +43,6 @@ export const config = {
     "/profile",
     "/profileupdate",
     "/updatepassword",
-     // Protected: only logged-in users can access
+    "/appointment-form/:path*", // Protected: only logged-in users can access
   ],
 };
