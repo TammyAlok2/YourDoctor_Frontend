@@ -33,7 +33,7 @@ const FirstDoctorsSection: React.FC = () => {
 
         if (storedDoctors) {
           const parsedDoctors: Doctor[] = JSON.parse(storedDoctors);
-          setDoctorData(parsedDoctors.slice(0, 3)); // Use the locally stored data
+          setDoctorData(parsedDoctors); // Use the locally stored data
           return;
         }
       }
@@ -41,7 +41,7 @@ const FirstDoctorsSection: React.FC = () => {
       // Step 2: If no data in localStorage, fetch it using the dispatcher
       const response = await dispatch(getAllDoctors({}));
       const doctorsData = response?.payload?.data;
-      setDoctorData(doctorsData.slice(0, 3)); // Use the fetched data
+      setDoctorData(doctorsData); // Use the fetched data
 
       if (isBrowser) {
         // Step 3: Store the fetched data in localStorage for future use
