@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect, FC } from "react";
 import { getUserData } from "@/app/GlobalRedux/slice/AuthSlice";
-import Login from "@/app/login/page";
+import Login from "@/components/login/page";
 import NeedHelp from "@/app/needhelp/page";
 import Location from "@/app/location/page";
-import Signup from "@/app/signup/page";
+import Signup from "@/components/signup/page";
 import Forget from "@/app/forget/page";
 import Image from "next/image";
 import Link from "next/link";
@@ -278,7 +278,8 @@ const Navbar: FC = () => {
               alt="multiply"
             />
           </div>
-          <Signup {... onBack}
+          <Signup
+           onBack={onBack}
             {... setVisibleComponent}
             {... setSignupVisible}
           />
@@ -302,8 +303,8 @@ const Navbar: FC = () => {
             />
           </div>
           <Login
-            {... onBack1}
-            {... onBack2}
+           onBack={onBack1}
+           onBack1={onBack2}
            
             {... setVisibleComponent}
             {... setSignupVisible}

@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { createAccount } from "../GlobalRedux/slice/AuthSlice";
+import { createAccount } from "../../app/GlobalRedux/slice/AuthSlice";
 import { useRouter } from "next/navigation";
-import { isEmail, isValidPassword } from "../Helpers/regexMatcher";
+import { isEmail, isValidPassword } from "../../app/Helpers/regexMatcher";
 import { toast } from "react-hot-toast";
 import { BsPersonCircle } from "react-icons/bs";
-import { AppDispatch } from "../GlobalRedux/store";
+import { AppDispatch } from "../../app/GlobalRedux/store";
 
 interface SignupData {
   name: string;
@@ -16,8 +16,11 @@ interface SignupData {
   mobile: string;
   avatar: File | string;
 }
-
-const SignupPage: React.FC = () => {
+interface SignProps {
+  onBack: () => void;
+  
+}
+const SignupPage: React.FC<SignProps> = ({onBack}) => {
   const dispatch = useDispatch<AppDispatch>();
   const [previewImage, setPreviewImage] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -102,7 +105,7 @@ const SignupPage: React.FC = () => {
     try {
       const response = await dispatch(createAccount(registerData));
       if (response?.payload?.success) {
-        router.push("/login");
+        router.push("/");
         setSignupData({
           name: "",
           email: "",
@@ -221,7 +224,7 @@ const SignupPage: React.FC = () => {
             />
             <span className="mx-auto">Sign up with Google</span>
           </button>
-          <div className="text-center cursor-pointer" >
+          <div className="text-center cursor-pointer"  onClick={onBack}>
             <span className="text-black cursor-pointer">
               Already have an account?{" "}
             </span>
