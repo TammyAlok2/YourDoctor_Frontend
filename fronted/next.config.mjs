@@ -1,10 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  compilerOptions: {
-    target: "ES2015", // or higher
-    downlevelIteration: true,
-    lib: ["ES2015", "DOM"], // or "ES2016", "ES2017", etc.
-    // other options...
+  compiler: {
+    styledComponents: true,
   },
   images: {
     domains: [
@@ -27,13 +24,10 @@ const nextConfig = {
       },
     ];
   },
-
   async headers() {
     return [
       {
-        // matching all API routes
         source: "/api/:path*",
-        destination: "https://api.yourlab.in/v1/:path*", 
         headers: [
           { key: "Access-Control-Allow-Credentials", value: "true" },
           { key: "Access-Control-Allow-Origin", value: "*" },
@@ -43,8 +37,6 @@ const nextConfig = {
       }
     ]
   }
-
-
 };
 
 export default nextConfig;
