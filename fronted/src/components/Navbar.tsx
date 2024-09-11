@@ -303,7 +303,7 @@ const Navbar: FC = () => {
           </div>
           <Login
             {... onBack1}
-
+            {... onBack2}
            
             {... setVisibleComponent}
             {... setSignupVisible}
