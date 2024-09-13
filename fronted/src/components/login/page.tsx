@@ -116,7 +116,7 @@ const Login: React.FC<LoginProps> = ({ onBack, onBack1 }) => {
             </button>
           </div>
           <div className="flex justify-end mb-4 cursor-pointer" >
-            <a className="text-red-600 text-sm" onClick={onBack1}>
+            <a className="text-red-600 text-sm" onClick={()=>router.push('/forget')}>
               Forgot Password?
             </a>
           </div>

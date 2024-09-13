@@ -51,7 +51,7 @@ export default function Reset() {
     if (resetToken) {
       const response = await dispatch(resetPassword([resetToken, data]));
       if (response) {
-        router.push("/login");
+        router.push("/");
       }
     } else {
       toast.error("Invalid reset token.");

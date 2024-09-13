@@ -149,9 +149,10 @@ export const createAppointment = createAsyncThunk(
 
 export const updatePassword = createAsyncThunk(
   "user/update/password",
-  async (data: [string, any]) => {
+  async (data: [string, string]) => {
     try {
-      const res = axiosInstance.post("user/change-password", data);
+      const payload = { oldPassword: data[0],newPassword:data[1]};
+      const res = axiosInstance.post("user/change-password", payload);
       toast.promise(res, {
         loading: "Please Wait! Password update is in progress...",
         success: (data) => {

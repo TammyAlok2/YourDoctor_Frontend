@@ -35,7 +35,7 @@ export default function Forget() {
     // Modified dispatch call
     const response = await dispatch(forgotPassword([data.email,null]));
     
-    if (response.payload) {
+    if (response.payload.success) {
       router.push("/");
     }
     setData({ email: "" });
