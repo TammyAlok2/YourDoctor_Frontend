@@ -44,7 +44,7 @@ const NeedHelp: React.FC = () => {
       return true;
     }
     setErrors({ name: "", mobile: "" });
-    return true;
+    return false;
   };
 
   const handleSubmit = async (e: any) => {

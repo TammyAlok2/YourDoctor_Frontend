@@ -18,6 +18,8 @@ export default function Forget() {
     email: "",
   });
 
+ 
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
@@ -31,7 +33,7 @@ export default function Forget() {
     }
     
     // Modified dispatch call
-    const response = await dispatch(forgotPassword([data.email, null]));
+    const response = await dispatch(forgotPassword([data.email,null]));
     
     if (response.payload) {
       router.push("/");

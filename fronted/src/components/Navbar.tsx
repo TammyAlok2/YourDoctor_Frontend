@@ -33,16 +33,32 @@ const Navbar: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
-  const { isLoggedIn } = useSelector((state: RootState) => state.auth);
+  const [isLoggedIn,setIsLoggedIn] = useState<boolean>(false);
+ 
+
+
+ useEffect(()=>{
+  const checkLoginStatus = () => {
+    const loggedIn = localStorage.getItem("isLoggedIn") === "true";
+    setIsLoggedIn(loggedIn);
+  };
+
+  checkLoginStatus();
+ })
+ 
+
 
   useEffect(() => {
 
     // Using localStorage safely in useEffect
+
     const pincode1 = typeof window !== 'undefined' ? localStorage.getItem("pincode") : null;
     const locationString1 = typeof window !== 'undefined' ? localStorage.getItem("location") : null;
     
     if (pincode1) setSelectedPincode(pincode1);
     if (locationString1) setLocation(locationString1);
+
+    
   }, []);
 
   const toggleMenu = () => setIsOpen(!isOpen);

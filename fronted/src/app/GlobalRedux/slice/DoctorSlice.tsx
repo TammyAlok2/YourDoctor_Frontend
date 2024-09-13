@@ -31,6 +31,7 @@ export const logout = createAsyncThunk("user/logout", async (data: any) => {
     toast.promise(res, {
       loading: "Wait! logout in progress...",
       success: (data: any) => {
+        document.cookie = "token=; Max-Age=0; path=/; SameSite=Strict";
         return data?.data?.message;
       },
       error: "Failed to logout",

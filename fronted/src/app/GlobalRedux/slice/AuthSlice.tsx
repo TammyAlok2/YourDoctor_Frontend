@@ -33,12 +33,22 @@ export const createAccount = createAsyncThunk(
       const res = axiosInstance.post("user/register", data, {
         withCredentials: true,
       });
+
       toast.promise(res, {
         loading: "Wait! creating your account",
         success: (data) => data?.data?.message,
         error: "Failed to create account",
       });
-      return (await res).data;
+
+      // Extract the token from the response
+      const response = await res;
+      const token = response?.data?.data?.token;
+      console.log('token',token)
+
+      // Save the token to a cookie (valid for 1 day)
+      document.cookie = `token=${token}; Max-Age=${24 * 60 * 60}; path=/; SameSite=None`;
+
+      return response.data;
     } catch (error: any) {
       toast.error(error?.response?.data?.message);
       throw error;
@@ -55,18 +65,30 @@ export const login = createAsyncThunk(
       const res = axiosInstance.post("user/login", data, {
         withCredentials: true,
       });
+
       toast.promise(res, {
         loading: "Wait! authentication in progress...",
         success: (data) => data?.data?.message,
         error: "Failed to login",
       });
-      return (await res).data;
+
+      // Extract the token from the response
+      const response = await res;
+      const token = response?.data?.data?.token;
+      console.log('token',token)
+
+      // Save the token to a cookie (valid for 1 day)
+      document.cookie = `token=${token}; Max-Age=${24 * 60 * 60}; path=/;  SameSite=None; Secure`;
+
+
+      return response.data;
     } catch (error: any) {
       toast.error(error?.response?.data?.message);
       throw error;
     }
   }
 );
+
 
 export const getUserData = createAsyncThunk(
   "user/details",
@@ -169,7 +191,9 @@ export const forgotPassword = createAsyncThunk(
   "user/forgot/password",
   async (data: [string, any]) => {
     try {
-      const res = axiosInstance.post("user/reset", data);
+      const payload = { email: data[0] };
+      const res = axiosInstance.post("user/reset", payload);
+
       toast.promise(res, {
         loading: "Please Wait! Password update is in progress...",
         success: (data) => {
@@ -216,13 +240,13 @@ export const authSlice = createSlice({
     builder
       .addCase(createAccount.fulfilled, (state, action: PayloadAction<any>) => {
         state.isLoggedIn = true;
-        state.data = action.payload.data;
+        state.data = action.payload.data.user;
         localStorage.setItem("data", JSON.stringify(state.data));
         localStorage.setItem("isLoggedIn", "true");
       })
       .addCase(login.fulfilled, (state, action: PayloadAction<any>) => {
         state.isLoggedIn = true;
-        state.data = action.payload.data;
+        state.data = action.payload.data.user;
         localStorage.setItem("data", JSON.stringify(state.data));
         localStorage.setItem("isLoggedIn", "true");
       })
@@ -231,6 +255,7 @@ export const authSlice = createSlice({
         state.isLoggedIn = true;
         state.data = action.payload.user;
         localStorage.setItem("data", JSON.stringify(action.payload.user));
+        localStorage.setItem("isLoggedIn", "true");
       })
       .addCase(logout.fulfilled, (state) => {
         state.isLoggedIn = false;

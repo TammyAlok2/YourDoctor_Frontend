@@ -12,7 +12,13 @@ const Logout = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const onLogout = async function () {
-    (await dispatch(logout(undefined))) ? router.push("/") : 'Failed to logout...';
+    const response = await dispatch(logout(undefined))
+    if(response?.payload?.success){
+document.cookie='';
+      router.push('/')
+    }
+   
+
   } 
 
   return (
