@@ -3,7 +3,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch } from "@/app/GlobalRedux/store";
+import { getAllDoctor } from "@/app/GlobalRedux/slice/AuthSlice";
 
 interface Doctor {
   _id: string;
@@ -15,42 +17,64 @@ interface Doctor {
 
 const DoctorPayment: React.FC = () => {
   const params = useParams();
+  const dispatch = useDispatch<AppDispatch>();
   const [doctor, setDoctor] = useState<Doctor | undefined>(undefined);
   const [feeToDisplay, setFeeToDisplay] = useState<number | undefined>(undefined);
 
-  useEffect(() => {
-   
-   {
-      const doctors = useSelector((state:any)=>state.auth.doctors);
+  const fetchDoctorData = async () => {
+    try {
+      const response = await dispatch(getAllDoctor());
+      const doctors = response?.payload?.data;
 
       if (doctors) {
-        const parsedDoctors = JSON.parse(doctors) as Doctor[];
-        const foundDoctor = parsedDoctors.find((doc: Doctor) => doc._id === params.id);
+        const foundDoctor = doctors.find((doc: Doctor) => doc._id === params.id);
 
         if (foundDoctor) {
           setDoctor(foundDoctor);
-          const currentTime = new Date();
-          const currentHour = currentTime.getHours();
-
-          // Check if it's after 10 PM or before 5 AM (emergency hours)
-          const isEmergencyTime = currentHour >= 22 || currentHour <= 5;
-
-          // Determine which fee to display
-          const fee = isEmergencyTime
-            ? (foundDoctor.fees.emergencyFee1 !== undefined && foundDoctor.fees.emergencyFee1 !== 0
-                ? foundDoctor.fees.emergencyFee1
-                : foundDoctor.fees.firstVisitFee)
-            : foundDoctor.fees.firstVisitFee;
-
-          setFeeToDisplay(fee);
+          updateFeeToDisplay(foundDoctor);
         }
       }
+    } catch (error) {
+      console.error("Error fetching doctor data:", error);
     }
+  };
+
+  const updateFeeToDisplay = (doctorData: Doctor) => {
+    const currentTime = new Date();
+    const currentHour = currentTime.getHours();
+
+    // Check if it's after 10 PM or before 5 AM (emergency hours)
+    const isEmergencyTime = currentHour >= 22 || currentHour < 5;
+
+    // Determine which fee to display
+    const fee = isEmergencyTime
+      ? (doctorData.fees.emergencyFee1 !== undefined && doctorData.fees.emergencyFee1 !== 0
+          ? doctorData.fees.emergencyFee1
+          : doctorData.fees.firstVisitFee)
+      : doctorData.fees.firstVisitFee;
+
+    setFeeToDisplay(fee);
+  };
+
+  useEffect(() => {
+    fetchDoctorData();
+
+    // Set up polling interval
+    const intervalId = setInterval(() => {
+      fetchDoctorData();
+    }, 30000); // Poll every 30 seconds
+
+    // Clean up interval on component unmount
+    return () => clearInterval(intervalId);
   }, [params.id]);
 
   // Calculate discount and total
   const discount = feeToDisplay ? Math.round(feeToDisplay * 0.3) : 0;
   const total = feeToDisplay ? feeToDisplay - discount : 0;
+
+  if (!doctor) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="flex h-screen flex-col items-center mt-[1.7rem]">

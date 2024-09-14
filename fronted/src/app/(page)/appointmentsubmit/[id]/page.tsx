@@ -33,43 +33,51 @@ const AppointmentSubmitted: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const params = useParams();
   const [doctor, setDoctor] = useState<Doctor | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const getDoctorData = async () => {
     try {
-      // Step 1: Check if doctor data is available in localStorage
-      const storedDoctors = localStorage.getItem("doctors");
-      let doctors: Doctor[] = [];
+      setIsLoading(true);
+      const response: any = await dispatch(getAllDoctor());
+      const doctors: Doctor[] = response?.payload?.data;
 
-      if (storedDoctors) {
-        doctors = JSON.parse(storedDoctors);
-      } else {
-        // Step 2: If no data is found in localStorage, dispatch to fetch it from the API
-        const response: any = await dispatch(getAllDoctor());
-        doctors = response?.payload?.data;
-
-        if (doctors) {
-          // Step 3: Store the fetched data in localStorage
-          localStorage.setItem("doctors", JSON.stringify(doctors));
+      if (doctors) {
+        const foundDoctor = doctors.find((doc) => doc._id === params.id);
+        if (foundDoctor) {
+          setDoctor(foundDoctor);
+        } else {
+          toast.error("Doctor not found");
         }
-      }
-
-      // Step 4: Find the specific doctor by ID
-      const foundDoctor = doctors?.find((doctor) => doctor._id === params.id);
-
-      if (foundDoctor) {
-        setDoctor(foundDoctor);
       } else {
-        toast.error("Doctor not found");
+        toast.error("Failed to fetch doctor data");
       }
     } catch (error: any) {
       console.error("Error fetching doctor data:", error);
       toast.error(`Doctor data fetch Error: ${error.message}`);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     getDoctorData();
-  }, []);
+
+    // Set up polling interval
+    const intervalId = setInterval(() => {
+      getDoctorData();
+    }, 30000); // Poll every 30 seconds
+
+    // Clean up interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [params.id]);
+
+  if (isLoading) {
+    return <div className="text-center mt-8">Loading...</div>;
+  }
+
+  if (!doctor) {
+    return <div className="text-center mt-8">Doctor not found</div>;
+  }
 
   return (
     <>
@@ -79,14 +87,14 @@ const AppointmentSubmitted: React.FC = () => {
             <div className="w-[8rem] h-[8rem] rounded-full relative flex items-center justify-center">
               <div
                 className={`${
-                  doctor?.status === false
+                  doctor.status === false
                     ? ""
                     : "border-[#0A8E8A] border-4 rounded-full w-[8rem] h-[8rem] flex text-center justify-center p-[0.2rem] mx-auto"
                 }`}
               >
-                {doctor?.avatar && (
+                {doctor.avatar && (
                   <Image
-                    src={doctor?.avatar?.secure_url}
+                    src={doctor.avatar.secure_url}
                     alt="Profile"
                     className="w-28 h-26 rounded-full"
                     width={100}
@@ -97,39 +105,37 @@ const AppointmentSubmitted: React.FC = () => {
                 <div
                   className={`absolute w-[1rem] right-3 animate-ping rounded-full bottom-3 h-[1rem]`}
                   style={{
-                    backgroundColor: `${
-                      doctor?.status === false ? "" : "#54FC05"
-                    }`,
+                    backgroundColor: doctor.status ? "#54FC05" : "transparent",
                   }}
                 ></div>
               </div>
             </div>
             <h1 className="font-bold text-center text-[#61b1ae] text-[1.7rem]">
-              {doctor?.fullName}
+              {doctor.fullName}
             </h1>
-            <h1 className="text-[rgba(0,0,0,0.99)] font-bold">{doctor?.email}</h1>
+            <h1 className="text-[rgba(0,0,0,0.99)] font-bold">{doctor.email}</h1>
           </div>
           <div className="mx-[2.5rem] xs:mx-[0.8rem] xs:my-[1rem]">
             <div className="space-y-10">
-              <h1 className="font-semibold">Specialist: {doctor?.specialist}</h1>
+              <h1 className="font-semibold">Specialist: {doctor.specialist}</h1>
               <div className="flex gap-[0.5rem]">Ratings: <ReviewComponent /></div>
-              <h1>Address: {doctor?.address}</h1>
+              <h1>Address: {doctor.address}</h1>
             </div>
             <div className="mt-[3.8rem] grid grid-cols-2 gap-2">
               <a className="list-none text-gray-600">
-                Emergency Fee1: <span className="text-teal-700">{doctor?.fees?.emergencyFee1 + "rs"}</span>
+                Emergency Fee1: <span className="text-teal-700">{doctor.fees.emergencyFee1}rs</span>
               </a>
               <a className="list-none text-gray-600">
-                Emergency Fee2: <span className="text-teal-700">{doctor?.fees?.emergencyFee2 + "rs"}</span>
+                Emergency Fee2: <span className="text-teal-700">{doctor.fees.emergencyFee2}rs</span>
               </a>
               <a className="list-none text-gray-600">
-                First Visit Fees: <span className="text-teal-700">{doctor?.fees?.firstVisitFee + "rs"}</span>
+                First Visit Fees: <span className="text-teal-700">{doctor.fees.firstVisitFee}rs</span>
               </a>
               <a className="list-none text-gray-600">
-                Second Visit Fee: <span className="text-teal-700">{doctor?.fees?.secondVisitFee + "rs"}</span>
+                Second Visit Fee: <span className="text-teal-700">{doctor.fees.secondVisitFee}rs</span>
               </a>
               <a className="list-none text-gray-600">
-                Visit Under 7 Days Fees: <span className="text-teal-700">{doctor?.fees?.visitUnder7DaysFee + "rs"}</span>
+                Visit Under 7 Days Fees: <span className="text-teal-700">{doctor.fees.visitUnder7DaysFee}rs</span>
               </a>
             </div>
           </div>
