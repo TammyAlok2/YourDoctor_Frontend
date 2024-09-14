@@ -128,8 +128,11 @@ const ProfileData: React.FC<ProfileDataProps> = ({ searchTerm }) => {
                       }}
                     ></div>
                   </div>
+                 
                   <h1 className="text-[rgb(17_164_160_/_99%)] font-bold items-end ml-auto">
-                    {userData.fullName}
+                  <Link href={`/doctor/${userData._id}`}>
+                {userData.fullName}
+              </Link>
                   </h1>
                   <button className="bg-[rgb(17_164_160_/_99%)] hover:bg-[rgba(17,164,159,0.89)] p-[0.3rem] text-white rounded-md">
                     <Link href={`/appointment/${userData._id}`}>
