@@ -33,29 +33,20 @@ const FirstDoctorsSection: React.FC<FirstDoctorsSectionProps> = ({ setData, filt
   const params = useParams();
   const [doctorData, setDoctorData] = useState<Doctor[]>([]);
 
-  const isBrowser = typeof window !== "undefined"; // Check if the code is running in the browser
+ 
 
   const getAllDoctor = async () => {
     try {
       // Step 1: Try to get doctor data from localStorage (only if on the client-side)
-      if (isBrowser) {
-        const storedDoctors = localStorage.getItem('doctors');
-
-        if (storedDoctors) {
-          const parsedDoctors: Doctor[] = JSON.parse(storedDoctors);
-          setData(parsedDoctors); // Use the locally stored data
-          return;
-        }
-      }
+     
 
       // Step 2: If no data in localStorage, fetch it using the dispatcher
       const response = await dispatch(getAllDoctors({}));
       const doctorsData = response?.payload?.data;
       setData(doctorsData);
 
-      if (filteredData && isBrowser) {
+      if (filteredData) {
         // Step 3: Store the fetched data in localStorage for future use
-        localStorage.setItem('doctors', JSON.stringify(filteredData));
         setData(filteredData); // Use the fetched data
       }
     } catch (error) {
@@ -74,9 +65,7 @@ const FirstDoctorsSection: React.FC<FirstDoctorsSectionProps> = ({ setData, filt
         setDoctorData(updatedDoctorsData.slice(0, 3));
 
         // Update local storage with the new data (only on client-side)
-        if (isBrowser) {
-          localStorage.setItem("doctors", JSON.stringify(updatedDoctorsData));
-        }
+    
       }
     } catch (error) {
       console.error("Error polling doctor status:", error);
@@ -90,7 +79,7 @@ const FirstDoctorsSection: React.FC<FirstDoctorsSectionProps> = ({ setData, filt
     // Poll every 30 seconds
     const intervalId = setInterval(() => {
       pollDoctorStatus();
-    }, 30000); // 30 seconds
+    }, 3000); // 30 seconds
 
     // Cleanup interval on component unmount
     return () => clearInterval(intervalId);

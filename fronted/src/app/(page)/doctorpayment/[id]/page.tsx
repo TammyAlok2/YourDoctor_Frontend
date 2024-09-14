@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 interface Doctor {
   _id: string;
@@ -18,9 +19,9 @@ const DoctorPayment: React.FC = () => {
   const [feeToDisplay, setFeeToDisplay] = useState<number | undefined>(undefined);
 
   useEffect(() => {
-    // Check if window is available (ensures this runs on client-side)
-    if (typeof window !== "undefined") {
-      const doctors = localStorage.getItem("doctors");
+   
+   {
+      const doctors = useSelector((state:any)=>state.auth.doctors);
 
       if (doctors) {
         const parsedDoctors = JSON.parse(doctors) as Doctor[];
