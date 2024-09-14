@@ -1,25 +1,20 @@
 "use client";
 
-// components/Form.js
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { postEnquiry } from "../GlobalRedux/slice/DoctorSlice";
 import { toast, Toaster } from "react-hot-toast";
 import { AppDispatch } from "../GlobalRedux/store";
 
-// Define the shape of the error object
 interface Errors {
   name: string;
   mobile: string;
 }
 
-// Define the shape of the form data
 interface FormData {
   name: string;
   number: string;
 }
-
-
 
 const NeedHelp: React.FC = () => {
   const [name, setName] = useState<string>("");
@@ -31,70 +26,55 @@ const NeedHelp: React.FC = () => {
     let nameError = "";
     let mobileError = "";
 
-    const nameRegex = /^[A-Za-z\s]+$/;
+    // Name validation: at least 5 letters, only letters and spaces
+    const nameRegex = /^[A-Za-z\s]{5,}$/;
     if (!name) {
       nameError = "Name is required";
     } else if (!nameRegex.test(name)) {
-      nameError = "Name can only contain letters";
-    } else if (name.length < 2) {
-      nameError = "Name must be at least 2 characters";
-    } else {
-      nameError = "";
+      nameError = "Name must be at least 5 letters and contain only letters and spaces";
     }
 
-    const mobileRegex = /^[0-9]{10}$/;
+    // Mobile number validation: 10 digits, starting with 6-9
+    const mobileRegex = /^[6-9]\d{9}$/;
     if (!mobile) {
       mobileError = "Mobile number is required";
     } else if (!mobileRegex.test(mobile)) {
-      mobileError = "Mobile number must be 10 digits long";
-    } else {
-      mobileError = "";
+      mobileError = "Mobile number must be 10 digits and start with 6, 7, 8, or 9";
     }
 
-    if (nameError || mobileError) {
-      setErrors({ name: nameError, mobile: mobileError });
-      return false;
-    }
-    setErrors({ name: "", mobile: "" });
-    return false;
+    setErrors({ name: nameError, mobile: mobileError });
+    return !(nameError || mobileError);
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    
-    if (!validate()) {
-      toast.error("Please fill all the required fields"); // Stop form submission if validation fails
-    }
-    else{
+    if (validate()) {
       const data: FormData = {
         name: name,
         number: mobile,
       };
-      
-  
+
       const response = await dispatch(postEnquiry(data));
       console.log(response);
       if (response?.payload?.success) {
-        toast.success("Enquiry send successfully");
-  
-        // Reset form fields
+        toast.success("Enquiry sent successfully");
         setName("");
         setMobile("");
       } else {
         toast.error("Enquiry send failed");
       }
+    } else {
+      toast.error("Please correct the errors in the form");
     }
   };
+
   return (
     <div className="flex justify-center items-center">
       <div className="bg-white p-6 rounded-lg shadow-lg max-w-xs w-full">
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div>
-            <label
-              htmlFor="name"
-              className="block text-gray-700 font-bold mb-2"
-            >
+            <label htmlFor="name" className="block text-gray-700 font-bold mb-2">
               Name
             </label>
             <input
@@ -105,28 +85,25 @@ const NeedHelp: React.FC = () => {
               className={`w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 ${
                 errors.name ? "border-red-500" : ""
               }`}
-              placeholder="Enter your name"
+              placeholder="Enter your name (min 5 letters)"
             />
             {errors.name && (
               <p className="text-red-500 text-sm mt-1">{errors.name}</p>
             )}
           </div>
           <div>
-            <label
-              htmlFor="mobile"
-              className="block text-gray-700 font-bold mb-2"
-            >
+            <label htmlFor="mobile" className="block text-gray-700 font-bold mb-2">
               Mobile No.
             </label>
             <input
-              type="text"
+              type="tel"
               id="mobile"
               value={mobile}
               onChange={(e) => setMobile(e.target.value)}
               className={`w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 ${
                 errors.mobile ? "border-red-500" : ""
               }`}
-              placeholder="Enter your mobile number"
+              placeholder="Enter 10-digit mobile number"
             />
             {errors.mobile && (
               <p className="text-red-500 text-sm mt-1">{errors.mobile}</p>

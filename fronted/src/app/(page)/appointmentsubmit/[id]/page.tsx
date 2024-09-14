@@ -10,6 +10,29 @@ import { useDispatch } from "react-redux";
 import ReviewComponent from "@/components/HomePage/ratings/page";
 import { AppDispatch } from "@/app/GlobalRedux/store";
 
+// Shimmer Component
+const Shimmer = () => (
+<div className="2xl:w-[70rem] xl:w-[70rem] lg:w-[58rem] mx-auto flex my-[2rem] rounded-xl flex-row-reverse justify-between p-[2rem] shadow-md md:w-[40rem] sm:w-[30rem] xs:w-[20rem] xs:flex-col animate-pulse">
+      <div className="flex items-center flex-col space-y-2">
+        <div className="w-[8rem] h-[8rem] rounded-full bg-gray-300"></div>
+        <div className="h-6 bg-gray-300 rounded w-48 mt-2"></div>
+        <div className="h-4 bg-gray-300 rounded w-40"></div>
+      </div>
+      <div className="mx-[2.5rem] xs:mx-[0.8rem] xs:my-[1rem] flex-grow">
+        <div className="space-y-10">
+          <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+          <div className="h-4 bg-gray-300 rounded w-1/2"></div>
+          <div className="h-4 bg-gray-300 rounded w-5/6"></div>
+        </div>
+        <div className="mt-[3.8rem] grid grid-cols-2 gap-2">
+          {[...Array(5)].map((_, index) => (
+            <div key={index} className="h-4 bg-gray-300 rounded w-full"></div>
+          ))}
+        </div>
+      </div>
+    </div>
+);
+
 interface Doctor {
   _id: string;
   avatar: {
@@ -62,17 +85,19 @@ const AppointmentSubmitted: React.FC = () => {
   useEffect(() => {
     getDoctorData();
 
-    // Set up polling interval
     const intervalId = setInterval(() => {
       getDoctorData();
     }, 30000); // Poll every 30 seconds
 
-    // Clean up interval on component unmount
     return () => clearInterval(intervalId);
   }, [params.id]);
 
   if (isLoading) {
-    return <div className="text-center mt-8">Loading...</div>;
+    return (
+      <div className="text-center mt-8">
+        <Shimmer />
+      </div>
+    );
   }
 
   if (!doctor) {
@@ -118,7 +143,9 @@ const AppointmentSubmitted: React.FC = () => {
           <div className="mx-[2.5rem] xs:mx-[0.8rem] xs:my-[1rem]">
             <div className="space-y-10">
               <h1 className="font-semibold">Specialist: {doctor.specialist}</h1>
-              <div className="flex gap-[0.5rem]">Ratings: <ReviewComponent /></div>
+              <div className="flex gap-[0.5rem]">
+                Ratings: <ReviewComponent />
+              </div>
               <h1>Address: {doctor.address}</h1>
             </div>
             <div className="mt-[3.8rem] grid grid-cols-2 gap-2">

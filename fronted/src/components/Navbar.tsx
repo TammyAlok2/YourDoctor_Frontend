@@ -41,7 +41,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
   const [location, setLocation] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-
+const pathname = usePathname()
   const [isLoggedIn,setIsLoggedIn] = useState<boolean>(false);
  
 
