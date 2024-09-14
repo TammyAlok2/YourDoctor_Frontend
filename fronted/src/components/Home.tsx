@@ -19,13 +19,7 @@ const Home = () => {
         <CardInfo />
       </div>
 
-      <div className="py-10">
-        <div className="container mx-auto">
-          <div className="flex flex-wrap gap-8 justify-center">
-            <LabCard />
-          </div>
-        </div>
-      </div>
+      
     </div>
   );
 };
