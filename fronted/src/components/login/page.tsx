@@ -1,26 +1,23 @@
 "use client";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { login } from "../GlobalRedux/slice/AuthSlice";
+import { login } from "../../app/GlobalRedux/slice/AuthSlice";
 import { useRouter } from "next/navigation";
-import { isEmail, isValidPassword } from "../Helpers/regexMatcher";
+import { isEmail, isValidPassword } from "../../app/Helpers/regexMatcher";
 import { toast } from "react-hot-toast";
-import { AppDispatch } from "../GlobalRedux/store";
-
-interface LoginProps {
-  onBack: () => void;
-  onBack1: () => void;
-}
+import { AppDispatch } from "../../app/GlobalRedux/store";
 
 interface LoginData {
   email: string;
   password: string;
 }
 
-const Login: React.FC<LoginProps> = ({
-  onBack,
-  onBack1,
-}) => {
+interface LoginProps {
+  onBack: () => void;
+  onBack1: () => void;
+}
+
+const Login: React.FC<LoginProps> = ({ onBack, onBack1 }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loginData, setLoginData] = useState<LoginData>({
     email: "",
@@ -118,8 +115,8 @@ const Login: React.FC<LoginProps> = ({
               />
             </button>
           </div>
-          <div className="flex justify-end mb-4 cursor-pointer" onClick={onBack1}>
-            <a className="text-red-600 text-sm">
+          <div className="flex justify-end mb-4 cursor-pointer" >
+            <a className="text-red-600 text-sm" onClick={onBack1}>
               Forgot Password?
             </a>
           </div>
@@ -145,7 +142,7 @@ const Login: React.FC<LoginProps> = ({
             />
             Login with Google
           </button>
-          <div className="text-center cursor-pointer"  onClick={() => router.push("/signup")}>
+          <div className="text-center cursor-pointer" onClick={onBack}>
             Don&apos;t have an account? Sign Up
           </div>
         </form>

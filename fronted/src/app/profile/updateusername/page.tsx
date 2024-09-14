@@ -10,31 +10,32 @@ import { AppDispatch, RootState } from "../../GlobalRedux/store";
 
 interface UpdateUserImageState {
   fullName: string;
-  userId: string | null;
+  userId: string; // Ensure this is always a string
 }
 
 const UpdateUserImage = () => {
-  const userId = useSelector((state: RootState) => state?.auth?.data?._id);
+  const userId = useSelector((state: RootState) => state?.auth?.data?._id) || ''; // Fallback to empty string
   const dispatch = useDispatch<AppDispatch>();
+
   const [data, setData] = useState<UpdateUserImageState>({
     fullName: "",
-    userId: userId || "",
+    userId: userId, // Initialize with userId or empty string
   });
 
   useEffect(() => {
     if (userId) {
       setData((prevData) => ({
         ...prevData,
-        userId: userId,
+        userId: userId, // Update userId if available
       }));
     }
   }, [userId]);
 
   useEffect(() => {
-    dispatch(getUserData([]));
+    dispatch(getUserData());
   }, [dispatch]);
 
-  const handleInputChange = (e:any) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setData({
       ...data,
@@ -42,7 +43,7 @@ const UpdateUserImage = () => {
     });
   };
 
-  const onFormSubmit = async (e:any) => {
+  const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // Full name validation: letters only and at least 5 characters long

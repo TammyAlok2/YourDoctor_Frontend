@@ -1,5 +1,4 @@
-'use client';
-
+'use client'
 // pages/Boxes.js
 import Image from "next/image";
 import { useEffect } from "react";
@@ -11,12 +10,9 @@ interface Box {
   description: string;
 }
 
-interface SecondDoctorsSectionProps {
-  setData1: (data: Box[]) => void;
-  filteredSecondData: Box[];
-}
 
-const SecondDoctorsSection: React.FC<SecondDoctorsSectionProps> = ({setData1, filteredSecondData}) => {
+
+const SecondDoctorsSection: React.FC = () => {
 
   const boxes: Box[] = [
     {
@@ -45,14 +41,12 @@ const SecondDoctorsSection: React.FC<SecondDoctorsSectionProps> = ({setData1, fi
       description: "Depression or anxiety.",
     },
   ];
-  useEffect(()=>{
-    setData1(boxes)
-  },[])
+  
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-wrap justify-between">
-        {filteredSecondData.map((box, index) => (
+        {boxes.map((box, index) => (
           <div
             key={index}
             className="flex flex-col items-center w-full md:w-1/5 p-4 mb-6 bg-white rounded-lg hover:shadow-lg transition-shadow duration-300"
@@ -65,7 +59,7 @@ const SecondDoctorsSection: React.FC<SecondDoctorsSectionProps> = ({setData1, fi
               className="rounded-full mb-4 h-[6rem] w-[6rem]"
             />
             <p className="text-[1.2rem] text-center font-bold">{box.description}</p>
-            <h2 className="text-xl font-bold mb-2 text-center text-[#0A8E8A]">{box.title}</h2>
+            <h2 className="text-xl font-bold mb-2 text-center text-[#0A8E8A] active:text-[1.2rem] cursor-pointer hover:text-[#0a8e8ad2]">{box.title}</h2>
           </div>
         ))}
       </div>

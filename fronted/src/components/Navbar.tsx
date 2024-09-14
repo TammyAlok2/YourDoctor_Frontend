@@ -1,15 +1,15 @@
 "use client";
 
-import React, { useState, useEffect, FC } from "react";
+import React, { useState, useEffect, FC, useRef } from "react";
 import { getUserData } from "@/app/GlobalRedux/slice/AuthSlice";
-import Login from "@/app/login/page";
+import Login from "@/components/login/page";
 import NeedHelp from "@/app/needhelp/page";
 import Location from "@/app/location/page";
-import Signup from "@/app/signup/page";
+import Signup from "@/components/signup/page";
 import Forget from "@/app/forget/page";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   FaPhone,
   FaFileAlt,
@@ -19,32 +19,60 @@ import {
 } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/GlobalRedux/store";
+import type { NextPage } from "next";
 
-const Navbar: FC = () => {
+type PageProps = {
+  title?: string;
+};
+
+const Navbar: NextPage<PageProps> = ({ title }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const router = useRouter();
+  const router: any = useRouter();
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [visibleComponent, setVisibleComponent] = useState<string | null>(null);
+  const [isLogoVisible, setLogoVisible] = useState<boolean>(false);
   const [isSignupVisible, setSignupVisible] = useState<boolean>(false);
   const [isNeedVisible, setNeedVisible] = useState<boolean>(false);
+  const [isReportsVisible, setReportsVisible] = useState<boolean>(false);
+  const [isCartVisible, setCartVisible] = useState<boolean>(false);
   const [isLocationVisible, setLocationVisible] = useState<boolean>(false);
   const [selectedPincode, setSelectedPincode] = useState<string>("");
   const [location, setLocation] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
-  const { isLoggedIn } = useSelector((state: RootState) => state.auth);
+  const pathname: string = usePathname();
+  // console.log(pathname)
+
+  // const { isLoggedIn } = useSelector((state: RootState) => state.auth);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
+  const handleInsideClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent click event from propagating and hiding the component
+  };
 
   useEffect(() => {
-    dispatch(getUserData());
+    const checkLoginStatus = () => {
+      const loggedIn = localStorage.getItem("isLoggedIn") === "true";
+      setIsLoggedIn(loggedIn);
+    };
+
+    checkLoginStatus();
+  });
+
+  useEffect(() => {
+    // dispatch(getUserData());
 
     // Using localStorage safely in useEffect
-    const pincode1 = typeof window !== 'undefined' ? localStorage.getItem("pincode") : null;
-    const locationString1 = typeof window !== 'undefined' ? localStorage.getItem("location") : null;
-    
+    const pincode1 =
+      typeof window !== "undefined" ? localStorage.getItem("pincode") : null;
+    const locationString1 =
+      typeof window !== "undefined" ? localStorage.getItem("location") : null;
+
     if (pincode1) setSelectedPincode(pincode1);
     if (locationString1) setLocation(locationString1);
-  }, [dispatch]);
+  }, []);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -59,44 +87,77 @@ const Navbar: FC = () => {
   };
 
   const toggleSignup = () => {
-    if (isLocationVisible) {
-      setLocationVisible(false);
-    }
-    if (isNeedVisible) {
-      setNeedVisible(false);
-    }
+    isLocationVisible && setLocationVisible(false);
+    isNeedVisible && setNeedVisible(false);
+    isCartVisible && setCartVisible(false);
+    isReportsVisible && setReportsVisible(false);
+
     setSignupVisible(!isSignupVisible);
-    setVisibleComponent(isSignupVisible ? null : "signup");
+    setVisibleComponent(isSignupVisible ? null : "login");
   };
 
   const toggleNeed = () => {
-    if (isLocationVisible) {
-      setLocationVisible(false);
-    }
-    if (isSignupVisible) {
-      setSignupVisible(false);
-    }
+    isLocationVisible && setLocationVisible(false);
+    isSignupVisible && setSignupVisible(false);
+    isCartVisible && setCartVisible(false);
+    isReportsVisible && setReportsVisible(false);
+
     setNeedVisible(!isNeedVisible);
     setVisibleComponent(isNeedVisible ? null : "need-help");
   };
 
   const toggleLocation = () => {
-    if (isNeedVisible) {
-      setNeedVisible(false);
-    }
-    if (isSignupVisible) {
-      setSignupVisible(false);
-    }
+    isNeedVisible && setNeedVisible(false);
+    isSignupVisible && setSignupVisible(false);
+    isCartVisible && setCartVisible(false);
+    isReportsVisible && setReportsVisible(false);
+
     setLocationVisible(!isLocationVisible);
     setVisibleComponent(isLocationVisible ? null : "location");
   };
+
+  const toggleReports = () => {
+    isNeedVisible && setNeedVisible(false);
+    isSignupVisible && setSignupVisible(false);
+    isCartVisible && setCartVisible(false);
+    isLocationVisible && setLocationVisible(false);
+
+    setReportsVisible(!isReportsVisible);
+    setVisibleComponent(isReportsVisible ? null : "reports");
+  };
+
+  const toggleCart = () => {
+    isNeedVisible && setNeedVisible(false);
+    isSignupVisible && setSignupVisible(false);
+    isReportsVisible && setReportsVisible(false);
+    isLocationVisible && setLocationVisible(false);
+
+    setCartVisible(!isCartVisible);
+    setVisibleComponent(isCartVisible ? null : "cart");
+  };
+
+  const logoClick = () => {
+    isNeedVisible && setNeedVisible(false);
+    isSignupVisible && setSignupVisible(false);
+    isReportsVisible && setReportsVisible(false);
+    isLocationVisible && setLocationVisible(false);
+    isCartVisible && setCartVisible(false);
+
+    setLogoVisible(!isLogoVisible);
+    setVisibleComponent(isLogoVisible ? null : "logo");
+  };
+
+  const onBack = () => showComponent("login");
+  const onBack1 = () => showComponent("signup");
+  const onBack2 = () => showComponent("forgot");
+  // const onNeedCancel = () => setNeedVisible(false);
 
   return (
     <>
       <nav className="p-4 border-b-[0.3rem] border-[#d5d5d5]">
         <div className="container mx-auto flex justify-between items-center max-[1025px]:min-[765px]:gap-[2rem]">
           <div className="flex gap-[2.5rem] items-center justify-center">
-            <div className="flex gap-[0.2rem] items-end">
+            <div className="flex gap-[0.2rem] items-end" onClick={logoClick}>
               <Link href="/">
                 <Image
                   width={166}
@@ -121,10 +182,11 @@ const Navbar: FC = () => {
                 src={"https://img.icons8.com/ios/50/marker--v1.png"}
                 alt="location icon"
               />
-              <span className="text-lg leading-[1.3rem]">
+              <span className="text-lg leading-[1.3rem] xs:mr-4">
                 {selectedPincode ? (
                   <>
-                    <p>{`${selectedPincode}`}</p><p>{`${location}`}</p>
+                    <p>{`${selectedPincode}`}</p>
+                    <p>{`${location}`}</p>
                   </>
                 ) : (
                   "Location"
@@ -132,7 +194,7 @@ const Navbar: FC = () => {
               </span>
             </div>
           </div>
-          <div className="hidden md:flex items-center space-x-10">
+          <div className="hidden lg:flex items-center space-x-10">
             <div
               onClick={toggleNeed}
               className={`flex items-center justify-center gap-1 mt-2 cursor-pointer ${
@@ -140,12 +202,10 @@ const Navbar: FC = () => {
               }`}
             >
               <Image
-                className="rotate-[-80deg] invert-[0.3]"
-                width={16}
-                height={16}
-                src={
-                  "https://img.icons8.com/material-outlined/24/phone-disconnected.png"
-                }
+                className="invert-[0.3]"
+                width={20}
+                height={20}
+                src={"https://img.icons8.com/material-outlined/24/phone.png"}
                 alt="help icon"
               />
               <span className="text-lg">Need Help</span>
@@ -153,13 +213,20 @@ const Navbar: FC = () => {
             <div>
               <Link
                 href={"/reports"}
-                className="cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem]"
+                className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${
+                  (isReportsVisible || pathname === "/reports") &&
+                  "bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg"
+                }`}
+                onClick={toggleReports}
               >
                 <Image
                   width={16}
                   height={16}
                   src={"/reports.png"}
                   alt="reports icon"
+                  className={`brightness-75 ${
+                    isReportsVisible && "brightness-50"
+                  }`}
                 />
                 <span className="text-lg">Reports</span>
               </Link>
@@ -167,7 +234,11 @@ const Navbar: FC = () => {
             <div>
               <Link
                 href={"/cart"}
-                className="cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem]"
+                className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${
+                  (isCartVisible || pathname === "/cart") &&
+                  "bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg"
+                }`}
+                onClick={toggleCart}
               >
                 <Image
                   className="invert-[0.4]"
@@ -205,14 +276,14 @@ const Navbar: FC = () => {
               </div>
             )}
           </div>
-          <div className="md:hidden relative xs:top-[0.4rem] xs:left-2">
+          <div className="lg:hidden relative xs:top-[0.4rem] xs:left-2 md:right-[2rem]">
             <button onClick={toggleMenu} className="text-xl focus:outline-none">
               <FaBars />
             </button>
           </div>
         </div>
         {isOpen && (
-          <div className="md:hidden mt-2 space-y-4 xs:py-[1rem] xs:px-[3rem] sm:px-[4rem] sm:py-[2rem] ">
+          <div className="lg:hidden mt-2 space-y-4 xs:py-[1rem] xs:px-[3rem] sm:px-[4rem] sm:py-[2rem] ">
             <div className="flex items-center space-x-4">
               <FaPhone className="text-xl" />
               <span>Need Help</span>
@@ -244,16 +315,42 @@ const Navbar: FC = () => {
       </nav>
 
       {visibleComponent === "location" && isLocationVisible && (
-        <div className="absolute z-10 w-full h-[100vh] bg-[#0000004b]">
-          <div className="absolute left-[15%] top-[1.5rem] z-10 bg-white rounded-xl py-[0.5rem] px-[1rem] 2xl:w-[30rem]">
-            <Location onPincodeSelect={handlePincodeSelect} />
+        <div
+          className="absolute z-10 w-full h-[100vh] bg-[#0000004b]"
+          onClick={() => setLocationVisible(false)}
+        >
+          <div
+            className="absolute left-[15%] top-[1.5rem] z-10 bg-white rounded-xl py-[0.5rem] px-[1rem] 2xl:w-[30rem]"
+            onClick={handleInsideClick} // Prevent closing when clicking inside
+          >
+            <Location {...handlePincodeSelect} />
           </div>
         </div>
       )}
 
       {visibleComponent === "need-help" && isNeedVisible && (
-        <div className="absolute z-10 w-full h-[100vh] bg-[#0000004b]">
-          <div className="absolute right-[15%] top-[1.5rem] z-10">
+        <div
+          className="absolute z-10 w-full h-[100vh] bg-[#0000004b]"
+          onClick={() => setNeedVisible(false)}
+        >
+          <div
+            className="absolute right-[15%] top-[1.5rem] z-10"
+            onClick={handleInsideClick}
+          >
+            <div
+              className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer"
+              onClick={() => {
+                setVisibleComponent(null);
+                setNeedVisible(!isNeedVisible);
+              }}
+            >
+              <img
+                width="30"
+                height="30"
+                src="https://img.icons8.com/ios-glyphs/30/multiply.png"
+                alt="multiply"
+              />
+            </div>
             <NeedHelp />
           </div>
         </div>
@@ -276,9 +373,9 @@ const Navbar: FC = () => {
             />
           </div>
           <Signup
-            onBack={() => showComponent("login")}
-            setVisibleComponent={setVisibleComponent}
-            setSignupVisible={setSignupVisible}
+            onBack={onBack}
+            {...setVisibleComponent}
+            {...setSignupVisible}
           />
         </div>
       )}
@@ -300,10 +397,10 @@ const Navbar: FC = () => {
             />
           </div>
           <Login
-            onBack={() => showComponent("signup")}
-            onBack1={() => showComponent("forgot")}
-            setVisibleComponent={setVisibleComponent}
-            setSignupVisible={setSignupVisible}
+            onBack={onBack1}
+            onBack1={onBack2}
+            {...setVisibleComponent}
+            {...setSignupVisible}
           />
         </div>
       )}

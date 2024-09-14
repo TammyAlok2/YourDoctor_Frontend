@@ -1,32 +1,30 @@
-"use client";
-import { useEffect, useState } from "react";
-import Link from "next/link";
+'use client';
+
+import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { createAccount } from "../GlobalRedux/slice/AuthSlice";
+import { createAccount } from "../../app/GlobalRedux/slice/AuthSlice";
 import { useRouter } from "next/navigation";
-import { isEmail, isValidPassword } from "../Helpers/regexMatcher";
+import { isEmail, isValidPassword } from "../../app/Helpers/regexMatcher";
 import { toast } from "react-hot-toast";
 import { BsPersonCircle } from "react-icons/bs";
-import { AppDispatch } from "../GlobalRedux/store";
-
-interface SignupProps {
-  onBack: () => void;
-}
+import { AppDispatch } from "../../app/GlobalRedux/store";
 
 interface SignupData {
-  fullName: string;
+  name: string;
   email: string;
   password: string;
   mobile: string;
   avatar: File | string;
 }
-
-export default function Signup({ onBack }: SignupProps) {
+interface SignProps {
+  onBack: () => void;
+}
+const SignupPage: React.FC<SignProps> = ({onBack}) => {
   const dispatch = useDispatch<AppDispatch>();
   const [previewImage, setPreviewImage] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [signupData, setSignupData] = useState<SignupData>({
-    fullName: "",
+    name: "",
     email: "",
     password: "",
     mobile: "",
@@ -64,10 +62,11 @@ export default function Signup({ onBack }: SignupProps) {
 
   async function createNewAccount(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
     if (
       !signupData.email ||
       !signupData.password ||
-      !signupData.fullName ||
+      !signupData.name ||
       !signupData.mobile ||
       !signupData.avatar
     ) {
@@ -75,14 +74,16 @@ export default function Signup({ onBack }: SignupProps) {
       return;
     }
 
-    if (signupData.fullName.length < 5) {
+    if (signupData.name.length < 5) {
       toast.error("Name should be at least 5 characters");
       return;
     }
+
     if (!isEmail(signupData.email)) {
       toast.error("Invalid email id");
       return;
     }
+
     if (!isValidPassword(signupData.password)) {
       toast.error(
         "Password should be 6 - 16 characters long with at least a number and special character"
@@ -90,25 +91,32 @@ export default function Signup({ onBack }: SignupProps) {
       return;
     }
 
-    const formData = new FormData();
-    formData.append("fullName", signupData.fullName);
-    formData.append("email", signupData.email);
-    formData.append("password", signupData.password);
-    formData.append("mobile", signupData.mobile);
-    formData.append("avatar", signupData.avatar as Blob);
+    // Convert FormData to plain object if needed
+    const registerData = {
+      name:'yourlab',
+      fullName: signupData.name,
+      email: signupData.email,
+      password: signupData.password,
+      mobile: signupData.mobile,
+      avatar: signupData.avatar instanceof File ? signupData.avatar : null,
+    };
 
-    const response = await dispatch(createAccount(formData));
-
-    if (response?.payload?.success) {
-      router.push("/login");
-      setSignupData({
-        fullName: "",
-        email: "",
-        password: "",
-        mobile: "",
-        avatar: "",
-      });
-      setPreviewImage("");
+    try {
+      const response = await dispatch(createAccount(registerData));
+      if (response?.payload?.success) {
+        router.push("/");
+        setSignupData({
+          name: "",
+          email: "",
+          password: "",
+          mobile: "",
+          avatar: "",
+        });
+        setPreviewImage("");
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      toast.error("An error occurred during signup");
     }
   }
 
@@ -143,10 +151,10 @@ export default function Signup({ onBack }: SignupProps) {
           <div className="mb-6">
             <input
               type="text"
-              name="fullName"
+              name="name"
               placeholder="Enter Your Name"
               className="w-full p-2 border rounded-lg text-black"
-              value={signupData.fullName}
+              value={signupData.name}
               onChange={handleUserInput}
             />
           </div>
@@ -215,7 +223,7 @@ export default function Signup({ onBack }: SignupProps) {
             />
             <span className="mx-auto">Sign up with Google</span>
           </button>
-          <div className="text-center cursor-pointer" onClick={() => router.push("/login")}>
+          <div className="text-center cursor-pointer"  onClick={onBack}>
             <span className="text-black cursor-pointer">
               Already have an account?{" "}
             </span>
@@ -225,4 +233,6 @@ export default function Signup({ onBack }: SignupProps) {
       </div>
     </div>
   );
-}
+};
+
+export default SignupPage;

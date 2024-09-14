@@ -32,7 +32,7 @@ const labCardData: LabCardData[] = [
   },
 ];
 
-const LabCard:FC = () => {
+const LabTestCards:FC = () => {
   return (
     <>
       {labCardData?.map((data, index) => (
@@ -40,7 +40,7 @@ const LabCard:FC = () => {
             <div className="bg-teal-600 text-white text-center py-2 rounded-t-lg">
               <h2 className="font-bold text-lg">Thyrocare</h2>
             </div>
-        <div className="p-4 flex gap-3 xs:flex-col">
+        <div className="p-4 flex gap-3">
 
           <div className="w-[16rem]">
             <div className="text-center mb-4 space-y-2">
@@ -88,4 +88,4 @@ const LabCard:FC = () => {
   );
 };
 
-export default LabCard;
+export default LabTestCards;

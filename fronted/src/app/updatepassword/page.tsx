@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { getUserData, updatePassword } from "../GlobalRedux/slice/AuthSlice";
@@ -17,12 +17,12 @@ export default function Reset() {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
-  // const dispatch = useDispatch();
-  const [data, setData] = useState({
+  const [data, setData] = useState<ResetFormData>({
     oldPassword: "",
     newPassword: "",
   });
-  const handleInputChange = (e:any) => {
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setData({
       ...data,
@@ -30,28 +30,43 @@ export default function Reset() {
     });
   };
 
-  const togglePasswordVisibility = (e:any) => {
+  const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleFormSubmit = async (e:any) => {
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (!data.oldPassword || !data.newPassword) {
       toast.error("All fields are mandatory");
       return;
     }
-    const response = await dispatch(updatePassword(data));
-    if (response?.payload?.success) {
-      router.push("/login");
+
+    try {
+      // If `updatePassword` expects a tuple, pass the passwords as an array
+      const response = await dispatch(updatePassword([data.oldPassword, data.newPassword]));
+      
+      if (response?.payload?.success) {
+        toast.success("Password updated successfully!");
+        router.push("/login");
+      } else {
+        toast.error("Failed to update password");
+      }
+
+      // Fetch the updated user data
+      await dispatch(getUserData());
+
+      // Reset form fields
+      setData({
+        oldPassword: "",
+        newPassword: "",
+      });
+    } catch (error) {
+      console.error("Error updating password:", error);
+      toast.error("An error occurred while updating the password");
     }
-    console.log(response);
-    await dispatch(getUserData());
-    setData({
-      oldPassword: "",
-      newPassword: "",
-    });
   };
-  // console.log(data)
+
   return (
     <div>
       <div className="flex justify-center items-center min-h-screen bg-gray-100">
@@ -61,17 +76,14 @@ export default function Reset() {
           </h1>
           <form onSubmit={handleFormSubmit}>
             <div className="mb-6 relative">
-              <label
-                className="block mb-2 font-semibold"
-                htmlFor="new-password"
-              >
+              <label className="block mb-2 font-semibold" htmlFor="oldPassword">
                 Old Password
               </label>
               <input
                 type={showPassword ? "text" : "password"}
                 name="oldPassword"
                 id="oldPassword"
-                placeholder="Enter new password"
+                placeholder="Enter old password"
                 className="w-full p-2 border rounded-lg"
                 value={data.oldPassword}
                 onChange={handleInputChange}
@@ -92,17 +104,14 @@ export default function Reset() {
               </button>
             </div>
             <div className="mb-6 relative">
-              <label
-                className="block mb-2 font-semibold"
-                htmlFor="confirm-password"
-              >
+              <label className="block mb-2 font-semibold" htmlFor="newPassword">
                 New Password
               </label>
               <input
                 type={showPassword ? "text" : "password"}
                 name="newPassword"
                 id="newPassword"
-                placeholder="Confirm password"
+                placeholder="Enter new password"
                 className="w-full p-2 border rounded-lg"
                 value={data.newPassword}
                 onChange={handleInputChange}

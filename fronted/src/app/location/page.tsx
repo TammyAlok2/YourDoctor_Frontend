@@ -2,11 +2,12 @@
 
 import React, { useState, useEffect } from 'react';
 
-interface LocationProps {
+// Define the shape of pincode data
+interface LocationSectionProps {
   onPincodeSelect: (pincode: string, location: string) => void;
 }
 
-const Location: React.FC<LocationProps> = ({ onPincodeSelect }) => {
+const LocationSection: React.FC<LocationSectionProps> = ({ onPincodeSelect }) => {
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
   const [pincodes, setPincodes] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -60,7 +61,6 @@ const Location: React.FC<LocationProps> = ({ onPincodeSelect }) => {
         const locationString = `${postOffice.Name}, ${postOffice.District}`;
         setLocation(locationString);
 
-        // Check if localStorage is available (i.e., we are in the browser)
         if (typeof window !== 'undefined') {
           localStorage.setItem('location', locationString);
           localStorage.setItem('pincode', pincode);
@@ -78,7 +78,6 @@ const Location: React.FC<LocationProps> = ({ onPincodeSelect }) => {
       setLoading(false);
     }
 
-    // Validation: Check if the pincode is 6 digits
     if (!/^\d{6}$/.test(pincode)) {
       console.log('Invalid Pincode. Please enter a 6-digit pincode.');
     }
@@ -156,4 +155,13 @@ const Location: React.FC<LocationProps> = ({ onPincodeSelect }) => {
   );
 };
 
-export default Location;
+// Page Component
+export default function Page() {
+  const handlePincodeSelect = (pincode: string, location: string) => {
+    // Handle the selected pincode and location here
+    console.log('Selected Pincode:', pincode);
+    console.log('Location:', location);
+  };
+
+  return <LocationSection onPincodeSelect={handlePincodeSelect} />;
+}
