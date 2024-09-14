@@ -43,6 +43,7 @@ export const config = {
     "/profile",
     "/profileupdate",
     "/updatepassword",
+    "/cart",// Protected: only logged-in users can access
     "/appointment-form/:path*", // Protected: only logged-in users can access
   ],
 };

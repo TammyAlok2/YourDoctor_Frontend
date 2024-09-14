@@ -147,6 +147,23 @@ export const createAppointment = createAsyncThunk(
   }
 );
 
+export const allAppointments = createAsyncThunk(
+  "user/allAppointments/",
+  async () => {
+    try {
+      const res = axiosInstance.get(`user/allAppointments`);
+      toast.promise(res, {
+        loading: "Please Wait! Appointment searching in progress...",
+        success: (data) => data?.data?.message,
+        error: "Failed to find Appointment",
+      });
+      return (await res).data;
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message);
+    }
+  }
+);
+
 export const updatePassword = createAsyncThunk(
   "user/update/password",
   async (data: [string, string]) => {

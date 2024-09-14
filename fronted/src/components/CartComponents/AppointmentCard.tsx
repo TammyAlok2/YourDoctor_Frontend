@@ -16,6 +16,7 @@ const AppointmentCard: FC<AppointmentCardProps> = ({ name, date, time }) => {
         <div className="flex flex-col md:flex-row gap-[7.6rem]">
           <p className="text-gray-500 text-sm md:text-base">{date}</p>
           <p className="text-gray-500 text-sm md:text-base">{time}</p>
+          
         </div>
       </div>
       <div className="flex flex-col justify-between items-center md:items-end border-t md:border-t-0 md:border-l-[0.1rem] border-[#747474] w-full md:w-auto mt-4 md:mt-0 pt-4 md:pt-0 pl-0 md:pl-4 pr-5">
