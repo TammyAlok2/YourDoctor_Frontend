@@ -16,7 +16,11 @@ interface FormData {
   number: string;
 }
 
-const NeedHelp: React.FC = () => {
+interface NeedProps{
+  onNeedCancel: () => void;
+}
+
+const NeedHelp: React.FC<NeedProps> = ({onNeedCancel}) => {
   const [name, setName] = useState<string>("");
   const dispatch = useDispatch<AppDispatch>();
   const [mobile, setMobile] = useState<string>("");
@@ -61,6 +65,7 @@ const NeedHelp: React.FC = () => {
         toast.success("Enquiry sent successfully");
         setName("");
         setMobile("");
+        onNeedCancel();
       } else {
         toast.error("Enquiry send failed");
       }

@@ -13,11 +13,12 @@ interface LoginData {
 }
 
 interface LoginProps {
+  onLoginCancel: () => void;
   onBack: () => void;
   onBack1: () => void;
 }
 
-const Login: React.FC<LoginProps> = ({ onBack, onBack1 }) => {
+const Login: React.FC<LoginProps> = ({onLoginCancel, onBack, onBack1 }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loginData, setLoginData] = useState<LoginData>({
     email: "",
@@ -65,6 +66,7 @@ const Login: React.FC<LoginProps> = ({ onBack, onBack1 }) => {
           email: "",
           password: "",
         });
+        onLoginCancel();
       }
     } catch (error) {
       console.error("Login error:", error);

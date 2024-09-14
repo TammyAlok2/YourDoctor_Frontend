@@ -17,9 +17,10 @@ interface SignupData {
   avatar: File | string;
 }
 interface SignProps {
+  onSignupCancel: () => void;
   onBack: () => void;
 }
-const SignupPage: React.FC<SignProps> = ({onBack}) => {
+const SignupPage: React.FC<SignProps> = ({onSignupCancel, onBack}) => {
   const dispatch = useDispatch<AppDispatch>();
   const [previewImage, setPreviewImage] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -112,6 +113,7 @@ const SignupPage: React.FC<SignProps> = ({onBack}) => {
           avatar: "",
         });
         setPreviewImage("");
+        onSignupCancel();
       }
     } catch (error) {
       console.error("Signup error:", error);

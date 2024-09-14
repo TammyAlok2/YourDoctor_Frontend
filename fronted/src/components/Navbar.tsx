@@ -41,33 +41,28 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
   const [location, setLocation] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-const pathname = usePathname()
-  const [isLoggedIn,setIsLoggedIn] = useState<boolean>(false);
- 
-
-
- useEffect(()=>{
-  const checkLoginStatus = () => {
-    const loggedIn = localStorage.getItem("isLoggedIn") === "true";
-    setIsLoggedIn(loggedIn);
-  };
-
-  checkLoginStatus();
- })
- 
-
+  const pathname = usePathname();
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
+    const checkLoginStatus = () => {
+      const loggedIn = localStorage.getItem("isLoggedIn") === "true";
+      setIsLoggedIn(loggedIn);
+    };
 
+    checkLoginStatus();
+  });
+
+  useEffect(() => {
     // Using localStorage safely in useEffect
 
-    const pincode1 = typeof window !== 'undefined' ? localStorage.getItem("pincode") : null;
-    const locationString1 = typeof window !== 'undefined' ? localStorage.getItem("location") : null;
-    
+    const pincode1 =
+      typeof window !== "undefined" ? localStorage.getItem("pincode") : null;
+    const locationString1 =
+      typeof window !== "undefined" ? localStorage.getItem("location") : null;
+
     if (pincode1) setSelectedPincode(pincode1);
     if (locationString1) setLocation(locationString1);
-
-    
   }, []);
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -149,7 +144,15 @@ const pathname = usePathname()
   const onBack = () => showComponent("login");
   const onBack1 = () => showComponent("signup");
   const onBack2 = () => showComponent("forgot");
-  // const onNeedCancel = () => setNeedVisible(false);
+  const onNeedCancel = () => setNeedVisible(false);
+  const onSignupCancel = () => {
+    setVisibleComponent(null);
+    setSignupVisible(!isSignupVisible);
+  };
+  const onLoginCancel = () => {
+    setVisibleComponent(null);
+    setSignupVisible(!isSignupVisible);
+  };
 
   return (
     <>
@@ -268,8 +271,15 @@ const pathname = usePathname()
             ) : (
               <div>
                 <button
-                  className={`w-full p-3 bg-gradient-to-r from-[#0CEDE6] text-white rounded-xl to-[#0A8E8A]`}
+                  className={`flex items-center w-full p-2 space-x-1 bg-gradient-to-r from-[#0CEDE6] rounded-xl text-white to-[#0A8E8A]`}
                 >
+                  <Image
+                    width={30}
+                    height={30}
+                    src="https://img.icons8.com/ios-glyphs/30/user-male-circle.png"
+                    alt="user-male-circle"
+                    className="invert-[1]"
+                  />
                   <Link href="/profile">Profile</Link>
                 </button>
               </div>
@@ -296,7 +306,7 @@ const pathname = usePathname()
               </div>
             </div>
             <div className="flex items-center space-x-4">
-            <Link
+              <Link
                 href={"/reports"}
                 className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${
                   (isReportsVisible || pathname === "/reports") &&
@@ -304,8 +314,8 @@ const pathname = usePathname()
                 }`}
                 onClick={toggleReports}
               >
-              <FaFileAlt className="text-xl xs:mr-2" />
-              <span>Report</span>
+                <FaFileAlt className="text-xl xs:mr-2" />
+                <span>Report</span>
               </Link>
             </div>
             <div className="flex items-center space-x-4">
@@ -337,8 +347,15 @@ const pathname = usePathname()
             ) : (
               <div>
                 <button
-                  className={`w-full p-3 bg-gradient-to-r from-[#0CEDE6] text-white rounded-xl to-[#0A8E8A]`}
+                  className={`flex items-center w-[40%] p-3 bg-gradient-to-r from-[#0CEDE6] space-x-1 text-white rounded-xl to-[#0A8E8A]`}
                 >
+                  <Image
+                    width={30}
+                    height={30}
+                    src="https://img.icons8.com/ios-glyphs/30/user-male-circle.png"
+                    alt="user-male-circle"
+                    className="invert-[1]"
+                  />
                   <Link href="/profile">Profile</Link>
                 </button>
               </div>
@@ -384,7 +401,7 @@ const pathname = usePathname()
                 alt="multiply"
               />
             </div>
-            <NeedHelp />
+            <NeedHelp onNeedCancel={onNeedCancel} />
           </div>
         </div>
       )}
@@ -406,6 +423,7 @@ const pathname = usePathname()
             />
           </div>
           <Signup
+            onSignupCancel={onSignupCancel}
             onBack={onBack}
             {...setVisibleComponent}
             {...setSignupVisible}
@@ -430,6 +448,7 @@ const pathname = usePathname()
             />
           </div>
           <Login
+            onLoginCancel={onLoginCancel}
             onBack={onBack1}
             onBack1={onBack2}
             {...setVisibleComponent}
