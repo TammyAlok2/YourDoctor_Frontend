@@ -84,7 +84,7 @@ const HomeCard: React.FC<HomeCard> = ({ setSearchTerm }) => {
           <div className="relative h-[2.4rem] bg-white rounded-lg xs:mt-2 shadow-lg">
             <input
               type="text"
-              className="w-full h-full rounded-lg relative py-[1rem] px-[1rem] outline-0 sm:w-[11rem] xs:w-[12rem] lg:w-[22rem]"
+              className="w-full h-full rounded-lg relative py-[1rem] px-[1rem] outline-0 sm:w-[11rem] xs:w-[12rem] lg:w-[22rem] active:bg-[#f3f1f1]"
               placeholder={"Search here"}
               value={inputVal}
               onChange={handleChange}
@@ -98,10 +98,10 @@ const HomeCard: React.FC<HomeCard> = ({ setSearchTerm }) => {
             />
           </div>
           <div className="flex gap-[3rem] items-center justify-center">
-            <button className="text-[0.9rem] font-semibold text-white bg-[rgb(247,86,61)] py-[0.6rem] px-[1rem] rounded-xl [box-shadow:0_0_0.4rem_0_gray] xs:w-[7rem] sm:w-[7rem]">
+            <button className="text-[0.9rem] font-semibold text-white bg-[rgb(247,86,61)] py-[0.6rem] px-[1rem] rounded-xl [box-shadow:0_0_0.4rem_0_gray] xs:w-[7rem] sm:w-[7rem] active:text-[0.8rem]">
               <Link href={"/labtests"}>Lab Tests</Link>
             </button>
-            <button className="text-[0.9rem] font-semibold text-white bg-[rgb(17_164_160_/_99%)] hover:bg-[rgba(17,164,159,0.89)] py-[0.6rem] px-[1rem] rounded-xl [box-shadow:0_0_0.4rem_0_gray]">
+            <button className="text-[0.9rem] font-semibold text-white bg-[rgb(17_164_160_/_99%)] hover:bg-[rgba(17,164,159,0.89)] py-[0.6rem] px-[1rem] rounded-xl [box-shadow:0_0_0.4rem_0_gray] active:text-[0.8rem]">
               <Link href={"/doctors"}>Doctors</Link>
             </button>
           </div>

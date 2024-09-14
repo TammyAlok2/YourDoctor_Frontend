@@ -65,10 +65,10 @@ const ProfileData: React.FC<ProfileDataProps> = ({searchTerm}) => {
   const displayedData = filteredData.slice(0, 3);
   return (
     <div className="flex items-center justify-center relative">
-      <div className="grid grid-cols-1 gap-[2rem] xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 justify-center mx-[1rem] sm:mx-[2rem] md:mx-[3rem] my-[3rem]">
+      <div className="grid grid-cols-1 gap-[2rem] xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 justify-center mx-[1rem] sm:mx-[2rem] md:mx-[3rem] my-[3rem]">
         {displayedData?.map((userData) => (
           <div
-            className="flex flex-col sm:flex-row gap-[2rem] p-[1rem] shadow-md rounded-md"
+            className="flex flex-col sm:flex-col md:flex-row gap-[0.5rem] p-[1rem] shadow-md rounded-md"
             key={userData._id}
           >
             <div className="flex flex-col gap-[1rem] w-[16rem]">
@@ -93,7 +93,7 @@ const ProfileData: React.FC<ProfileDataProps> = ({searchTerm}) => {
             <div className="ml-auto flex flex-col items-end sm:items-start relative gap-[0.8rem] w-[45%] xs:w-[100%] sm:w-auto">
               <div className="w-[6rem] h-[6rem] rounded-full overflow-hidden items-end ml-auto relative">
               {/* className={`${doctor?.status === false ? "" : 'border-[#0A8E8A] border-4 rounded-full w-[8.8rem] h-[8.8rem] flex text-center justify-center p-[0.2rem] mx-auto'}` */}
-                <div className={`${userData?.status === false ? "" : "border-4 rounded-full w-22 h-22 border-[#0A8E8A] flex text-center justify-center p-[0.2rem] mx-auto"}`}>
+                <div className={`${userData?.status ? "border-4 rounded-full w-22 h-22 border-[#0A8E8A] flex text-center justify-center p-[0.2rem] mx-auto" : ""}`}>
                   {userData?.avatar && (
                     <Image
                       src={userData?.avatar?.secure_url}
@@ -108,13 +108,15 @@ const ProfileData: React.FC<ProfileDataProps> = ({searchTerm}) => {
                   className={`absolute right-2 w-[0.8rem] animate-ping rounded-full bottom-3 h-[0.8rem]`}
                   style={{
                     backgroundColor: `${
-                      userData?.status === false ? "" : "#54FC05"
+                      userData?.status ? "#54FC05" : ""
                     }`,
                   }}
                 ></div>
               </div>
-              <h1 className="text-[rgb(17_164_160_/_99%)] font-bold items-end ml-auto">
+              <h1 className="text-[rgb(17_164_160_/_99%)] font-bold items-end ml-auto hover:text-[rgba(17,164,159,0.81)] active:text-[0.97rem]">
+              <Link href={`/doctor/${userData._id}`}>
                 {userData.fullName}
+              </Link>
               </h1>
               <button className="bg-[rgb(17_164_160_/_99%)] hover:bg-[rgba(17,164,159,0.89)] p-[0.3rem] text-white rounded-md">
                 <Link href={`/appointment/${userData._id}`}>
