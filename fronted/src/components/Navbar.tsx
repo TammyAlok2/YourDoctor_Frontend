@@ -172,7 +172,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
               onClick={toggleLocation}
               className={`flex items-center justify-center gap-1 mt-2 cursor-pointer ${
                 isLocationVisible &&
-                "bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg"
+                "bg-[#0A8E8A] text-white p-[0.3rem] xs:pl-4 rounded-lg"
               }`}
             >
               <Image
@@ -285,21 +285,55 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
         {isOpen && (
           <div className="lg:hidden mt-2 space-y-4 xs:py-[1rem] xs:px-[3rem] sm:px-[4rem] sm:py-[2rem] ">
             <div className="flex items-center space-x-4">
-              <FaPhone className="text-xl" />
-              <span>Need Help</span>
+              <div
+                onClick={toggleNeed}
+                className={`flex items-center justify-center gap-1 mt-2 cursor-pointer ${
+                  isNeedVisible &&
+                  "bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg"
+                }`}
+              >
+                <FaPhone className="text-xl xs:mr-3" />
+                <span>Need Help</span>
+              </div>
             </div>
             <div className="flex items-center space-x-4">
-              <FaFileAlt className="text-xl" />
+            <Link
+                href={"/reports"}
+                className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${
+                  (isReportsVisible || pathname === "/reports") &&
+                  "bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg"
+                }`}
+                onClick={toggleReports}
+              >
+              <FaFileAlt className="text-xl xs:mr-2" />
               <span>Report</span>
+              </Link>
             </div>
             <div className="flex items-center space-x-4">
-              <FaShoppingCart className="text-xl" />
-              <span>Cart</span>
+              <Link
+                href={"/cart"}
+                className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${
+                  (isCartVisible || pathname === "/cart") &&
+                  "bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg"
+                }`}
+                onClick={toggleCart}
+              >
+                <FaShoppingCart className="text-xl xs:mr-3" />
+                <span>Cart</span>
+              </Link>
             </div>
             {!isLoggedIn ? (
               <div className="flex items-center space-x-4">
-                <FaUser className="text-xl" onClick={toggleSignup} />
-                <span>Register</span>
+                <div
+                  className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${
+                    isSignupVisible &&
+                    "bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg"
+                  }`}
+                  onClick={toggleSignup}
+                >
+                  <FaUser className="text-xl xs:mr-3" onClick={toggleSignup} />
+                  <span>Register</span>
+                </div>
               </div>
             ) : (
               <div>
@@ -330,11 +364,11 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
 
       {visibleComponent === "need-help" && isNeedVisible && (
         <div
-          className="absolute z-10 w-full h-[100vh] bg-[#0000004b]"
+          className="absolute z-10 w-full h-[100vh] bg-[#0000004b] xs:left-0 xs:top-0 xs:w-[100%]"
           onClick={() => setNeedVisible(false)}
         >
           <div
-            className="absolute right-[15%] top-[1.5rem] z-10"
+            className="absolute right-[15%] top-[1.5rem] z-10 xs:left-0 xs:top-0 xs:w-[100%]"
             onClick={handleInsideClick}
           >
             <div
@@ -357,7 +391,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
       )}
 
       {visibleComponent === "signup" && (
-        <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto">
+        <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto xs:left-0 xs:top-0 xs:w-[100%]">
           <div
             className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer"
             onClick={() => {
@@ -381,7 +415,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
       )}
 
       {visibleComponent === "login" && (
-        <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto">
+        <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto xs:left-0 xs:top-0 xs:w-[100%]">
           <div
             className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer"
             onClick={() => {
@@ -406,7 +440,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
       )}
 
       {visibleComponent === "forgot" && (
-        <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto">
+        <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto xs:left-0 xs:top-0 xs:w-[100%]">
           <div
             className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer"
             onClick={() => {
