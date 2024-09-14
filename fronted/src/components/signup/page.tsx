@@ -67,8 +67,7 @@ const SignupPage: React.FC<SignProps> = ({onBack}) => {
       !signupData.email ||
       !signupData.password ||
       !signupData.name ||
-      !signupData.mobile ||
-      !signupData.avatar
+      !signupData.mobile 
     ) {
       toast.error("Please fill all the details");
       return;

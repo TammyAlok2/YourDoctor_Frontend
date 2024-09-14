@@ -142,6 +142,9 @@ const pathname = usePathname()
     setLogoVisible(!isLogoVisible);
     setVisibleComponent(isLogoVisible ? null : "logo");
   };
+  const handleInsideClick = (event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevent modal from closing
+  };
 
   const onBack = () => showComponent("login");
   const onBack1 = () => showComponent("signup");

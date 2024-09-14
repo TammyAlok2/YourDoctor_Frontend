@@ -240,10 +240,9 @@ export const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(createAccount.fulfilled, (state, action: PayloadAction<any>) => {
-        state.isLoggedIn = true;
         state.data = action.payload.data.user;
         localStorage.setItem("data", JSON.stringify(state.data));
-        localStorage.setItem("isLoggedIn", "true");
+    
       })
       .addCase(login.fulfilled, (state, action: PayloadAction<any>) => {
         state.isLoggedIn = true;
