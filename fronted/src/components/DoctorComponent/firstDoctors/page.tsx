@@ -23,6 +23,8 @@ interface Doctor {
 interface FirstDoctorsSectionProps {
   setData: (data: Doctor[]) => void;
   filteredData: Doctor[];
+  setData: (data: Doctor[]) => void;
+  filteredData: Doctor[];
 }
 
 const ShimmerUI: React.FC = () => {

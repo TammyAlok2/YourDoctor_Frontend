@@ -30,13 +30,13 @@ const Footer:React.FC = () => {
             <h3 className="font-semibold mb-4 text-[1.5rem]">Follow us on</h3>
             <div className='flex gap-3 items-center'>
             <Link href="https://www.instagram.com/yourlab_in/">
-            <Image width="25" height="25" src="https://img.icons8.com/ios/50/instagram-new--v1.png" alt="instagram-new--v1"/>
+            <Image width="33" height="33" src="https://img.icons8.com/color/48/instagram-new--v1.png" alt="instagram-new--v1" className="hover:brightness-[0.7] active:w-[2rem]"/>
             </Link>
             <Link href="https://www.youtube.com/@YourLab-v4f" target="_blank" rel="noopener noreferrer">
-            <Image width="30" height="30" src="https://img.icons8.com/ios/50/youtube-play.png" alt="youtube-play"/>
+            <Image width="35" height="35" src="https://img.icons8.com/color/48/youtube-play.png" alt="youtube-play" className="hover:brightness-[0.7] active:w-[2rem]"/>
             </Link>
             <Link href="https://www.linkedin.com/company/yourlab-in/">
-            <Image width="25" height="25" src="https://img.icons8.com/ios/50/linkedin.png" alt="linkedin"/>
+            <Image width="33" height="33" src="https://img.icons8.com/color/48/linkedin.png" alt="linkedin" className="hover:brightness-[0.7] active:w-[2rem]"/>
             </Link>
             {/* Add social media links here */}
             </div>

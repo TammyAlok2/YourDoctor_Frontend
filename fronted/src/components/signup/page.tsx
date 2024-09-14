@@ -18,7 +18,6 @@ interface SignupData {
 }
 interface SignProps {
   onBack: () => void;
-  
 }
 const SignupPage: React.FC<SignProps> = ({onBack}) => {
   const dispatch = useDispatch<AppDispatch>();

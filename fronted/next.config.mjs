@@ -14,6 +14,8 @@ const nextConfig = {
       "kotadiasdental.com",
       "tse2.mm.bing.net",
       "thumbs.dreamstime.com",
+      "www.figma.com",
+      "bookmerilab.com"
     ],
   },
   async rewrites() {

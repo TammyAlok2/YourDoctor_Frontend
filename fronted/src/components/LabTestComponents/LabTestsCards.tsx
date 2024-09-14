@@ -30,9 +30,45 @@ const labCardData: LabCardData[] = [
     date: "Sun: 10am to 6pm",
     address: "Sirmour chowk near tansen complex, Hospital Road, Rewa, 486001",
   },
+  {
+    achieve: "ISO and NABL certified",
+    time: "Mon-Sat 9am to 7pm",
+    date: "Sun: 10am to 6pm",
+    address: "Sirmour chowk near tansen complex, Hospital Road, Rewa, 486001",
+  },
+  {
+    achieve: "ISO and NABL certified",
+    time: "Mon-Sat 9am to 7pm",
+    date: "Sun: 10am to 6pm",
+    address: "Sirmour chowk near tansen complex, Hospital Road, Rewa, 486001",
+  },
+  {
+    achieve: "ISO and NABL certified",
+    time: "Mon-Sat 9am to 7pm",
+    date: "Sun: 10am to 6pm",
+    address: "Sirmour chowk near tansen complex, Hospital Road, Rewa, 486001",
+  },
+  {
+    achieve: "ISO and NABL certified",
+    time: "Mon-Sat 9am to 7pm",
+    date: "Sun: 10am to 6pm",
+    address: "Sirmour chowk near tansen complex, Hospital Road, Rewa, 486001",
+  },
+  {
+    achieve: "ISO and NABL certified",
+    time: "Mon-Sat 9am to 7pm",
+    date: "Sun: 10am to 6pm",
+    address: "Sirmour chowk near tansen complex, Hospital Road, Rewa, 486001",
+  },
+  {
+    achieve: "ISO and NABL certified",
+    time: "Mon-Sat 9am to 7pm",
+    date: "Sun: 10am to 6pm",
+    address: "Sirmour chowk near tansen complex, Hospital Road, Rewa, 486001",
+  }
 ];
 
-const LabCard:FC = () => {
+const LabTestsCards:FC = () => {
   return (
     <>
       {labCardData?.map((data, index) => (
@@ -40,7 +76,7 @@ const LabCard:FC = () => {
             <div className="bg-teal-600 text-white text-center py-2 rounded-t-lg">
               <h2 className="font-bold text-lg">Thyrocare</h2>
             </div>
-        <div className="p-4 flex gap-3 xs:flex-col">
+        <div className="p-4 flex gap-3">
 
           <div className="w-[16rem]">
             <div className="text-center mb-4 space-y-2">
@@ -88,4 +124,4 @@ const LabCard:FC = () => {
   );
 };
 
-export default LabCard;
+export default LabTestsCards;

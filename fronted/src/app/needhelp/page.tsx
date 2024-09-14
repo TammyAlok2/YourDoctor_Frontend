@@ -19,6 +19,8 @@ interface FormData {
   number: string;
 }
 
+
+
 const NeedHelp: React.FC = () => {
   const [name, setName] = useState<string>("");
   const dispatch = useDispatch<AppDispatch>();
@@ -29,19 +31,29 @@ const NeedHelp: React.FC = () => {
     let nameError = "";
     let mobileError = "";
 
-    if (name.trim() === "") {
+    const nameRegex = /^[A-Za-z\s]+$/;
+    if (!name) {
       nameError = "Name is required";
+    } else if (!nameRegex.test(name)) {
+      nameError = "Name can only contain letters";
+    } else if (name.length < 2) {
+      nameError = "Name must be at least 2 characters";
+    } else {
+      nameError = "";
     }
 
-    if (mobile.trim() === "") {
+    const mobileRegex = /^[0-9]{10}$/;
+    if (!mobile) {
       mobileError = "Mobile number is required";
-    } else if (!/^\d{10}$/.test(mobile)) {
-      mobileError = "Mobile number must be 10 digits";
+    } else if (!mobileRegex.test(mobile)) {
+      mobileError = "Mobile number must be 10 digits long";
+    } else {
+      mobileError = "";
     }
 
     if (nameError || mobileError) {
       setErrors({ name: nameError, mobile: mobileError });
-      return true;
+      return false;
     }
     setErrors({ name: "", mobile: "" });
     return false;
@@ -50,29 +62,28 @@ const NeedHelp: React.FC = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    const isValid = validate();
-
-    if (!isValid) {
-      // Clear errors and proceed with form submission logic
-      setErrors({ name: "", mobile: "" });
-      return;
+    
+    if (!validate()) {
+      toast.error("Please fill all the required fields"); // Stop form submission if validation fails
     }
-
-    const data: FormData = {
-      name: name,
-      number: mobile,
-    };
-
-    const response = await dispatch(postEnquiry(data));
-    console.log(response);
-    if (response?.payload?.success) {
-      toast.success("Enquiry send successfully");
-
-      // Reset form fields
-      setName("");
-      setMobile("");
-    } else {
-      toast.error("Enquiry send failed");
+    else{
+      const data: FormData = {
+        name: name,
+        number: mobile,
+      };
+      
+  
+      const response = await dispatch(postEnquiry(data));
+      console.log(response);
+      if (response?.payload?.success) {
+        toast.success("Enquiry send successfully");
+  
+        // Reset form fields
+        setName("");
+        setMobile("");
+      } else {
+        toast.error("Enquiry send failed");
+      }
     }
   };
   return (
