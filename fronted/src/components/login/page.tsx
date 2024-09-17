@@ -75,13 +75,13 @@ const Login: React.FC<LoginProps> = ({onLoginCancel, onBack, onBack1 }) => {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-white rounded-xl">
-      <div className="w-full max-w-md p-8 rounded">
-        <h1 className="text-3xl text-gray-950 font-bold mb-4 text-center">
+    <div className="flex justify-center items-center bg-white rounded-xl xs:h-screen">
+      <div className="w-full max-w-sm p-8 rounded mt-3">
+        <h1 className="text-2xl text-gray-950 font-bold mb-4 text-center">
           Hi, Welcome Back! 👋
         </h1>
         <form noValidate onSubmit={onLogin}>
-          <div className="mb-4">
+          <div className="mb-1 text-[0.9rem] flex flex-col">
             <label className="font-bold mb-2 text-gray-950">Email</label>
             <input
               type="email"
@@ -92,7 +92,7 @@ const Login: React.FC<LoginProps> = ({onLoginCancel, onBack, onBack1 }) => {
               onChange={handleUserInput}
             />
           </div>
-          <div className="mb-4 relative">
+          <div className="mb-1 relative text-[0.9rem] flex flex-col">
             <label className="font-bold mb-2 text-gray-950">Password</label>
             <input
               type={showPassword ? "text" : "password"}
@@ -118,13 +118,13 @@ const Login: React.FC<LoginProps> = ({onLoginCancel, onBack, onBack1 }) => {
             </button>
           </div>
           <div className="flex justify-end mb-4 cursor-pointer" >
-            <a className="text-red-600 text-sm" onClick={()=>router.push('/forget')}>
+            <a className="text-red-600 text-sm" onClick={onBack1}>
               Forgot Password?
             </a>
           </div>
           <button
             type="submit"
-            className="w-full p-2 bg-teal-600 text-white rounded-lg mb-6"
+            className="w-full p-2 text-[0.9rem] bg-teal-600 text-white rounded-lg mb-6"
           >
             Login
           </button>
@@ -133,7 +133,7 @@ const Login: React.FC<LoginProps> = ({onLoginCancel, onBack, onBack1 }) => {
           </div>
           <button 
             type="button"
-            className="w-full p-2 bg-white text-gray-500 border rounded-lg flex items-center justify-center mb-6 relative"
+            className="w-full p-2 bg-white text-gray-500 border rounded-lg flex items-center mb-3 relative space-x-10 text-[0.9rem]"
           >
             <img
               src="/google-logo.png"
@@ -142,10 +142,10 @@ const Login: React.FC<LoginProps> = ({onLoginCancel, onBack, onBack1 }) => {
               width="20"
               height="20"
             />
-            Login with Google
+            <h1>Login with Google</h1>
           </button>
-          <div className="text-center cursor-pointer" onClick={onBack}>
-            Don&apos;t have an account? Sign Up
+          <div className="text-center cursor-pointer font-medium text-[0.9rem]" onClick={onBack}>
+            Don&apos;t have an account? <span className="text-[#160062]">Sign Up</span>
           </div>
         </form>
       </div>

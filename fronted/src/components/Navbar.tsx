@@ -37,6 +37,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
   const [isReportsVisible, setReportsVisible] = useState<boolean>(false);
   const [isCartVisible, setCartVisible] = useState<boolean>(false);
   const [isLocationVisible, setLocationVisible] = useState<boolean>(false);
+  const [isProfileVisible, setProfileVisible] = useState<boolean>(false);
   const [selectedPincode, setSelectedPincode] = useState<string>("");
   const [location, setLocation] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -81,6 +82,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
     isLocationVisible && setLocationVisible(false);
     isNeedVisible && setNeedVisible(false);
     isCartVisible && setCartVisible(false);
+    isProfileVisible && setProfileVisible(false);
     isReportsVisible && setReportsVisible(false);
 
     setSignupVisible(!isSignupVisible);
@@ -91,6 +93,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
     isLocationVisible && setLocationVisible(false);
     isSignupVisible && setSignupVisible(false);
     isCartVisible && setCartVisible(false);
+    isProfileVisible && setProfileVisible(false);
     isReportsVisible && setReportsVisible(false);
 
     setNeedVisible(!isNeedVisible);
@@ -101,6 +104,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
     isNeedVisible && setNeedVisible(false);
     isSignupVisible && setSignupVisible(false);
     isCartVisible && setCartVisible(false);
+    isProfileVisible && setProfileVisible(false);
     isReportsVisible && setReportsVisible(false);
 
     setLocationVisible(!isLocationVisible);
@@ -111,6 +115,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
     isNeedVisible && setNeedVisible(false);
     isSignupVisible && setSignupVisible(false);
     isCartVisible && setCartVisible(false);
+    isProfileVisible && setProfileVisible(false);
     isLocationVisible && setLocationVisible(false);
 
     setReportsVisible(!isReportsVisible);
@@ -121,17 +126,30 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
     isNeedVisible && setNeedVisible(false);
     isSignupVisible && setSignupVisible(false);
     isReportsVisible && setReportsVisible(false);
+    isProfileVisible && setProfileVisible(false);
     isLocationVisible && setLocationVisible(false);
 
     setCartVisible(!isCartVisible);
     setVisibleComponent(isCartVisible ? null : "cart");
   };
 
+  const toggleProfile  = () =>{
+    isNeedVisible && setNeedVisible(false);
+    isSignupVisible && setSignupVisible(false);
+    isReportsVisible && setReportsVisible(false);
+    isCartVisible && setCartVisible(false);
+    isLocationVisible && setLocationVisible(false);
+
+    setProfileVisible(!isProfileVisible);
+    setVisibleComponent(isCartVisible ? null : "profile");
+  }
+
   const logoClick = () => {
     isNeedVisible && setNeedVisible(false);
     isSignupVisible && setSignupVisible(false);
     isReportsVisible && setReportsVisible(false);
     isLocationVisible && setLocationVisible(false);
+    isProfileVisible && setProfileVisible(false);
     isCartVisible && setCartVisible(false);
 
     setLogoVisible(!isLogoVisible);
@@ -150,6 +168,10 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
     setSignupVisible(!isSignupVisible);
   };
   const onLoginCancel = () => {
+    setVisibleComponent(null);
+    setSignupVisible(!isSignupVisible);
+  };
+  const onForgetCancel = () => {
     setVisibleComponent(null);
     setSignupVisible(!isSignupVisible);
   };
@@ -178,7 +200,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
               }`}
             >
               <Image
-                className="invert-[0.4]"
+                className={`${isLocationVisible ? "invert-[1]" : "invert-[0.4]"}`}
                 width={28}
                 height={24}
                 src={"https://img.icons8.com/ios/50/marker--v1.png"}
@@ -204,11 +226,13 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
               }`}
             >
               <Image
-                className="invert-[0.3]"
                 width={20}
                 height={20}
                 src={"https://img.icons8.com/material-outlined/24/phone.png"}
                 alt="help icon"
+                className={`${
+                  (isNeedVisible) ? "invert-[1]" : "invert-[0.3]"
+                }`}
               />
               <span className="text-lg">Need Help</span>
             </div>
@@ -226,8 +250,8 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                   height={16}
                   src={"/reports.png"}
                   alt="reports icon"
-                  className={`brightness-75 ${
-                    isReportsVisible && "brightness-50"
+                  className={`${
+                    (isReportsVisible || pathname === "/reports") ? "grayscale-[0.5]" : "contrast-[0.5]"
                   }`}
                 />
                 <span className="text-lg">Reports</span>
@@ -243,7 +267,10 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                 onClick={toggleCart}
               >
                 <Image
-                  className="invert-[0.4]"
+                  className={`${
+                    (isCartVisible || pathname === "/cart") ?
+                    "invert-[1]" : "invert-[0.4]"
+                  }`}
                   width={16}
                   height={16}
                   src={"https://img.icons8.com/material-two-tone/24/buy.png"}
@@ -256,7 +283,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
               <div
                 className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${
                   isSignupVisible &&
-                  "bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg"
+                  "bg-gradient-to-r from-cyan-500 to-blue-500 text-white p-[0.3rem] rounded-lg"
                 }`}
                 onClick={toggleSignup}
               >
@@ -265,22 +292,38 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                   height={16}
                   src={"https://img.icons8.com/ios/50/guest-male.png"}
                   alt="yourlab icon"
+                  className={`${
+                    (isSignupVisible || pathname === "/signup") &&
+                    "invert-[1]"
+                  }`}
                 />
-                <span className="text-lg">Registration</span>
+                <span className="text-lg">Login/Signup</span>
               </div>
             ) : (
               <div>
                 <button
-                  className={`flex items-center w-full p-2 space-x-1 bg-gradient-to-r from-[#0CEDE6] rounded-xl text-white to-[#0A8E8A]`}
+                  className={`flex items-center w-full space-x-1 bg-gradient-to-r rounded-xl`}
                 >
-                  <Image
-                    width={30}
-                    height={30}
-                    src="https://img.icons8.com/ios-glyphs/30/user-male-circle.png"
-                    alt="user-male-circle"
-                    className="invert-[1]"
-                  />
-                  <Link href="/profile">Profile</Link>
+                  <Link
+                    href="/profile"
+                    className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${
+                      (isProfileVisible || pathname === "/profile") &&
+                      "bg-gradient-to-r from-cyan-500 to-blue-500 text-white p-[0.3rem] rounded-lg"
+                    }`}
+                    onClick={toggleProfile}
+                  >
+                    <Image
+                      width={30}
+                      height={30}
+                      src="https://img.icons8.com/ios-glyphs/30/user-male-circle.png"
+                      alt="user-male-circle"
+                      className={`${
+                        (isProfileVisible || pathname === "/profile") &&
+                        "invert-[1]"
+                      }`}
+                    />
+                    <div>Profile</div>
+                  </Link>
                 </button>
               </div>
             )}
@@ -322,7 +365,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
               <Link
                 href={"/cart"}
                 className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${
-                  (isCartVisible || pathname === "/cart") &&
+                  (pathname === "/cart") &&
                   "bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg"
                 }`}
                 onClick={toggleCart}
@@ -341,20 +384,27 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                   onClick={toggleSignup}
                 >
                   <FaUser className="text-xl xs:mr-3" onClick={toggleSignup} />
-                  <span>Register</span>
+                  <span>Login/Signup</span>
                 </div>
               </div>
             ) : (
               <div>
                 <button
-                  className={`flex items-center w-[40%] p-3 bg-gradient-to-r from-[#0CEDE6] space-x-1 text-white rounded-xl to-[#0A8E8A]`}
+                  className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${
+                    (isProfileVisible || pathname === "/profile") &&
+                    "bg-gradient-to-r from-cyan-500 to-blue-500 text-white p-[0.3rem] rounded-lg"
+                  }`}
+                  onClick={toggleProfile}
                 >
                   <Image
                     width={30}
                     height={30}
                     src="https://img.icons8.com/ios-glyphs/30/user-male-circle.png"
                     alt="user-male-circle"
-                    className="invert-[1]"
+                    className={`${
+                      (isProfileVisible || pathname === "/profile") &&
+                      "invert-[1]"
+                    }`}
                   />
                   <Link href="/profile">Profile</Link>
                 </button>
@@ -384,7 +434,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
           onClick={() => setNeedVisible(false)}
         >
           <div
-            className="absolute right-[15%] top-[1.5rem] z-10 xs:left-0 xs:top-0 xs:w-[100%]"
+            className="absolute right-[15%] top-[1.5rem] z-10 xs:left-0 xs:top-0 xs:w-full"
             onClick={handleInsideClick}
           >
             <div
@@ -407,7 +457,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
       )}
 
       {visibleComponent === "signup" && (
-        <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto xs:left-0 xs:top-0 xs:w-[100%]">
+        <div className="absolute top-[5rem] left-[20%] z-10 w-[63.64%] mx-auto xs:left-0 xs:top-0 xs:w-[100%]">
           <div
             className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer"
             onClick={() => {
@@ -432,7 +482,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
       )}
 
       {visibleComponent === "login" && (
-        <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto xs:left-0 xs:top-0 xs:w-[100%]">
+        <div className="absolute top-[8rem] left-[20%] z-10 w-[63.64%] mx-auto xs:left-0 xs:top-0 xs:w-[100%]">
           <div
             className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer"
             onClick={() => {
@@ -473,7 +523,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
               alt="multiply"
             />
           </div>
-          <Forget />
+          <Forget onForgetCancel={onForgetCancel}/>
         </div>
       )}
     </>

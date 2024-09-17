@@ -73,12 +73,12 @@ const DoctorPayment: React.FC = () => {
   const total = feeToDisplay ? feeToDisplay - discount : 0;
 
   if (!doctor) {
-    return <div>Loading...</div>;
+    return <div className="flex h-[100vh] items-center justify-center font-thin text-[3rem]">Loading...</div>;
   }
 
   return (
     <div className="flex h-screen flex-col items-center mt-[1.7rem]">
-      <div className="bg-white pt-6 pb-10 px-7 border-[0.3rem] border-[#0A8E8A] w-[34rem] text-center rounded-lg shadow-lg">
+      <div className="bg-white pt-6 pb-10 px-7 border-[0.3rem] border-[#0A8E8A] w-[34rem] xs:w-[94%] text-center rounded-lg shadow-lg">
         <h1 className="text-2xl text-left font-semibold mb-2">You're paying,</h1>
         <p className="text-4xl font-semibold mt-[1.5rem] mb-2">
           Rs {feeToDisplay || 'N/A'}

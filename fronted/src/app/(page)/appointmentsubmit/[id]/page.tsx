@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { getAllDoctor } from "@/app/GlobalRedux/slice/AuthSlice";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
@@ -12,7 +12,7 @@ import { AppDispatch } from "@/app/GlobalRedux/store";
 
 // Shimmer Component
 const Shimmer = () => (
-<div className="2xl:w-[70rem] xl:w-[70rem] lg:w-[58rem] mx-auto flex my-[2rem] rounded-xl flex-row-reverse justify-between p-[2rem] shadow-md md:w-[40rem] sm:w-[30rem] xs:w-[20rem] xs:flex-col animate-pulse">
+<div className="2xl:w-[70rem] xl:w-[70rem] lg:w-[58rem] mx-auto flex my-[2rem] rounded-xl flex-row-reverse justify-between p-[1rem] shadow-md md:w-[40rem] sm:w-[30rem] xs:w-[20rem] xs:flex-col animate-pulse">
       <div className="flex items-center flex-col space-y-2">
         <div className="w-[8rem] h-[8rem] rounded-full bg-gray-300"></div>
         <div className="h-6 bg-gray-300 rounded w-48 mt-2"></div>
@@ -55,6 +55,7 @@ interface Doctor {
 const AppointmentSubmitted: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const params = useParams();
+  const router = useRouter();
   const [doctor, setDoctor] = useState<Doctor | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -92,6 +93,15 @@ const AppointmentSubmitted: React.FC = () => {
     return () => clearInterval(intervalId);
   }, [params.id]);
 
+  useEffect(() => {
+    // Set a 5-second timer to redirect to another page
+    const timer = setTimeout(() => {
+      router.push("/appointmentdetails"); // Redirect to a different page (replace with the target path)
+    }, 5000); // 5 seconds
+
+    return () => clearTimeout(timer); // Cleanup on unmount
+  }, [router]);
+
   if (isLoading) {
     return (
       <div className="text-center mt-8">
@@ -107,7 +117,7 @@ const AppointmentSubmitted: React.FC = () => {
   return (
     <>
       <div>
-        <div className="2xl:w-[70rem] xl:w-[70rem] lg:w-[58rem] mx-auto flex my-[2rem] rounded-xl flex-row-reverse justify-between p-[2rem] shadow-md md:w-[40rem] sm:w-[30rem] xs:w-[20rem] xs:flex-col">
+        <div className="2xl:w-[70rem] xl:w-[70rem] lg:w-[58rem] mx-auto flex my-[2rem] rounded-xl flex-row-reverse justify-between px-[1.5rem] py-[1rem] shadow-md md:w-[40rem] sm:w-[30rem] xs:w-[20rem] xs:flex-col">
           <div className="flex items-center flex-col space-y-2">
             <div className="w-[8rem] h-[8rem] rounded-full relative flex items-center justify-center">
               <div
@@ -140,15 +150,15 @@ const AppointmentSubmitted: React.FC = () => {
             </h1>
             <h1 className="text-[rgba(0,0,0,0.99)] font-bold">{doctor.email}</h1>
           </div>
-          <div className="mx-[2.5rem] xs:mx-[0.8rem] xs:my-[1rem]">
-            <div className="space-y-10">
+          <div className="xs:mx-[0.8rem] xs:my-[1rem]">
+            <div className="space-y-4">
               <h1 className="font-semibold">Specialist: {doctor.specialist}</h1>
               <div className="flex gap-[0.5rem]">
                 Ratings: <ReviewComponent />
               </div>
               <h1>Address: {doctor.address}</h1>
             </div>
-            <div className="mt-[3.8rem] grid grid-cols-2 gap-2">
+            <div className="mt-[2rem] grid grid-cols-2 gap-2">
               <a className="list-none text-gray-600">
                 Emergency Fee1: <span className="text-teal-700">{doctor.fees.emergencyFee1}rs</span>
               </a>

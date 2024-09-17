@@ -11,24 +11,24 @@ interface AppointmentDataType {
 
 const appointmentData:AppointmentDataType[] = [
   {
-    name: "Alok Tamrakar",
-    date: "08-09-24",
-    time: "morning 08am-10am",
+    name: "",
+    date: "",
+    time: "",
   },
   {
-    name: "Alok Tamrakar",
-    date: "08-09-24",
-    time: "morning 08am-10am",
+    name: "",
+    date: "",
+    time: "",
   },
   {
-    name: "Alok Tamrakar",
-    date: "08-09-24",
-    time: "morning 08am-10am",
+    name: "",
+    date: "",
+    time: "",
   },
   {
-    name: "Alok Tamrakar",
-    date: "08-09-24",
-    time: "morning 08am-10am",
+    name: "",
+    date: "",
+    time: "",
   },
 ];
 

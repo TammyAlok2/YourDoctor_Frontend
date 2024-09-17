@@ -30,7 +30,7 @@ interface Doctor {
 
 const ShimmerUI: React.FC = () => (
   <div className="animate-pulse">
-    <div className="flex items-center justify-center flex-col space-y-2">
+    <div className="flex space-y-2 relative">
       <div className="w-32 h-32 bg-gray-300 rounded-full"></div>
       <div className="h-8 bg-gray-300 rounded w-48"></div>
     </div>
@@ -87,7 +87,7 @@ const AppointmentSec1: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="2xl:w-[70rem] xl:w-[70rem] lg:w-[58rem] mx-auto flex mb-[3rem] mt-[4rem] flex-col px-[2rem] py-[1rem] shadow-lg rounded-xl md:w-[40rem] sm:w-[30rem] xs:w-[20rem]">
+      <div className="2xl:w-[70rem] xl:w-[70rem] lg:w-[58rem] mx-auto flex mb-[3rem] mt-[4rem] flex-row-reverse px-[2rem] py-[1rem] shadow-lg rounded-xl md:w-[40rem] sm:w-[30rem] xs:w-[20rem] justify-between relative">
         <ShimmerUI />
       </div>
     );
@@ -99,11 +99,11 @@ const AppointmentSec1: React.FC = () => {
 
   return (
     <div>
-      <div className="2xl:w-[70rem] xl:w-[70rem] lg:w-[58rem] mx-auto flex mb-[3rem] mt-[4rem] flex-col px-[2rem] py-[1rem] shadow-lg rounded-xl md:w-[40rem] sm:w-[30rem] xs:w-[20rem]">
-        <div className="flex items-center justify-center flex-col space-y-2">
+      <div className="2xl:w-[948px] xs:flex-col xl:w-[70rem] lg:w-[58rem] mx-auto flex mb-[3rem] mt-[4rem] flex-row-reverse px-[2rem] pt-[1rem] shadow-lg rounded-xl md:w-[40rem] sm:w-[30rem] xs:w-[20rem] justify-between relative">
+        <div className="flex space-y-2 relative justify-center">
           <Link href={`/doctor/${params.id}`}>
             <div className={`${doctor.status === false ? "" : "border-4 rounded-full border-[#0A8E8A] w-[8.8rem] h-[8.8rem] flex text-center justify-center p-[0.2rem] mx-auto"}`}>
-              <div className="w-[8rem] h-[8rem] rounded-full flex items-center justify-center relative mx-auto">
+              <div className="w-[8rem] h-[8rem] rounded-full flex items-center relative mx-auto">
                 {doctor.avatar && (
                   <Image
                     src={doctor.avatar.secure_url}
@@ -127,10 +127,19 @@ const AppointmentSec1: React.FC = () => {
             </h1>
           </Link>
         </div>
-        <div className="space-y-5 my-[2rem] mx-[2.5rem] xs:mx-[0.8rem]">
+        <Link href={"/"}>
+            <Image
+              width={25}
+              height={25}
+              src="https://img.icons8.com/ios-filled/50/reply-arrow.png"
+              alt="reply-arrow"
+              className="absolute left-2 top-2 cursor-pointer hover:invert-[0.4] active:rotate-[-15deg]"
+            />
+          </Link>
+        <div className="space-y-5 my-[2rem] xs:mx-[0.8rem]">
           <div className="space-y-3">
             <h1 className="font-semibold">Specialist: {doctor.specialist}</h1>
-            <div className="flex gap-[0.5rem]">
+            <div className="flex gap-[0.5rem] items-center">
               Ratings: <ReviewComponent />
             </div>
             <h1 className="font-semibold">Address: {doctor.address}</h1>

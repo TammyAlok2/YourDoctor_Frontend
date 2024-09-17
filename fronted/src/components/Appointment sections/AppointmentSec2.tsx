@@ -131,10 +131,10 @@ const AppointmentSec2 = () => {
   };
 
   return (
-    <div className="2xl:w-[70rem] shadow-lg mx-auto py-[1rem] my-[3rem]">
+    <div className="2xl:w-[1185px] shadow-lg mx-auto py-[1rem] my-[3rem]">
       <div className="relative w-full max-w-4xl mx-auto flex items-center justify-between space-x-2">
         <button
-          className="text-gray-800 font-bold py-1 px-2 rounded-full h-[4rem] w-[4rem]"
+          className="text-gray-800 font-bold py-1 px-2 rounded-full xs:w-[3rem] xs:h-[3rem] h-[4rem] w-[4rem]"
           onClick={prevSlide}
         >
           <Image
@@ -144,14 +144,14 @@ const AppointmentSec2 = () => {
             alt="back"
           />
         </button>
-        <div className="flex space-x-4 overflow-hidden w-full justify-center">
+        <div className="flex space-x-4 xs:space-x-1 overflow-hidden w-full justify-center xs:items-center">
           {getVisibleItems().map((item, index) => {
             const globalIndex =
               (currentIndex + index) % timeSchedulingData.length;
             return (
               <div
                 key={index}
-                className={`flex flex-col space-x-[0.5rem] w-1/3 p-4 items-center justify-center flex-shrink-0 cursor-pointer  ${
+                className={`flex flex-col space-x-[0.5rem] w-1/3 p-4 xs:p-0 items-center justify-center flex-shrink-0 cursor-pointer  ${
                   selectedIndex === globalIndex
                     ? "bg-gradient-to-r from-green-400 to-green-600 text-white border-b-4 border-green-700 rounded-lg"
                     : ""
@@ -159,17 +159,18 @@ const AppointmentSec2 = () => {
                   item.isToday && selectedIndex !== index
                     ? "text-black"
                     : "hover:border-b-[0.3rem] hover:border-black"
-                } ${!index && "border-b-[0.3rem] border-teal-500"}`}
+                } ${!index && "border-b-[0.3rem] border-[#0A8E8A]"}`}
                 onClick={() => handleDateClick(index)}
               >
-                <h2 className="text-xl font-bold mb-2">{item.day}</h2>
+                <h2 className="text-xl xs:ml-[0.5rem] xs:text-[0.9rem] font-bold mb-2">{item.day}</h2>
               
               </div>
             )
           })}
         </div>
         <button
-          className="text-gray-800 font-bold py-1 px-2 rounded-full h-[4rem] w-[4rem]"
+          className="text-gray-800 font-bold py-1 px-2 rounded-full xs:w-[3rem]
+xs:h-[3rem] h-[4rem] w-[4rem]"
           onClick={nextSlide}
         >
           <Image

@@ -58,7 +58,7 @@ const HomeCard: React.FC<HomeCard> = ({ setSearchTerm }) => {
 
   return (
     <div className="mt-[3rem] xs:mt-8">
-      <div className="rounded-2xl w-[80%] p-[5rem] relative overflow-hidden mx-auto">
+      <div className="rounded-2xl w-[74.4%] p-[2rem] relative overflow-hidden mx-auto border-teal-500 border-[0.1rem] xs:bg-gradient-to-br xs:from-[#00ffffc2] xs:to-[#dadde2ca] xs:z-[-1]">
         {cardData.map((cardItem, index) => (
           <div
             className={index === current ? "slide active" : "slide"}
@@ -79,7 +79,7 @@ const HomeCard: React.FC<HomeCard> = ({ setSearchTerm }) => {
             )}
           </div>
         ))}
-        <div className="flex items-center justify-center font-semibold text-[2.3rem] my-[3rem]"></div>
+        <div className="flex items-center justify-center font-semibold text-[2.3rem] mt-[3rem] sm:mb-[5rem] md:mb-[7rem] xl:mb-[10rem] lg:mb-[7rem]"></div>
         <div className="flex items-center justify-center gap-[5rem] xs:flex-col">
           <div className="relative h-[2.4rem] bg-white rounded-lg xs:mt-2 shadow-lg">
             <input
@@ -90,7 +90,7 @@ const HomeCard: React.FC<HomeCard> = ({ setSearchTerm }) => {
               onChange={handleChange}
             />
             <Image
-              className="absolute right-[0.2rem] top-[0.6rem] invert-[0.2] cursor-pointer"
+              className="absolute right-[0.5rem] top-[0.6rem] invert-[0.2] cursor-pointer"
               width={20}
               height={20}
               src={"https://img.icons8.com/ios-glyphs/50/search--v1.png"}
@@ -98,10 +98,10 @@ const HomeCard: React.FC<HomeCard> = ({ setSearchTerm }) => {
             />
           </div>
           <div className="flex gap-[3rem] items-center justify-center">
-            <button className="text-[0.9rem] font-semibold text-white bg-[rgb(247,86,61)] py-[0.6rem] px-[1rem] rounded-xl [box-shadow:0_0_0.4rem_0_gray] xs:w-[7rem] sm:w-[7rem] active:text-[0.8rem]">
+            <button className="text-[0.9rem] font-semibold text-white bg-[#FD7456] hover:bg-[#fd7556ce] py-[0.6rem] px-[1rem] rounded-xl [box-shadow:0_0_0.4rem_0_gray] xs:w-[7rem] sm:w-[7rem] active:text-[0.8rem]">
               <Link href={"/labtests"}>Lab Tests</Link>
             </button>
-            <button className="text-[0.9rem] font-semibold text-white bg-[rgb(17_164_160_/_99%)] hover:bg-[rgba(17,164,159,0.89)] py-[0.6rem] px-[1rem] rounded-xl [box-shadow:0_0_0.4rem_0_gray] active:text-[0.8rem]">
+            <button className="text-[0.9rem] font-semibold text-white bg-[#0A8E8A] hover:bg-[#0a8e8ab8] py-[0.6rem] px-[1rem] rounded-xl [box-shadow:0_0_0.4rem_0_gray] active:text-[0.8rem]">
               <Link href={"/doctors"}>Doctors</Link>
             </button>
           </div>

@@ -76,7 +76,7 @@ const NeedHelp: React.FC<NeedProps> = ({onNeedCancel}) => {
 
   return (
     <div className="flex justify-center items-center">
-      <div className="bg-white p-6 rounded-lg shadow-lg max-w-xs w-full">
+      <div className="bg-white p-6 xs:p-[3rem] rounded-lg shadow-lg w-full xs:h-screen">
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div>
             <label htmlFor="name" className="block text-gray-700 font-bold mb-2">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
@@ -11,7 +11,11 @@ interface ForgetData {
   email: string;
 }
 
-export default function Forget() {
+interface ForgetProps {
+  onForgetCancel: () => void;
+}
+
+const Forget: React.FC<ForgetProps> = ({onForgetCancel}) => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const [data, setData] = useState<ForgetData>({
@@ -36,32 +40,33 @@ export default function Forget() {
     const response = await dispatch(forgotPassword([data.email,null]));
     
     if (response.payload.success) {
+      onForgetCancel();
       router.push("/");
     }
     setData({ email: "" });
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-white rounded-xl">
-      <div className="w-full max-w-md p-8 rounded">
-        <h1 className="text-3xl text-gray-950 font-bold mb-6 text-center">
+    <div className="flex justify-center items-center bg-white rounded-xl xs:h-screen">
+      <div className="w-full max-w-sm p-8 rounded mt-10">
+        <h1 className="text-2xl text-gray-950 font-bold mb-4 text-center">
           Forget Password
         </h1>
         <form onSubmit={onFormSubmit}>
-          <div className="mb-6 text-black">
+          <div className="text-[0.9rem] flex flex-col">
             <label className="font-bold mb-2 text-gray-950">Email</label>
             <input
               type="email"
               name="email"
               placeholder="Enter Your Email"
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2 border rounded-lg text-black"
               value={data.email}
               onChange={handleInputChange}
             />
           </div>
           <button
             type="submit"
-            className="w-full p-2 bg-teal-600 text-white rounded-lg mb-4"
+            className="w-full p-2 mt-[1rem] text-[0.9rem] bg-teal-600 text-white rounded-lg mb-4"
           >
             Submit
           </button>
@@ -70,3 +75,5 @@ export default function Forget() {
     </div>
   );
 }
+
+export default Forget;

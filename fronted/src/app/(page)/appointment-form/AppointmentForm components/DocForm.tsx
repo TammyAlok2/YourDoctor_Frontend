@@ -120,71 +120,72 @@ const DocForm = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-full my-[2rem]">
-      <div className="w-full max-w-[60rem] h-[85%] bg-white p-[2rem] border-x-[0.1rem] border-gray-200 mx-auto">
+    <div className="flex justify-center items-center h-full my-[2rem] xs:w-[99%]xs:mx-auto">
+      <div className="w-full max-w-[63rem] h-[85%] bg-white py-[0.8rem] xs:px-[2rem] px-[4rem] border-[0.1rem] border-gray-700 mx-auto">
         <FormHead />
 
         <form className="font-bold flex flex-col gap-4" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-2">
-            <label htmlFor="patientName">Patient Name*</label>
+            <label htmlFor="patientName">Patient Name</label>
             <input
               type="text"
               id="patientName"
               name="patientName"
               value={formData.patientName}
               onChange={handleChange}
-              className="p-2 border-[0.1rem] shadow-md border-black py-3 px-2"
+              className="p-2 border-[0.1rem] shadow-md w-[90%] border-black py-2 px-2"
             />
             {errors.patientName && (
               <div className="text-red-500">{errors.patientName}</div>
             )}
           </div>
 
-          <div className="flex flex-wrap gap-[8rem] xs:gap-[2rem]">
-            <div className="flex flex-col gap-2 w-full sm:w-[calc(100%-7rem)] lg:w-[22rem]">
-              <label htmlFor="patientPhone">Mobile No.*</label>
+          <div className="flex flex-wrap gap-[9rem] xs:gap-[2rem] sm:gap-[1rem] md:gap-[2rem] lg:gap-[6rem] xl:gap-[6rem] 2xl:gap-[7rem]">
+            <div className="flex flex-col gap-2 w-full sm:w-[20rem] lg:w-[22rem]">
+              <label htmlFor="patientPhone">Contact No</label>
               <input
                 type="number"
                 name="patientPhone"
                 id="patientPhone"
                 value={formData.patientPhone}
                 onChange={handleChange}
-                className="p-2 border-[0.1rem] shadow-md border-black py-3 px-2"
+                className="p-2 border-[0.1rem] shadow-md border-black py-2 px-2 xs:w-[90%]"
               />
               {errors.patientPhone && (
                 <div className="text-red-500">{errors.patientPhone}</div>
               )}
             </div>
-            <div className="flex flex-col gap-2 w-full sm:w-[6rem] lg:w-[6rem]">
-              <label htmlFor="age">Age.*</label>
+            <div className="flex flex-col gap-2 w-full xs:w-[6rem] sm:w-[6rem] lg:w-[6rem]">
+              <label htmlFor="age">Age</label>
               <input
                 type="number"
                 name="age"
                 id="age"
                 value={formData.age}
                 onChange={handleChange}
-                className="p-2 border-[0.1rem] shadow-md border-black py-3 px-2"
+                className="p-2 border-[0.1rem] shadow-md border-black py-2 px-2"
               />
               {errors.age && <div className="text-red-500">{errors.age}</div>}
             </div>
-            <div className="flex flex-col gap-2 w-[21%] xs:w-[70%]">
-              <label htmlFor="weight">Weight.*</label>
+            <div className="flex flex-col gap-2 xs:w-[70%] relative">
+              <label htmlFor="weight">Weight</label>
               <input
                 type="number"
                 name="weight"
                 id="weight"
                 value={formData.weight}
                 onChange={handleChange}
-                className="p-2 border-[0.1rem] shadow-md border-black py-3 px-2 sm:w-[6rem] lg:w-[6rem] xs:w-[46%]"
+                className="p-2 border-[0.1rem] shadow-md border-black py-2 px-2 xs:w-[6rem] sm:w-[6rem] lg:w-[6rem]"
               />
               {errors.weight && (
-                <div className="text-red-500">{errors.weight}</div>
+                <div className="text-red-500 absolute xs:relative sm:relative bottom-0 w-[12rem]">{errors.weight}</div>
               )}
             </div>
           </div>
 
+<div className="flex justify-between items-center xs:flex-col xs:items-start sm:flex-col sm:items-start md:flex-row">
           <div className="flex flex-col gap-2 mb-4">
-            <label htmlFor="gender">Gender*</label>
+            <label htmlFor="gender">Gender</label>
             <div className="flex gap-4 flex-wrap">
               <div className="flex items-center gap-2">
                 <input
@@ -227,6 +228,22 @@ const DocForm = () => {
               <div className="text-red-500">{errors.gender}</div>
             )}
           </div>
+          <div className="flex flex-col relative right-[3rem] xs:right-0 sm:right-0 md:right-[7rem]">
+            <label htmlFor="bloodPressure">BP</label>
+            <input
+              type="text"
+              name="bloodPressure"
+              id="bloodPressure"
+              value={formData.bloodPressure}
+              onChange={handleBPInput}
+              maxLength={7}
+              className="p-2 border-[0.1rem] shadow-md border-black py-2 px-2 sm:w-[6rem] lg:w-[6rem]"
+            />
+            {errors.bloodPressure && (
+              <div className="text-red-500">{errors.bloodPressure}</div>
+            )}
+          </div>
+          </div>
 
           <div className="flex flex-wrap gap-4 mb-8">
             <div className="flex gap-4 items-start w-full lg:w-[calc(50%-1rem)]">
@@ -253,39 +270,24 @@ const DocForm = () => {
                 )}
               </div>
             </div>
-            <div className="flex flex-col w-[30%]">
-              <label htmlFor="bloodPressure">BP.*</label>
-              <input
-                type="text"
-                name="bloodPressure"
-                id="bloodPressure"
-                value={formData.bloodPressure}
-                onChange={handleBPInput}
-                maxLength={7}
-                className="p-2 border-[0.1rem] shadow-md border-black py-3 px-2 sm:w-[6rem] lg:w-[6rem]"
-              />
-              {errors.bloodPressure && (
-                <div className="text-red-500">{errors.bloodPressure}</div>
-              )}
-            </div>
           </div>
 
-          <div className="flex flex-col gap-2 mt-2">
+          <div className="flex flex-col gap-2 mt-3 relative">
             <label htmlFor="description">Description</label>
             <textarea
               name="description"
               id="description"
               value={formData.description}
               onChange={handleChange}
-              className="p-2 border-[0.1rem] shadow-md border-black py-3 px-2 placeholder:font-light"
+              className="border-[0.1rem] shadow-md border-black py-3 px-2 placeholder:font-light"
               placeholder="Mention your disease and symptoms...."
             />
             {errors.description && (
-              <div className="text-red-500">{errors.description}</div>
+              <div className="text-red-500 absolute xs:relative xs:bottom-0 -bottom-8">{errors.description}</div>
             )}
           </div>
 
-          <div className="flex items-center justify-center mt-6">
+          <div className="flex items-center justify-center mt-2">
             <button
               type="submit"
               className="text-[1.2rem] text-white font-bold py-[0.5rem] px-[4rem] bg-[#0A8E8A] font-sans tracking-tighter"
