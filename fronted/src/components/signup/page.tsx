@@ -113,7 +113,7 @@ const SignupPage: React.FC<SignProps> = ({onSignupCancel, onBack}) => {
           avatar: "",
         });
         setPreviewImage("");
-        onSignupCancel();
+        // onSignupCancel();
       }
     } catch (error) {
       console.error("Signup error:", error);

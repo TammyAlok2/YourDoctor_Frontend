@@ -15,7 +15,9 @@ const LocationSection: React.FC<LocationSectionProps> = ({ onPincodeSelect }) =>
   const [location, setLocation] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
+  
 
+  // Fetch pincodes based on the search term
   useEffect(() => {
     if (searchTerm.length >= 1) {
       fetchPincodes(searchTerm);
@@ -24,6 +26,7 @@ const LocationSection: React.FC<LocationSectionProps> = ({ onPincodeSelect }) =>
     }
   }, [searchTerm]);
 
+  // Function to fetch pincodes from the API
   const fetchPincodes = async (search: string) => {
     setLoading(true);
     setError('');
@@ -38,7 +41,7 @@ const LocationSection: React.FC<LocationSectionProps> = ({ onPincodeSelect }) =>
       } else {
         setPincodes([]);
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error fetching pincodes:', error);
       setError('Failed to fetch pincodes. Please try again.');
     } finally {
@@ -46,7 +49,15 @@ const LocationSection: React.FC<LocationSectionProps> = ({ onPincodeSelect }) =>
     }
   };
 
+  // Function to handle pincode selection and fetch location data
   const handlePincodeSelect = async (pincode: string) => {
+    if (!/^\d{6}$/.test(pincode)) {
+      setError('Invalid Pincode. Please enter a 6-digit pincode.');
+      setLocation('Location not found');
+      onPincodeSelect(pincode, 'Location not found');
+      return;
+    }
+
     setSelectedPincode(pincode);
     setSearchTerm(pincode);
     setShowSuggestions(false);
@@ -77,9 +88,14 @@ const LocationSection: React.FC<LocationSectionProps> = ({ onPincodeSelect }) =>
     } finally {
       setLoading(false);
     }
+  };
 
-    if (!/^\d{6}$/.test(pincode)) {
-      console.log('Invalid Pincode. Please enter a 6-digit pincode.');
+  // Function to handle the Done button click
+  const handleDoneClick = () => {
+    if (/^\d{6}$/.test(searchTerm)) {
+      handlePincodeSelect(searchTerm);
+    } else {
+      setError('Invalid Pincode. Please enter a 6-digit pincode.');
     }
   };
 
@@ -122,8 +138,9 @@ const LocationSection: React.FC<LocationSectionProps> = ({ onPincodeSelect }) =>
           </svg>
         </div>
         <button
+          type="button"
           className="bg-teal-500 text-white px-4 py-2"
-          onClick={() => setShowSuggestions(true)}
+          onClick={handleDoneClick}
         >
           Done
         </button>

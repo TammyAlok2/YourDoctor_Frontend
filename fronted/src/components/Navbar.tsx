@@ -59,6 +59,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
 
     const pincode1 =
       typeof window !== "undefined" ? localStorage.getItem("pincode") : null;
+      console.log(pincode1)
     const locationString1 =
       typeof window !== "undefined" ? localStorage.getItem("location") : null;
 
@@ -76,6 +77,12 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
     setLocation(locationString);
     setLocationVisible(false);
     setVisibleComponent(null);
+
+    // Update localStorage as well
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('pincode', pincode);
+      localStorage.setItem('location', locationString);
+    }
   };
 
   const toggleSignup = () => {
@@ -207,7 +214,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                 alt="location icon"
               />
               <span className="text-lg leading-[1.3rem] xs:mr-4">
-                {selectedPincode ? (
+                {selectedPincode || location ? (
                   <>
                     <p>{`${selectedPincode}`}</p>
                     <p>{`${location}`}</p>
