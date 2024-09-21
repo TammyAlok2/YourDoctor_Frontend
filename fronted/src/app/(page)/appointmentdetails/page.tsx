@@ -163,7 +163,7 @@ const AppointmentDetail = () => {
 
   return (
     <>
-    <div className="flex flex-col items-center mt-[2rem] min-h-screen relative overflow-hidden">
+    <div className="flex flex-col items-center mt-[2rem] mb-[3rem] relative overflow-hidden">
       <Link href={"/cart"}>
         <Image
           width={35}
