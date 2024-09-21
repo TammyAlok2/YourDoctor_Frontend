@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import Image from "next/image";
 import ReviewComponent from "./ratings/page";
 import { AppDispatch } from "@/app/GlobalRedux/store";
+import AOS from "aos";
 
 interface DoctorData {
   _id: string;
@@ -77,6 +78,16 @@ const ProfileData: React.FC<ProfileDataProps> = ({ searchTerm }) => {
 
   const displayedData = filteredData.slice(0, 4);
 
+  
+  useEffect(() => {
+    AOS.init({
+      // Global settings:
+      duration: 1000, // values from 0 to 3000, with step 50ms
+      once: false, // whether animation should happen only once - while scrolling down
+      mirror: false, // whether elements should animate out while scrolling past them
+    });
+  }, []);
+
   return (
     <div className="flex items-center justify-center relative">
       <div className="grid grid-cols-1 gap-[0.8rem] xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-4 justify-center mx-[1rem] sm:mx-[2rem] md:mx-[3rem] xs:my-0 my-[3rem] lg:w-full xs:w-[78%] xl:mx-2 2xl:mx-[1rem] lg:mx-3 lg:grid-cols-3">
@@ -86,6 +97,7 @@ const ProfileData: React.FC<ProfileDataProps> = ({ searchTerm }) => {
               <div
                 className="flex flex-col sm:flex-row p-[1rem] shadow-md rounded-md w-[100%] xs:w-[18rem] xs:mx-auto text-[0.9rem]"
                 key={userData._id}
+                data-aos="fade-right"
               >
                 <div className="flex flex-col gap-[1rem] w-[12rem] xs:mx-auto xs:mb-3">
                   <h1 className="font-bold">

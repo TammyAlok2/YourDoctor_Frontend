@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FirstDoctorsSection from "../../components/DoctorComponent/firstDoctors/page";
 import SecondDoctorsSection from "../../components/DoctorComponent/secondDoctors/page";
 import Image from "next/image";
@@ -33,6 +33,9 @@ const Doctors: React.FC = () => {
    
     return specialistMatch || addressMatch || fullNameMatch;
   });
+
+  
+
 
   return (
     <>

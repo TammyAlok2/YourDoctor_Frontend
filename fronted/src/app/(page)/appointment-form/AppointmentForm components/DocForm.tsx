@@ -68,14 +68,14 @@ const DocForm = () => {
     if (+formData.age < 0 || +formData.age > 100)
       newErrors.age = "Age must be between 0 and 100";
     if (!formData.gender) newErrors.gender = "Gender is required";
-    if (!formData.description)
-      newErrors.description = "Description is required";
+    // if (!formData.description)
+    //   newErrors.description = "Description is required";
     if (+formData.weight <= 0 || +formData.weight > 300)
       newErrors.weight = "Weight must be between 0 and 300 kg";
-    if (!/^\d{2,3}\/\d{2,3}$/.test(formData.bloodPressure))
-      newErrors.bloodPressure = "BP must be in format 120/80";
-    if (!formData.diabetes)
-      newErrors.diabetes = "Diabetes information is required";
+    // if (!/^\d{2,3}\/\d{2,3}$/.test(formData.bloodPressure))
+    //   newErrors.bloodPressure = "BP must be in format 120/80";
+    // if (!formData.diabetes)
+    //   newErrors.diabetes = "Diabetes information is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -224,9 +224,9 @@ const DocForm = () => {
                 <label htmlFor="gender-other">Other</label>
               </div>
             </div>
-            {errors.gender && (
+            {/* {errors.gender && (
               <div className="text-red-500">{errors.gender}</div>
-            )}
+            )} */}
           </div>
           <div className="flex flex-col relative right-[3rem] xs:right-0 sm:right-0 md:right-[7rem]">
             <label htmlFor="bloodPressure">BP</label>
@@ -239,9 +239,9 @@ const DocForm = () => {
               maxLength={7}
               className="p-2 border-[0.1rem] shadow-md border-black py-2 px-2 sm:w-[6rem] lg:w-[6rem]"
             />
-            {errors.bloodPressure && (
+            {/* {errors.bloodPressure && (
               <div className="text-red-500">{errors.bloodPressure}</div>
-            )}
+            )} */}
           </div>
           </div>
 
@@ -259,7 +259,7 @@ const DocForm = () => {
                     onSelect={handleDiabetesSelect}
                   />
                 </div>
-                {errors.diabetes && (
+                {/* {errors.diabetes && (
                   <div
                     className={`text-red-500 transition-all duration-300 ${
                       isDiabetesSelectOpen ? "mt-16" : "mt-2"
@@ -267,7 +267,7 @@ const DocForm = () => {
                   >
                     {errors.diabetes}
                   </div>
-                )}
+                )} */}
               </div>
             </div>
           </div>

@@ -113,7 +113,7 @@ const SignupPage: React.FC<SignProps> = ({onSignupCancel, onBack}) => {
           avatar: "",
         });
         setPreviewImage("");
-        onSignupCancel();
+        onBack();
       }
     } catch (error) {
       console.error("Signup error:", error);
@@ -122,7 +122,7 @@ const SignupPage: React.FC<SignProps> = ({onSignupCancel, onBack}) => {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-white rounded-xl">
+    <div className="flex justify-center items-center min-h-screen bg-white rounded-xl" data-aos="fade-in">
       <div className="w-full max-w-sm p-8 rounded -mt-5">
         <h1 className="text-2xl text-gray-950 font-bold mb-4 text-center">
           Create an Account

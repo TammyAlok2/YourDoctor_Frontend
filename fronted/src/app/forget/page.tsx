@@ -47,7 +47,7 @@ const Forget: React.FC<ForgetProps> = ({onForgetCancel}) => {
   };
 
   return (
-    <div className="flex justify-center items-center bg-white rounded-xl xs:h-screen">
+    <div className="flex justify-center items-center bg-white rounded-xl xs:h-screen" data-aos="fade-in">
       <div className="w-full max-w-sm p-8 rounded mt-10">
         <h1 className="text-2xl text-gray-950 font-bold mb-4 text-center">
           Forget Password

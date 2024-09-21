@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { postEnquiry } from "../GlobalRedux/slice/DoctorSlice";
 import { toast, Toaster } from "react-hot-toast";
 import { AppDispatch } from "../GlobalRedux/store";
+import AOS from "aos";
 
 interface Errors {
   name: string;
@@ -16,11 +17,11 @@ interface FormData {
   number: string;
 }
 
-interface NeedProps{
+interface NeedProps {
   onNeedCancel: () => void;
 }
 
-const NeedHelp: React.FC<NeedProps> = ({onNeedCancel}) => {
+const NeedHelp: React.FC<NeedProps> = ({ onNeedCancel }) => {
   const [name, setName] = useState<string>("");
   const dispatch = useDispatch<AppDispatch>();
   const [mobile, setMobile] = useState<string>("");
@@ -35,7 +36,8 @@ const NeedHelp: React.FC<NeedProps> = ({onNeedCancel}) => {
     if (!name) {
       nameError = "Name is required";
     } else if (!nameRegex.test(name)) {
-      nameError = "Name must be at least 5 letters and contain only letters and spaces";
+      nameError =
+        "Name must be at least 5 letters and contain only letters and spaces";
     }
 
     // Mobile number validation: 10 digits, starting with 6-9
@@ -43,7 +45,8 @@ const NeedHelp: React.FC<NeedProps> = ({onNeedCancel}) => {
     if (!mobile) {
       mobileError = "Mobile number is required";
     } else if (!mobileRegex.test(mobile)) {
-      mobileError = "Mobile number must be 10 digits and start with 6, 7, 8, or 9";
+      mobileError =
+        "Mobile number must be 10 digits and start with 6, 7, 8, or 9";
     }
 
     setErrors({ name: nameError, mobile: mobileError });
@@ -74,12 +77,24 @@ const NeedHelp: React.FC<NeedProps> = ({onNeedCancel}) => {
     }
   };
 
+  useEffect(() => {
+    AOS.init({
+      // Global settings:
+      duration: 1000, // values from 0 to 3000, with step 50ms
+      once: false, // whether animation should happen only once - while scrolling down
+      mirror: false, // whether elements should animate out while scrolling past them
+    });
+  }, []);
+
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center items-center" data-aos="fade-in">
       <div className="bg-white p-6 xs:p-[3rem] rounded-lg shadow-lg w-full xs:h-screen">
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="name" className="block text-gray-700 font-bold mb-2">
+            <label
+              htmlFor="name"
+              className="block text-gray-700 font-bold mb-2"
+            >
               Name
             </label>
             <input
@@ -97,7 +112,10 @@ const NeedHelp: React.FC<NeedProps> = ({onNeedCancel}) => {
             )}
           </div>
           <div>
-            <label htmlFor="mobile" className="block text-gray-700 font-bold mb-2">
+            <label
+              htmlFor="mobile"
+              className="block text-gray-700 font-bold mb-2"
+            >
               Mobile No.
             </label>
             <input

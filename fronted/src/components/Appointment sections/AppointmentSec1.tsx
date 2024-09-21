@@ -131,9 +131,9 @@ const AppointmentSec1: React.FC = () => {
             <Image
               width={25}
               height={25}
-              src="https://img.icons8.com/ios-filled/50/reply-arrow.png"
+              src="https://img.icons8.com/ios-glyphs/30/arrow.png"
               alt="reply-arrow"
-              className="absolute left-2 top-2 cursor-pointer hover:invert-[0.4] active:rotate-[-15deg]"
+              className="absolute left-2 top-2 cursor-pointer hover:invert-[0.4] active:rotate-[-200deg] rotate-180"
             />
           </Link>
         <div className="space-y-5 my-[2rem] xs:mx-[0.8rem]">

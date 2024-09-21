@@ -144,17 +144,17 @@ const DoctorPage = () => {
     <div className="min-h-screen bg-gray-100">
       <header className="h-8"></header>
       <main className="max-w-4xl mx-auto pb-4 px-4 md:px-6 lg:px-4 xl:px-8">
-        <div className="bg-white p-6 md:p-8 lg:p-8 rounded-lg shadow-lg mb-4 relative">
+        <div className="bg-white p-6 xs:w-[82%] xs:mx-auto md:p-8 lg:p-8 rounded-lg shadow-lg mb-4 relative">
           <Link href={"/"}>
             <Image
               width={25}
               height={25}
-              src="https://img.icons8.com/ios-filled/50/reply-arrow.png"
+              src="https://img.icons8.com/ios-glyphs/30/arrow.png"
               alt="reply-arrow"
-              className="absolute left-2 top-2 cursor-pointer hover:invert-[0.4] active:rotate-[-15deg]"
+              className="absolute left-2 top-2 cursor-pointer hover:invert-[0.4] active:rotate-[-200deg] rotate-180"
             />
           </Link>
-          <div className="flex flex-col xs:flex-col-reverse sm:flex-col-reverse xs:gap-2 md:flex-row justify-between items-start sm:items-center sm:justify-center md:justify-between">
+          <div className="flex flex-col xs:flex-col-reverse xs:items-center sm:flex-col-reverse xs:gap-2 md:flex-row justify-between items-start sm:items-center sm:justify-center md:justify-between">
             <div className="text-black space-y-4">
               <p>Specialist: {doctor.specialist}</p>
               <div className="flex gap-[0.5rem]">
@@ -225,7 +225,7 @@ const DoctorPage = () => {
                   ></div>
                 </div>
               </div>
-              <h1 className="text-[rgb(17_164_160_/_99%)] font-bold mt-4 text-[1.3rem] xs:mt-1 sm:mt-1">
+              <h1 className="text-[rgb(17_164_160_/_99%)] font-bold mt-4 text-[1.3rem] xs:mt-3 sm:mt-1">
                 {doctor.fullName}
               </h1>
             </div>
