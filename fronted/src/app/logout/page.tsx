@@ -30,7 +30,7 @@ const Logout = () => {
 
   const onLogout = async function () {
     try {
-      const response = await dispatch(logout());
+      const response = await dispatch(logout(undefined));
       if (response.payload?.success) {
         deleteAllCookies();
         router.push('/');
