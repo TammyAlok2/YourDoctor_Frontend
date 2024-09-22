@@ -51,7 +51,7 @@ export const createAccount = createAsyncThunk(
       // Save the token to a cookie (valid for 1 day)
       document.cookie = `loginToken=${token}; Max-Age=${
         24 * 60 * 60
-      }; path=/; SameSite=None`;
+      }; path=/; Domain=.yourlab.in; SameSite=None; Secure`;
 
       return response.data;
     } catch (error: any) {
@@ -62,7 +62,7 @@ export const createAccount = createAsyncThunk(
     }
   }
 );
-
+import { parseCookies } from 'nookies';
 export const login = createAsyncThunk(
   "user/login",
   async (data: { email: string; password: string }) => {
@@ -85,7 +85,8 @@ export const login = createAsyncThunk(
       // Save the token to a cookie (valid for 1 day)
       document.cookie = `loginToken=${token}; Max-Age=${
         24 * 60 * 60
-      }; path=/;  SameSite=None; Secure`;
+      }; path=/; Domain=.yourlab.in; SameSite=None; Secure`;
+   
 
       return response.data;
     } catch (error: any) {
@@ -117,9 +118,17 @@ export const getAllDoctor = createAsyncThunk("user/getAllDoctors", async () => {
 export const allScheduleByDate = createAsyncThunk(
   "user/getSchedule",
   async (data: [string, string], { rejectWithValue }) => {
+    const cookies = parseCookies();
+    const token = cookies.loginToken; // Assuming the token is stored in a cookie called 'token'
+console.log('token is this ',token)
+
     try {
       const response = await axiosInstance.get(
-        `user/allScheduleByDate/${data[0]}/${data[1]}`
+        `user/allScheduleByDate/${data[0]}/${data[1]}`,{
+          headers: {
+            Authorization: `Bearer ${token}`,  // Attach token in the Authorization header
+          },
+        }
       );
       return response.data;
     } catch (error: any) {
@@ -146,7 +155,7 @@ export const createAppointment = createAsyncThunk(
   }
 );
 
-import { parseCookies } from 'nookies';
+
 
 export const getAllAppointments = createAsyncThunk(
   "user/getAllAppointments",
