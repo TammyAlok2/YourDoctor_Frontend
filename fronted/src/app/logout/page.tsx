@@ -43,9 +43,14 @@ const Logout = () => {
   };
 
   return (
-    <button onClick={onLogout} className="logout-button">
-      Logout
-    </button>
+        <div>
+      <button
+        className={`w-full mt-6 p-3 bg-gradient-to-r from-[#0CEDE6] text-white rounded-xl to-[#0A8E8A]`}
+        onClick={onLogout}
+      >
+        Logout
+      </button>
+    </div>
   );
 };
 
