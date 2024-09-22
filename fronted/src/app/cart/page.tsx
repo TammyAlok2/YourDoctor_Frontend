@@ -2,59 +2,63 @@
 
 import Link from "next/link";
 import AppointmentData from "../../components/CartComponents/AppointmentCard";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../GlobalRedux/store"; // Import AppDispatch type from your store
-import { allAppointments } from "../GlobalRedux/slice/AuthSlice";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-interface AppointmentDataType {
-  patientName: string;
-  date: string;
-  time: string;
-  patientId: string;
-  doctorId: string;
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/app/GlobalRedux/store";
+import { useRouter } from "next/navigation";
+import { getAllAppointments } from "../GlobalRedux/slice/AuthSlice";
+
+interface AppointmentsDetails {
+  age?: number;
+  bloodPressure?: string;
+  createdAt?: string;
+  date?: string;
+  description?: string;
+  diabetes?: string;
+  doctorId?: string;
+  gender?: string;
+  patientId?: string;
+  patientName?: string;
+  patientPhone: number;
+  slotId?: string;
+  time?: string;
+  updatedAt?: string;
+  userId?: string;
+  weight: number;
+  _id?: string;
 }
 
 const Cart: React.FC = () => {
-  const [appointmentData, setAppointmentData] = useState<AppointmentDataType[]>([]); // Ensure state is an array
-  const dispatch: AppDispatch = useDispatch();
-
-  const fetchAllAppointments = async () => {
-    try {
-      const response = await dispatch(allAppointments()); // Dispatch action to get appointments
-      console.log(response.payload);
-
-      if (response.payload && Array.isArray(response.payload.data)) {
-        setAppointmentData(response.payload.data); // Ensure payload contains data array
-      } else {
-        console.log("No appointment data found");
-      }
-    } catch (error) {
-      console.error("Failed to fetch appointments:", error);
-    }
-  };
+  const dispatch = useDispatch<AppDispatch>();
+  const [appointmentsData, setAppointmentsData] = useState<AppointmentsDetails[] | null>([]);
+  console.log(appointmentsData);
 
   useEffect(() => {
-    fetchAllAppointments(); // Trigger fetching on component mount
-  },[]); // Only run on first render (add the empty array dependency)
+   
+    const appointments = async () => {
+      const res = await dispatch(getAllAppointments());
+      setAppointmentsData(res?.payload?.data);
+    };
+
+    appointments();
+  }, [dispatch]);
 
   return (
     <div className="min-h-screen bg-gray-50 py-10">
       <div className="container mx-auto">
         {/* Multiple Appointments */}
-        {appointmentData.length > 0 ? (
-          appointmentData.map((data, index) => (
-            <div key={index}>
-              <AppointmentData
-                name={data.patientName}
-                date={data.date}
-                time={data.time}
-              />
-            </div>
-          ))
-        ) : (
-          <p className="text-center text-gray-500">No appointments found.</p>
-        )}
+        {appointmentsData?.map((data: any, index: any) => (
+          <div key={index}>
+            <AppointmentData
+              name={data?.patientName}
+              date={data?.date}
+              time={data?.time}
+              patientId={data?._id}
+              doctorId={data?.doctorId}
+            />
+          </div>
+        ))}
 
         {/* Back to Home Button */}
         <div className="flex justify-center mt-10">

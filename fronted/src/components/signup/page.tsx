@@ -17,9 +17,10 @@ interface SignupData {
   avatar: File | string;
 }
 interface SignProps {
+  onSignupCancel: () => void;
   onBack: () => void;
 }
-const SignupPage: React.FC<SignProps> = ({onBack}) => {
+const SignupPage: React.FC<SignProps> = ({onSignupCancel, onBack}) => {
   const dispatch = useDispatch<AppDispatch>();
   const [previewImage, setPreviewImage] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -112,6 +113,7 @@ const SignupPage: React.FC<SignProps> = ({onBack}) => {
           avatar: "",
         });
         setPreviewImage("");
+        onBack();
       }
     } catch (error) {
       console.error("Signup error:", error);
@@ -120,22 +122,22 @@ const SignupPage: React.FC<SignProps> = ({onBack}) => {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-white rounded-xl">
-      <div className="w-full max-w-md p-8 rounded">
-        <h1 className="text-3xl text-gray-950 font-bold mb-4 text-center">
+    <div className="flex justify-center items-center min-h-screen bg-white rounded-xl" data-aos="fade-in">
+      <div className="w-full max-w-sm p-8 rounded -mt-5">
+        <h1 className="text-2xl text-gray-950 font-bold mb-4 text-center">
           Create an Account
         </h1>
         <form onSubmit={createNewAccount}>
-          <div className="my-4">
+          <div className="my-1 text-[0.9rem]">
             <label htmlFor="image_uploads" className="cursor-pointer">
               {previewImage ? (
                 <img
-                  className="w-24 h-24 rounded-full m-auto"
+                  className="w-20 h-20 rounded-full m-auto"
                   src={previewImage}
                   alt="Preview"
                 />
               ) : (
-                <BsPersonCircle className="w-24 h-24 rounded-full m-auto text-gray-600" />
+                <BsPersonCircle className="w-20 h-20 rounded-full m-auto text-gray-600" />
               )}
             </label>
             <input
@@ -147,7 +149,8 @@ const SignupPage: React.FC<SignProps> = ({onBack}) => {
               accept=".jpg, .jpeg, .png, .svg"
             />
           </div>
-          <div className="mb-6">
+          <div className="mb-1 text-[0.9rem] flex flex-col">
+          <label className="font-bold mb-1 text-gray-950">Name</label>
             <input
               type="text"
               name="name"
@@ -157,7 +160,8 @@ const SignupPage: React.FC<SignProps> = ({onBack}) => {
               onChange={handleUserInput}
             />
           </div>
-          <div className="mb-6">
+          <div className="mb-1 text-[0.9rem] flex flex-col">
+          <label className="font-bold mb-1 text-gray-950">Mobile</label>
             <input
               type="tel"
               name="mobile"
@@ -167,7 +171,8 @@ const SignupPage: React.FC<SignProps> = ({onBack}) => {
               onChange={handleUserInput}
             />
           </div>
-          <div className="mb-6">
+          <div className="mb-1 text-[0.9rem] flex flex-col">
+          <label className="font-bold mb-1 text-gray-950">Email</label>
             <input
               type="email"
               name="email"
@@ -177,7 +182,8 @@ const SignupPage: React.FC<SignProps> = ({onBack}) => {
               onChange={handleUserInput}
             />
           </div>
-          <div className="mb-6 relative">
+          <div className="mb-4 relative text-[0.9rem] flex flex-col">
+          <label className="font-bold mb-1 text-gray-950">Password</label>
             <input
               type={showPassword ? "text" : "password"}
               name="password"
@@ -189,7 +195,7 @@ const SignupPage: React.FC<SignProps> = ({onBack}) => {
             <button
               type="button"
               onClick={togglePasswordVisibility}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 mt-1"
+              className="absolute right-3 top-10 transform -translate-y-1/2 text-gray-600 mt-1"
             >
               <img
                 src={
@@ -205,14 +211,14 @@ const SignupPage: React.FC<SignProps> = ({onBack}) => {
           </div>
           <button
             type="submit"
-            className="w-full p-2 bg-teal-600 text-white rounded-lg mb-9"
+            className="w-full p-2 bg-teal-600 text-white rounded-lg mb-3 text-[0.9rem]"
           >
             Sign up
           </button>
           <div className="text-center text-gray-500 mb-6">
             _____________or With_____________
           </div>
-          <button className="w-full p-2 bg-white text-gray-500 border rounded-lg flex items-center justify-center mb-8">
+          <button className="w-full p-2 bg-white text-gray-500 border rounded-lg flex items-center justify-center mb-4">
             <img
               src="/google-logo.png"
               alt="Google Logo"
@@ -220,13 +226,13 @@ const SignupPage: React.FC<SignProps> = ({onBack}) => {
               height="20"
               className="mr-2"
             />
-            <span className="mx-auto">Sign up with Google</span>
+            <span className="mx-auto text-[0.9rem]">Sign up with Google</span>
           </button>
-          <div className="text-center cursor-pointer"  onClick={onBack}>
+          <div className="text-center cursor-pointer font-medium text-[0.9rem]"  onClick={onBack}>
             <span className="text-black cursor-pointer">
               Already have an account?{" "}
             </span>
-            Log In
+            <span className="text-[#160062]">Log In </span>
           </div>
         </form>
       </div>

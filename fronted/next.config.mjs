@@ -4,18 +4,28 @@ const nextConfig = {
     styledComponents: true,
   },
   images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'kotadiasdental.com',
+        pathname: '/wp-content/uploads/**',
+      },
+    ],
     domains: [
       "img.icons8.com",
       "img.flaticon.com",
       "img.mm.bing.net",
       "static.vecteezy.com",
       "res.cloudinary.com",
-      "slidesbase.com",
+      "previews.123rf.com",
       "kotadiasdental.com",
       "tse2.mm.bing.net",
-      "thumbs.dreamstime.com",
+      "unihealthparanaque.com",
       "www.figma.com",
-      "bookmerilab.com"
+      "bookmerilab.com",
+      "static.vecteezy.com",
+      "img.freepik.com",
+      "thumbs.dreamstime.com"
     ],
   },
   async rewrites() {

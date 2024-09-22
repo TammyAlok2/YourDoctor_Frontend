@@ -17,15 +17,23 @@ import {
   FaUser,
   FaBars,
 } from "react-icons/fa";
+import { RxHamburgerMenu } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/GlobalRedux/store";
 import type { NextPage } from "next";
+import AOS from "aos";
+import { parseCookies } from 'nookies';
 
 type PageProps = {
   title?: string;
 };
 
 const Navbar: NextPage<PageProps> = ({ title }) => {
+
+  const cookies = parseCookies();
+  let token = cookies.loginToken; // Assuming the token is stored in a cookie called 'token'
+console.log('token is this ',token)
+
   const dispatch = useDispatch<AppDispatch>();
   const router: any = useRouter();
 
@@ -37,37 +45,45 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
   const [isReportsVisible, setReportsVisible] = useState<boolean>(false);
   const [isCartVisible, setCartVisible] = useState<boolean>(false);
   const [isLocationVisible, setLocationVisible] = useState<boolean>(false);
+  const [isProfileVisible, setProfileVisible] = useState<boolean>(false);
   const [selectedPincode, setSelectedPincode] = useState<string>("");
   const [location, setLocation] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-const pathname = usePathname()
-  const [isLoggedIn,setIsLoggedIn] = useState<boolean>(false);
- 
+  const pathname = usePathname();
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [showFullAddress, setShowFullAddress] = useState<boolean>(false);
 
-
- useEffect(()=>{
-  const checkLoginStatus = () => {
-    const loggedIn = localStorage.getItem("isLoggedIn") === "true";
-    setIsLoggedIn(loggedIn);
+  const handleShowFullAddress = () => {
+    setShowFullAddress((prev) => !prev);
+    setShowFullAddress(prev=>!prev)
   };
 
-  checkLoginStatus();
- })
- 
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      if(token ){
+        setIsLoggedIn(true)
+      }
+      else{
+        setIsLoggedIn(false)
+      }
+      
+    };
 
+    checkLoginStatus();
+  },[token]);
 
   useEffect(() => {
-
     // Using localStorage safely in useEffect
 
-    const pincode1 = typeof window !== 'undefined' ? localStorage.getItem("pincode") : null;
-    const locationString1 = typeof window !== 'undefined' ? localStorage.getItem("location") : null;
-    
+    const pincode1 =
+      typeof window !== "undefined" ? localStorage.getItem("pincode") : null;
+    console.log(pincode1);
+    const locationString1 =
+      typeof window !== "undefined" ? localStorage.getItem("location") : null;
+
     if (pincode1) setSelectedPincode(pincode1);
     if (locationString1) setLocation(locationString1);
-
-    
   }, []);
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -80,12 +96,19 @@ const pathname = usePathname()
     setLocation(locationString);
     setLocationVisible(false);
     setVisibleComponent(null);
+
+    // Update localStorage as well
+    if (typeof window !== "undefined") {
+      localStorage.setItem("pincode", pincode);
+      localStorage.setItem("location", locationString);
+    }
   };
 
   const toggleSignup = () => {
     isLocationVisible && setLocationVisible(false);
     isNeedVisible && setNeedVisible(false);
     isCartVisible && setCartVisible(false);
+    isProfileVisible && setProfileVisible(false);
     isReportsVisible && setReportsVisible(false);
 
     setSignupVisible(!isSignupVisible);
@@ -96,6 +119,7 @@ const pathname = usePathname()
     isLocationVisible && setLocationVisible(false);
     isSignupVisible && setSignupVisible(false);
     isCartVisible && setCartVisible(false);
+    isProfileVisible && setProfileVisible(false);
     isReportsVisible && setReportsVisible(false);
 
     setNeedVisible(!isNeedVisible);
@@ -106,6 +130,7 @@ const pathname = usePathname()
     isNeedVisible && setNeedVisible(false);
     isSignupVisible && setSignupVisible(false);
     isCartVisible && setCartVisible(false);
+    isProfileVisible && setProfileVisible(false);
     isReportsVisible && setReportsVisible(false);
 
     setLocationVisible(!isLocationVisible);
@@ -116,6 +141,7 @@ const pathname = usePathname()
     isNeedVisible && setNeedVisible(false);
     isSignupVisible && setSignupVisible(false);
     isCartVisible && setCartVisible(false);
+    isProfileVisible && setProfileVisible(false);
     isLocationVisible && setLocationVisible(false);
 
     setReportsVisible(!isReportsVisible);
@@ -123,13 +149,27 @@ const pathname = usePathname()
   };
 
   const toggleCart = () => {
+    router.push('/cart')
     isNeedVisible && setNeedVisible(false);
     isSignupVisible && setSignupVisible(false);
     isReportsVisible && setReportsVisible(false);
+    isProfileVisible && setProfileVisible(false);
     isLocationVisible && setLocationVisible(false);
 
     setCartVisible(!isCartVisible);
     setVisibleComponent(isCartVisible ? null : "cart");
+  };
+
+  const toggleProfile = () => {
+    router.push('/profile')
+    isNeedVisible && setNeedVisible(false);
+    isSignupVisible && setSignupVisible(false);
+    isReportsVisible && setReportsVisible(false);
+    isCartVisible && setCartVisible(false);
+    isLocationVisible && setLocationVisible(false);
+
+    setProfileVisible(!isProfileVisible);
+    setVisibleComponent(isCartVisible ? null : "profile");
   };
 
   const logoClick = () => {
@@ -137,6 +177,7 @@ const pathname = usePathname()
     isSignupVisible && setSignupVisible(false);
     isReportsVisible && setReportsVisible(false);
     isLocationVisible && setLocationVisible(false);
+    isProfileVisible && setProfileVisible(false);
     isCartVisible && setCartVisible(false);
 
     setLogoVisible(!isLogoVisible);
@@ -149,12 +190,33 @@ const pathname = usePathname()
   const onBack = () => showComponent("login");
   const onBack1 = () => showComponent("signup");
   const onBack2 = () => showComponent("forgot");
-  // const onNeedCancel = () => setNeedVisible(false);
+  const onNeedCancel = () => setNeedVisible(false);
+  const onSignupCancel = () => {
+    setVisibleComponent(null);
+    setSignupVisible(!isSignupVisible);
+  };
+  const onLoginCancel = () => {
+    setVisibleComponent(null);
+    setSignupVisible(!isSignupVisible);
+  };
+  const onForgetCancel = () => {
+    setVisibleComponent(null);
+    setSignupVisible(!isSignupVisible);
+  };
+
+  useEffect(() => {
+    AOS.init({
+      // Global settings:
+      duration: 1000, // values from 0 to 3000, with step 50ms
+      once: false, // whether animation should happen only once - while scrolling down
+      mirror: false, // whether elements should animate out while scrolling past them
+    });
+  }, []);
 
   return (
     <>
       <nav className="p-4 border-b-[0.3rem] border-[#d5d5d5]">
-        <div className="container mx-auto flex justify-between items-center max-[1025px]:min-[765px]:gap-[2rem]">
+        <div className="container mx-auto flex xs:justify-around justify-between items-center max-[1025px]:min-[765px]:gap-[2rem]">
           <div className="flex gap-[2.5rem] items-center justify-center">
             <div className="flex gap-[0.2rem] items-end" onClick={logoClick}>
               <Link href="/">
@@ -169,20 +231,23 @@ const pathname = usePathname()
             </div>
             <div
               onClick={toggleLocation}
-              className={`flex items-center justify-center gap-1 mt-2 cursor-pointer ${
+              className={`flex items-center justify-center gap-1 mt-2 xs:mt-[0.4rem] xs:-ml-8 sm:mt-[0.4rem] cursor-pointer ${
                 isLocationVisible &&
                 "bg-[#0A8E8A] text-white p-[0.3rem] xs:pl-4 rounded-lg"
               }`}
             >
               <Image
-                className="invert-[0.4]"
+                className={`${
+                  isLocationVisible ? "invert-[1]" : "invert-[0.4]"
+                }`}
                 width={28}
                 height={24}
                 src={"https://img.icons8.com/ios/50/marker--v1.png"}
                 alt="location icon"
+                onClick={() =>setIsOpen(false)}
               />
-              <span className="text-lg leading-[1.3rem] xs:mr-4">
-                {selectedPincode ? (
+              <span className="hidden sm:block text-lg leading-[1.3rem] xs:mr-4" onClick={() =>setIsOpen(false)}>
+                {selectedPincode || location ? (
                   <>
                     <p>{`${selectedPincode}`}</p>
                     <p>{`${location}`}</p>
@@ -191,6 +256,27 @@ const pathname = usePathname()
                   "Location"
                 )}
               </span>
+              <div onClick={handleShowFullAddress}>
+                {showFullAddress || isLocationVisible ? (
+                  <div className="sm:hidden absolute text-teal-600 top-[3.5rem] font-bold left-16 w-[20rem]">
+                    <p>{`${selectedPincode}`}</p>
+                    <p>{`${location}`}</p>
+                  </div>
+                ) : (
+                  <span className="sm:hidden">
+                    {selectedPincode || location || isLocationVisible ? (
+                      <div>
+                        <p>
+                          {`${selectedPincode}`}
+                          {"..."}
+                        </p>
+                      </div>
+                    ) : (
+                      "Location"
+                    )}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
           <div className="hidden lg:flex items-center space-x-10">
@@ -201,11 +287,11 @@ const pathname = usePathname()
               }`}
             >
               <Image
-                className="invert-[0.3]"
                 width={20}
                 height={20}
                 src={"https://img.icons8.com/material-outlined/24/phone.png"}
                 alt="help icon"
+                className={`${isNeedVisible ? "invert-[1]" : "invert-[0.3]"}`}
               />
               <span className="text-lg">Need Help</span>
             </div>
@@ -213,7 +299,7 @@ const pathname = usePathname()
               <Link
                 href={"/reports"}
                 className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${
-                  (isReportsVisible || pathname === "/reports") &&
+                  pathname === "/reports" &&
                   "bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg"
                 }`}
                 onClick={toggleReports}
@@ -223,8 +309,10 @@ const pathname = usePathname()
                   height={16}
                   src={"/reports.png"}
                   alt="reports icon"
-                  className={`brightness-75 ${
-                    isReportsVisible && "brightness-50"
+                  className={`${
+                    pathname === "/reports"
+                      ? "grayscale-[0.5]"
+                      : "contrast-[0.5]"
                   }`}
                 />
                 <span className="text-lg">Reports</span>
@@ -234,13 +322,15 @@ const pathname = usePathname()
               <Link
                 href={"/cart"}
                 className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${
-                  (isCartVisible || pathname === "/cart") &&
+                  pathname === "/cart" &&
                   "bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg"
                 }`}
                 onClick={toggleCart}
               >
                 <Image
-                  className="invert-[0.4]"
+                  className={`${
+                    pathname === "/cart" ? "invert-[1]" : "invert-[0.4]"
+                  }`}
                   width={16}
                   height={16}
                   src={"https://img.icons8.com/material-two-tone/24/buy.png"}
@@ -253,7 +343,7 @@ const pathname = usePathname()
               <div
                 className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${
                   isSignupVisible &&
-                  "bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg"
+                  "bg-gradient-to-r from-cyan-500 to-blue-500 text-white p-[0.3rem] rounded-lg"
                 }`}
                 onClick={toggleSignup}
               >
@@ -262,28 +352,53 @@ const pathname = usePathname()
                   height={16}
                   src={"https://img.icons8.com/ios/50/guest-male.png"}
                   alt="yourlab icon"
+                  className={`${
+                    (isSignupVisible || pathname === "/signup") && "invert-[1]"
+                  }`}
                 />
-                <span className="text-lg">Registration</span>
+                <span className="text-lg">Login/Signup</span>
               </div>
             ) : (
               <div>
                 <button
-                  className={`w-full p-3 bg-gradient-to-r from-[#0CEDE6] text-white rounded-xl to-[#0A8E8A]`}
+                  className={`flex items-center w-full space-x-1 bg-gradient-to-r rounded-xl`}
                 >
-                  <Link href="/profile">Profile</Link>
+                  <Link
+                    href="/profile"
+                    className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${
+                      (pathname === "/profile") &&
+                      "bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg"
+                    }`}
+                    onClick={toggleProfile}
+                  >
+                    <Image
+                      width={30}
+                      height={30}
+                      src="https://img.icons8.com/ios-glyphs/30/user-male-circle.png"
+                      alt="user-male-circle"
+                      className={`${
+                        (pathname === "/profile") &&
+                        "invert-[1]"
+                      }`}
+                    />
+                    <div>Profile</div>
+                  </Link>
                 </button>
               </div>
             )}
           </div>
           <div className="lg:hidden relative xs:top-[0.4rem] xs:left-2 md:right-[2rem]">
-            <button onClick={toggleMenu} className="text-xl focus:outline-none">
-              <FaBars />
+            <button
+              onClick={toggleMenu}
+              className="text-[1.4rem] focus:outline-none"
+            >
+              <RxHamburgerMenu />
             </button>
           </div>
         </div>
         {isOpen && (
           <div className="lg:hidden mt-2 space-y-4 xs:py-[1rem] xs:px-[3rem] sm:px-[4rem] sm:py-[2rem] ">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4" onClick={() =>setIsOpen(false)}>
               <div
                 onClick={toggleNeed}
                 className={`flex items-center justify-center gap-1 mt-2 cursor-pointer ${
@@ -295,24 +410,24 @@ const pathname = usePathname()
                 <span>Need Help</span>
               </div>
             </div>
-            <div className="flex items-center space-x-4">
-            <Link
+            <div className="flex items-center space-x-4" onClick={() =>setIsOpen(false)}>
+              <Link
                 href={"/reports"}
                 className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${
-                  (isReportsVisible || pathname === "/reports") &&
+                  (pathname === "/reports") &&
                   "bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg"
                 }`}
                 onClick={toggleReports}
               >
-              <FaFileAlt className="text-xl xs:mr-2" />
-              <span>Report</span>
+                <FaFileAlt className="text-xl xs:mr-2" />
+                <span>Report</span>
               </Link>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4" onClick={() =>setIsOpen(false)}>
               <Link
                 href={"/cart"}
                 className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${
-                  (isCartVisible || pathname === "/cart") &&
+                  pathname === "/cart" &&
                   "bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg"
                 }`}
                 onClick={toggleCart}
@@ -322,7 +437,7 @@ const pathname = usePathname()
               </Link>
             </div>
             {!isLoggedIn ? (
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-4" onClick={() =>setIsOpen(false)}>
                 <div
                   className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${
                     isSignupVisible &&
@@ -331,14 +446,28 @@ const pathname = usePathname()
                   onClick={toggleSignup}
                 >
                   <FaUser className="text-xl xs:mr-3" onClick={toggleSignup} />
-                  <span>Register</span>
+                  <span>Login/Signup</span>
                 </div>
               </div>
             ) : (
-              <div>
+              <div onClick={() =>setIsOpen(false)}>
                 <button
-                  className={`w-full p-3 bg-gradient-to-r from-[#0CEDE6] text-white rounded-xl to-[#0A8E8A]`}
+                  className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${
+                    (pathname === "/profile") &&
+                    "bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg"
+                  }`}
+                  onClick={toggleProfile}
                 >
+                  <Image
+                    width={30}
+                    height={30}
+                    src="https://img.icons8.com/ios-glyphs/30/user-male-circle.png"
+                    alt="user-male-circle"
+                    className={`${
+                      (isProfileVisible || pathname === "/profile") &&
+                      "invert-[1]"
+                    }`}
+                  />
                   <Link href="/profile">Profile</Link>
                 </button>
               </div>
@@ -348,6 +477,7 @@ const pathname = usePathname()
       </nav>
 
       {visibleComponent === "location" && isLocationVisible && (
+        <div onClick={()=>setShowFullAddress(false)}>
         <div
           className="absolute z-10 w-full h-[100vh] bg-[#0000004b]"
           onClick={() => setLocationVisible(false)}
@@ -359,6 +489,7 @@ const pathname = usePathname()
             <Location {...handlePincodeSelect} />
           </div>
         </div>
+        </div>
       )}
 
       {visibleComponent === "need-help" && isNeedVisible && (
@@ -367,15 +498,16 @@ const pathname = usePathname()
           onClick={() => setNeedVisible(false)}
         >
           <div
-            className="absolute right-[15%] top-[1.5rem] z-10 xs:left-0 xs:top-0 xs:w-[100%]"
+            className="absolute right-[15%] top-[1.5rem] z-10 xs:left-0 xs:top-0 xs:w-full"
             onClick={handleInsideClick}
           >
             <div
-              className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer"
+              className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer z-10"
               onClick={() => {
                 setVisibleComponent(null);
                 setNeedVisible(!isNeedVisible);
               }}
+              data-aos="fade-right"
             >
               <img
                 width="30"
@@ -384,19 +516,20 @@ const pathname = usePathname()
                 alt="multiply"
               />
             </div>
-            <NeedHelp />
+            <NeedHelp {... onNeedCancel} />
           </div>
         </div>
       )}
 
       {visibleComponent === "signup" && (
-        <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto xs:left-0 xs:top-0 xs:w-[100%]">
+        <div className="absolute top-[5rem] left-[20%] z-10 w-[63.64%] mx-auto xs:left-0 xs:top-0 xs:w-[100%]">
           <div
-            className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer"
+            className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer z-10"
             onClick={() => {
               setVisibleComponent(null);
               setSignupVisible(!isSignupVisible);
             }}
+            data-aos="fade-right"
           >
             <img
               width="30"
@@ -406,6 +539,7 @@ const pathname = usePathname()
             />
           </div>
           <Signup
+            onSignupCancel={onSignupCancel}
             onBack={onBack}
             {...setVisibleComponent}
             {...setSignupVisible}
@@ -414,13 +548,14 @@ const pathname = usePathname()
       )}
 
       {visibleComponent === "login" && (
-        <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto xs:left-0 xs:top-0 xs:w-[100%]">
+        <div className="absolute top-[8rem] left-[20%] z-10 w-[63.64%] mx-auto xs:left-0 xs:top-0 xs:w-[100%]">
           <div
-            className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer"
+            className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer z-10"
             onClick={() => {
               setVisibleComponent(null);
               setSignupVisible(!isSignupVisible);
             }}
+            data-aos="fade-right"
           >
             <img
               width="30"
@@ -430,6 +565,7 @@ const pathname = usePathname()
             />
           </div>
           <Login
+            onLoginCancel={onLoginCancel}
             onBack={onBack1}
             onBack1={onBack2}
             {...setVisibleComponent}
@@ -441,11 +577,12 @@ const pathname = usePathname()
       {visibleComponent === "forgot" && (
         <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto xs:left-0 xs:top-0 xs:w-[100%]">
           <div
-            className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer"
+            className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer z-10"
             onClick={() => {
               setVisibleComponent(null);
               setSignupVisible(!isSignupVisible);
             }}
+            data-aos="fade-right"
           >
             <img
               width="30"
@@ -454,7 +591,7 @@ const pathname = usePathname()
               alt="multiply"
             />
           </div>
-          <Forget />
+          <Forget {... onForgetCancel} />
         </div>
       )}
     </>

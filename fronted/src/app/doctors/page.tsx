@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FirstDoctorsSection from "../../components/DoctorComponent/firstDoctors/page";
 import SecondDoctorsSection from "../../components/DoctorComponent/secondDoctors/page";
 import Image from "next/image";
@@ -26,13 +26,16 @@ const Doctors: React.FC = () => {
     setSearchTerm(event.target.value.toLowerCase());
   };
 
-  const filteredData = data.filter((doctor) => {
+  const filteredData = data?.filter((doctor) => {
     const specialistMatch = doctor.specialist?.toLowerCase().includes(searchTerm) ?? false;
     const addressMatch = doctor.address?.toLowerCase().includes(searchTerm) ?? false;
     const fullNameMatch = doctor.fullName?.toLowerCase().includes(searchTerm) ?? false;
    
     return specialistMatch || addressMatch || fullNameMatch;
   });
+
+  
+
 
   return (
     <>

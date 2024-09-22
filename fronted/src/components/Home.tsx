@@ -5,7 +5,6 @@ import CardInfo from "@/components/HomePage/CardInfo";
 import ProfileData from "@/components/HomePage/ProfileData";
 import { useState } from "react";
 import LabCard from "./HomePage/LabCard";
-// import LabCard from '@/components/HomePage/LabCard'
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,8 +18,9 @@ const Home = () => {
         <CardInfo />
       </div>
 
-      
-    </div>
+        
+            {/* <LabCard /> */}
+    </div> 
   );
 };
 
