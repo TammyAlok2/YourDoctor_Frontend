@@ -1,29 +1,24 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-import { parseCookies } from 'nookies';
-
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
 
-  // Try to get the token from different sources
-  const cookies = parseCookies();
-      let token = cookies.loginToken; // Assuming the token is stored in a cookie called 'token'
- console.log('token is this ',token)
-
-  // If token is not found in cookies, check headers
-  if (!token) {
-    const authHeader = request.headers.get("Authorization");
-    token = authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : "";
-  }
+  // Get the token from the cookies
+  const token = request.cookies.get('loginToken')?.value;
 
   console.log('Path:', path);
   console.log('Token:', token);
 
   // Public paths that do not require authentication
-  const isPublicPath = ["/login", "/forget", "/signup", "/doctors"].includes(path);
-  const isProtectedPath = ["/cart", "/appointment-form/:path*"]
+  const publicPaths = ["/login", "/forget", "/signup", "/doctors"];
+  // Protected paths that require authentication
+  const protectedPaths = ["/cart", "/appointment-form"];
 
+  // Check if the current path is public
+  const isPublicPath = publicPaths.some(p => path.startsWith(p));
+  // Check if the current path is protected
+  const isProtectedPath = protectedPaths.some(p => path.startsWith(p));
 
   // If the user is logged in and tries to access a public path (except /doctors), redirect to home
   if (isPublicPath && token && path !== "/doctors") {
@@ -31,7 +26,7 @@ export function middleware(request: NextRequest) {
   }
 
   // If the user is not logged in and tries to access a protected path, redirect to the login page
-  if (!isPublicPath && !token) {
+  if (isProtectedPath && !token) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
@@ -44,12 +39,12 @@ export const config = {
     "/login",
     "/signup",
     "/forget",
-    "/doctors", // Accessible to both logged-in and non-logged-in users
+    "/doctors",
     "/logout",
     "/profile",
     "/profileupdate",
     "/updatepassword",
     "/cart",
-    "/appointment-form/:path*", // Protected: only logged-in users can access
+    "/appointment-form/:path*",
   ],
 };

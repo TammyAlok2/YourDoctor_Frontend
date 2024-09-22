@@ -26,7 +26,7 @@ const Doctors: React.FC = () => {
     setSearchTerm(event.target.value.toLowerCase());
   };
 
-  const filteredData = data.filter((doctor) => {
+  const filteredData = data?.filter((doctor) => {
     const specialistMatch = doctor.specialist?.toLowerCase().includes(searchTerm) ?? false;
     const addressMatch = doctor.address?.toLowerCase().includes(searchTerm) ?? false;
     const fullNameMatch = doctor.fullName?.toLowerCase().includes(searchTerm) ?? false;

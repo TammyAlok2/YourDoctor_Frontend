@@ -23,7 +23,7 @@ const Footer:React.FC = () => {
               <li><Link href="#" className="text-[1.2rem] hover:underline">Legal</Link></li>
               <li><Link href="#" className="text-[1.2rem] hover:underline">Contact</Link></li>
               <li><Link href="#" className="text-[1.2rem] hover:underline">Terms & Conditions</Link></li>
-              <li><Link href="#" className="text-[1.2rem] hover:underline">Privacy Policy</Link></li>
+              <li><Link href="/privacy-policy" className="text-[1.2rem] hover:underline">Privacy Policy</Link></li>
             </ul>
           </div>
           <div>

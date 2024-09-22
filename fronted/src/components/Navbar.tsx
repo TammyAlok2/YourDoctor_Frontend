@@ -64,11 +64,14 @@ console.log('token is this ',token)
       if(token ){
         setIsLoggedIn(true)
       }
+      else{
+        setIsLoggedIn(false)
+      }
       
     };
 
     checkLoginStatus();
-  });
+  },[token]);
 
   useEffect(() => {
     // Using localStorage safely in useEffect
@@ -146,6 +149,7 @@ console.log('token is this ',token)
   };
 
   const toggleCart = () => {
+    router.push('/cart')
     isNeedVisible && setNeedVisible(false);
     isSignupVisible && setSignupVisible(false);
     isReportsVisible && setReportsVisible(false);
@@ -157,6 +161,7 @@ console.log('token is this ',token)
   };
 
   const toggleProfile = () => {
+    router.push('/profile')
     isNeedVisible && setNeedVisible(false);
     isSignupVisible && setSignupVisible(false);
     isReportsVisible && setReportsVisible(false);
@@ -511,7 +516,7 @@ console.log('token is this ',token)
                 alt="multiply"
               />
             </div>
-            <NeedHelp onNeedCancel={onNeedCancel} />
+            <NeedHelp {... onNeedCancel} />
           </div>
         </div>
       )}
@@ -586,7 +591,7 @@ console.log('token is this ',token)
               alt="multiply"
             />
           </div>
-          <Forget onForgetCancel={onForgetCancel} />
+          <Forget {... onForgetCancel} />
         </div>
       )}
     </>

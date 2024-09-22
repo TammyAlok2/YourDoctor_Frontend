@@ -86,7 +86,7 @@ const FirstDoctorsSection: React.FC<FirstDoctorsSectionProps> = ({
           ? Array(6)
               .fill(0)
               .map((_, index) => <ShimmerUI key={index} />)
-          : filteredData.map((userData) => (
+          : filteredData?.map((userData) => (
               <div
                 className="flex flex-col sm:flex-row p-[1rem] shadow-md rounded-md w-[100%] xs:w-[18rem] xs:mx-auto text-[0.9rem]"
                 key={userData._id}
