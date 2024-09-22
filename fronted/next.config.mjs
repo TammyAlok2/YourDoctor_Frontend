@@ -11,6 +11,8 @@ const nextConfig = {
         pathname: '/wp-content/uploads/**',
       },
     ],
+
+    // 
     domains: [
       "img.icons8.com",
       "img.flaticon.com",
