@@ -22,12 +22,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/GlobalRedux/store";
 import type { NextPage } from "next";
 import AOS from "aos";
+import { parseCookies } from 'nookies';
 
 type PageProps = {
   title?: string;
 };
 
 const Navbar: NextPage<PageProps> = ({ title }) => {
+
+  const cookies = parseCookies();
+  let token = cookies.loginToken; // Assuming the token is stored in a cookie called 'token'
+console.log('token is this ',token)
+
   const dispatch = useDispatch<AppDispatch>();
   const router: any = useRouter();
 
@@ -55,8 +61,10 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
 
   useEffect(() => {
     const checkLoginStatus = () => {
-      const loggedIn = localStorage.getItem("isLoggedIn") === "true";
-      setIsLoggedIn(loggedIn);
+      if(token ){
+        setIsLoggedIn(true)
+      }
+      
     };
 
     checkLoginStatus();

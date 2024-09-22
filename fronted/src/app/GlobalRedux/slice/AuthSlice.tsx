@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axiosInstance from "../../Helpers/axiosInstance";
 import { toast } from "react-hot-toast";
 import { logout } from "./DoctorSlice";
+import { RootState } from "../store";
 
 // Define types for state and payload
 interface UserState {
@@ -48,7 +49,7 @@ export const createAccount = createAsyncThunk(
       console.log("token", token);
 
       // Save the token to a cookie (valid for 1 day)
-      document.cookie = `token=${token}; Max-Age=${
+      document.cookie = `loginToken=${token}; Max-Age=${
         24 * 60 * 60
       }; path=/; SameSite=None`;
 
@@ -82,7 +83,7 @@ export const login = createAsyncThunk(
       console.log("token", token);
 
       // Save the token to a cookie (valid for 1 day)
-      document.cookie = `token=${token}; Max-Age=${
+      document.cookie = `loginToken=${token}; Max-Age=${
         24 * 60 * 60
       }; path=/;  SameSite=None; Secure`;
 
@@ -145,18 +146,36 @@ export const createAppointment = createAsyncThunk(
   }
 );
 
+import { parseCookies } from 'nookies';
+
 export const getAllAppointments = createAsyncThunk(
   "user/getAllAppointments",
-  async () => {
+  async (_, { rejectWithValue }) => {
     try {
-      const res = axiosInstance.get("user/allAppointments");
-      console.log(res);
-      return (await res).data;
+      // Parse cookies using nookies
+      const cookies = parseCookies();
+      const token = cookies.loginToken; // Assuming the token is stored in a cookie called 'token'
+ console.log('token is this ',token)
+      if (!token) {
+        return rejectWithValue("Unauthorized: No token provided");
+      }
+
+      // Make request with the token in headers
+      const res = await axiosInstance.get("user/allAppointments", {
+        headers: {
+          Authorization: `Bearer ${token}`,  // Attach token in the Authorization header
+        },
+      });
+
+      return res.data;
     } catch (error: any) {
-      toast.error(error?.response?.data?.message);
+      const errorMessage = error?.response?.data?.message || "Something went wrong";
+      toast.error(errorMessage);
+      return rejectWithValue(errorMessage);
     }
   }
 );
+
 
 export const updatePassword = createAsyncThunk(
   "user/update/password",

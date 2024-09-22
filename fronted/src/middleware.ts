@@ -1,11 +1,15 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+import { parseCookies } from 'nookies';
+
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
 
   // Try to get the token from different sources
-  let token = request.cookies.get("token")?.value;
+  const cookies = parseCookies();
+      let token = cookies.loginToken; // Assuming the token is stored in a cookie called 'token'
+ console.log('token is this ',token)
 
   // If token is not found in cookies, check headers
   if (!token) {
@@ -18,6 +22,8 @@ export function middleware(request: NextRequest) {
 
   // Public paths that do not require authentication
   const isPublicPath = ["/login", "/forget", "/signup", "/doctors"].includes(path);
+  const isProtectedPath = ["/cart", "/appointment-form/:path*"]
+
 
   // If the user is logged in and tries to access a public path (except /doctors), redirect to home
   if (isPublicPath && token && path !== "/doctors") {
@@ -43,6 +49,7 @@ export const config = {
     "/profile",
     "/profileupdate",
     "/updatepassword",
+    "/cart",
     "/appointment-form/:path*", // Protected: only logged-in users can access
   ],
 };

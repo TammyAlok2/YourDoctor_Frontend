@@ -35,7 +35,7 @@ const Cart: React.FC = () => {
   console.log(appointmentsData);
 
   useEffect(() => {
-    // Try to get user data from localStorage
+   
     const appointments = async () => {
       const res = await dispatch(getAllAppointments());
       setAppointmentsData(res?.payload?.data);
