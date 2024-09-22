@@ -11,9 +11,9 @@ export function middleware(request: NextRequest) {
   console.log('Token:', token);
 
   // Public paths that do not require authentication
-  const publicPaths = ["/login", "/forget", "/signup", "/doctors"];
+  const publicPaths = ["/login", "/forget", "/signup", "/doctors","/cart"];
   // Protected paths that require authentication
-  const protectedPaths = ["/cart", "/appointment-form"];
+  const protectedPaths = ["/appointment-form"];
 
   // Check if the current path is public
   const isPublicPath = publicPaths.some(p => path.startsWith(p));
@@ -21,7 +21,7 @@ export function middleware(request: NextRequest) {
   const isProtectedPath = protectedPaths.some(p => path.startsWith(p));
 
   // If the user is logged in and tries to access a public path (except /doctors), redirect to home
-  if (isPublicPath && token && path !== "/doctors") {
+  if (isPublicPath && token && path !== "/doctors" && path !== "/cart") {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
