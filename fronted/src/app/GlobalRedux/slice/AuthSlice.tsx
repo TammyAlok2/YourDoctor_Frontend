@@ -51,7 +51,7 @@ export const createAccount = createAsyncThunk(
       // Save the token to a cookie (valid for 1 day)
       document.cookie = `loginToken=${token}; Max-Age=${
         24 * 60 * 60
-      }; path=/; Domain=.yourlab.in; SameSite=None; Secure`;
+      }; path=/; Domain=yourlab.in; SameSite=None; Secure`;
 
       return response.data;
     } catch (error: any) {
@@ -85,7 +85,7 @@ export const login = createAsyncThunk(
       // Save the token to a cookie (valid for 1 day)
       document.cookie = `loginToken=${token}; Max-Age=${
         24 * 60 * 60
-      }; path=/; Domain=.yourlab.in; SameSite=None; Secure`;
+      }; path=/; Domain=yourlab.in; SameSite=None; Secure`;
    
 
       return response.data;
