@@ -6,7 +6,8 @@ export function middleware(request: NextRequest) {
 
   // Try to get the token from different sources
   let token = request.cookies.get("token")?.value;
-
+  // token is this 
+   
   // If token is not found in cookies, check headers
   if (!token) {
     const authHeader = request.headers.get("Authorization");
