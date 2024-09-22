@@ -12,7 +12,7 @@ const nextConfig = {
       },
     ],
 
-    // 
+    // s
     domains: [
       "img.icons8.com",
       "img.flaticon.com",
