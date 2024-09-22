@@ -401,7 +401,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
               <Link
                 href={"/reports"}
                 className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${
-                  (isReportsVisible || pathname === "/reports") &&
+                  (pathname === "/reports") &&
                   "bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg"
                 }`}
                 onClick={toggleReports}
@@ -440,7 +440,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
               <div onClick={() =>setIsOpen(false)}>
                 <button
                   className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${
-                    (isProfileVisible || pathname === "/profile") &&
+                    (pathname === "/profile") &&
                     "bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg"
                   }`}
                   onClick={toggleProfile}

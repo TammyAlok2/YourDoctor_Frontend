@@ -24,7 +24,8 @@ const nextConfig = {
       "www.figma.com",
       "bookmerilab.com",
       "static.vecteezy.com",
-      "img.freepik.com"
+      "img.freepik.com",
+      "thumbs.dreamstime.com"
     ],
   },
   async rewrites() {
