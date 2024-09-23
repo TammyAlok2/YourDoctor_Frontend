@@ -97,7 +97,7 @@ const DocForm = () => {
   const handleDiabetesSelect = (value: string) => {
     setFormData((prev) => ({ ...prev, diabetes: value }));
   };
-
+  
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (doctorId) {
@@ -108,7 +108,13 @@ const DocForm = () => {
             createAppointment([doctorId, formData])
           );
           if (response?.payload?.success) {
-            router.push(`/doctorpayment/${doctorId}`);
+            const appointmentId = response?.payload?.appointment?._id;
+            console.log(appointmentId)
+            if(appointmentId){
+              router.push(`/doctorpayment/${doctorId}?appointmentId=${appointmentId}`);
+  
+            }
+            
           }
         } catch (error) {
           toast.error("Failed to create appointment");

@@ -96,6 +96,9 @@ const AppointmentSec2 = () => {
       if (schedule?.payload?.success) {
         const response = schedule?.payload?.data as Schedule;
         toast.success(schedule?.payload?.message);
+        if(!response){
+          setMessage(schedule?.payload?.message || "No schedules available.");
+        }
         setSlot(response);
    
       } else {
@@ -188,7 +191,7 @@ xs:h-[3rem] h-[4rem] w-[4rem]"
       ) : slot ? (
         <AppointmentSec3 allSlot={slot} />
       ) : (
-        <h1 className="text-center mt-4">{message}</h1>
+        <h1 className="text-center mt-4 text-xl">{message}</h1>
       )}
     </div>
   );

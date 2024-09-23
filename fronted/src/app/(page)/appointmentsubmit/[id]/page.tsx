@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { getAllDoctor } from "@/app/GlobalRedux/slice/AuthSlice";
 import Image from "next/image";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter ,useSearchParams} from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
@@ -56,8 +56,11 @@ const AppointmentSubmitted: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const params = useParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [doctor, setDoctor] = useState<Doctor | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const appointmentId = searchParams.get('appointmentId');
+  const doctorId = params.id
 
   const getDoctorData = async () => {
     try {
@@ -96,7 +99,15 @@ const AppointmentSubmitted: React.FC = () => {
   useEffect(() => {
     // Set a 5-second timer to redirect to another page
     const timer = setTimeout(() => {
-      router.push("/appointmentdetails"); // Redirect to a different page (replace with the target path)
+      const queryString = new URLSearchParams({
+        
+        patientId: appointmentId,
+        doctorId: doctorId
+      }as any).toString();
+      
+      router.push(`/appointmentdetails?${queryString}`)
+    
+ // Redirect to a different page (replace with the target path)
     }, 5000); // 5 seconds
 
     return () => clearTimeout(timer); // Cleanup on unmount

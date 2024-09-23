@@ -68,11 +68,13 @@ const AppointmentDetail = () => {
   const searchParams = useSearchParams();
   const patientId = searchParams.get("patientId");
   const doctorId = searchParams.get("doctorId");
+
   const [appointmentData, setAppointmentData] =
     useState<AppointmentsDetails | null>(null);
   const [doctorData, setDoctorData] = useState<Doctor | null>(null);
-  // console.log(doctorData);
+
   const [doctor, setDoctor] = useState<Doctors | undefined>(undefined);
+
   const [feeToDisplay, setFeeToDisplay] = useState<number | undefined>(
     undefined
   );
@@ -133,7 +135,6 @@ const AppointmentDetail = () => {
         (state: Doctor) => state._id === doctorId
       );
       setDoctorData(doctorViaAppointment);
-
       updateFeeToDisplay(doctorViaAppointment);
     };
     getDoctorViaAppointment();
@@ -158,7 +159,7 @@ const AppointmentDetail = () => {
   };
 
   // Calculate discount and total
-  const discount = feeToDisplay ? Math.round(feeToDisplay * 0.3) : 0;
+  const discount = feeToDisplay ? Math.round(feeToDisplay * 0.2) : 0;
   const total = feeToDisplay ? feeToDisplay - discount : 0;
 
   return (

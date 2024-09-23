@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/app/GlobalRedux/store";
 import { getAllDoctor } from "@/app/GlobalRedux/slice/AuthSlice";
 
@@ -17,9 +17,13 @@ interface Doctor {
 
 const DoctorPayment: React.FC = () => {
   const params = useParams();
+  const searchParams = useSearchParams();
   const dispatch = useDispatch<AppDispatch>();
   const [doctor, setDoctor] = useState<Doctor | undefined>(undefined);
   const [feeToDisplay, setFeeToDisplay] = useState<number | undefined>(undefined);
+
+  const doctorId = params.id as string;
+  const appointmentId = searchParams.get('appointmentId');
 
   const fetchDoctorData = async () => {
     try {
@@ -27,7 +31,7 @@ const DoctorPayment: React.FC = () => {
       const doctors = response?.payload?.data;
 
       if (doctors) {
-        const foundDoctor = doctors.find((doc: Doctor) => doc._id === params.id);
+        const foundDoctor = doctors.find((doc: Doctor) => doc._id === doctorId);
 
         if (foundDoctor) {
           setDoctor(foundDoctor);
@@ -43,10 +47,8 @@ const DoctorPayment: React.FC = () => {
     const currentTime = new Date();
     const currentHour = currentTime.getHours();
 
-    // Check if it's after 10 PM or before 5 AM (emergency hours)
     const isEmergencyTime = currentHour >= 22 || currentHour < 5;
 
-    // Determine which fee to display
     const fee = isEmergencyTime
       ? (doctorData.fees.emergencyFee1 !== undefined && doctorData.fees.emergencyFee1 !== 0
           ? doctorData.fees.emergencyFee1
@@ -59,17 +61,14 @@ const DoctorPayment: React.FC = () => {
   useEffect(() => {
     fetchDoctorData();
 
-    // Set up polling interval
     const intervalId = setInterval(() => {
       fetchDoctorData();
     }, 30000); // Poll every 30 seconds
 
-    // Clean up interval on component unmount
     return () => clearInterval(intervalId);
-  }, [params.id]);
+  }, [doctorId]);
 
-  // Calculate discount and total
-  const discount = feeToDisplay ? Math.round(feeToDisplay * 0.3) : 0;
+  const discount = feeToDisplay ? Math.round(feeToDisplay * 0.2) : 0;
   const total = feeToDisplay ? feeToDisplay - discount : 0;
 
   if (!doctor) {
@@ -98,7 +97,7 @@ const DoctorPayment: React.FC = () => {
             <span>Rs 0.00</span>
           </div>
           <div className="flex justify-between text-lg mt-1 text-green-600">
-            <span className="font-bold">Discount (30%)</span>
+            <span className="font-bold">Discount (20%)</span>
             <span>- Rs {discount}</span>
           </div>
           <div className="flex justify-between text-xl mt-3 pt-3 border-t-2 border-gray-200">
@@ -108,7 +107,9 @@ const DoctorPayment: React.FC = () => {
         </div>
       </div>
       <button className="mt-[7rem] bg-[#0A8E8A] text-white py-3 px-6 rounded-lg hover:bg-[#086e6e] transition duration-200 text-2xl shadow-md">
-        <Link href={`/appointmentsubmit/${params.id}`}>Pay at clinic</Link>
+        <Link href={`/appointmentsubmit/${doctorId}?appointmentId=${appointmentId}`}>
+          Pay at clinic
+        </Link>
       </button>
     </div>
   );
