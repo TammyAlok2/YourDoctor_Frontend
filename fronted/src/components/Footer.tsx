@@ -14,6 +14,7 @@ const Footer:React.FC = () => {
               <li><Link href="#" className="text-[1.2rem] hover:underline">Careers</Link></li>
               <li><Link href="#" className="text-[1.2rem] hover:underline">Blog</Link></li>
               <li><Link href="#" className="text-[1.2rem] hover:underline">Partner with Yourlab</Link></li>
+              <li><Link href="#" className="text-[1.2rem] hover:underline">Download Doctor App</Link></li>
             </ul>
           </div>
           <div>

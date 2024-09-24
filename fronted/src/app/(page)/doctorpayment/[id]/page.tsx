@@ -68,7 +68,7 @@ const DoctorPayment: React.FC = () => {
     return () => clearInterval(intervalId);
   }, [doctorId]);
 
-  const discount = feeToDisplay ? Math.round(feeToDisplay * 0.2) : 0;
+  const discount = feeToDisplay ? Math.round(100) : 0;
   const total = feeToDisplay ? feeToDisplay - discount : 0;
 
   if (!doctor) {
@@ -97,7 +97,7 @@ const DoctorPayment: React.FC = () => {
             <span>Rs 0.00</span>
           </div>
           <div className="flex justify-between text-lg mt-1 text-green-600">
-            <span className="font-bold">Discount (20%)</span>
+            <span className="font-bold">Discount (20% upto 100)</span>
             <span>- Rs {discount}</span>
           </div>
           <div className="flex justify-between text-xl mt-3 pt-3 border-t-2 border-gray-200">
