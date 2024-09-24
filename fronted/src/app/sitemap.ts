@@ -9,13 +9,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: 'https://www.yourlab.in/doctors',
+      url: 'https://www.yourlab.in/about',
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
-      url: 'https://www.yourlab.in/cart',
+      url: 'https://www.yourlab.in/blog',
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.5,
