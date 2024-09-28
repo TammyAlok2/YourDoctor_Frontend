@@ -1,4 +1,6 @@
-import { useState } from "react";
+'use client';
+
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams, useSearchParams } from "next/navigation";
 import { createAppointment } from "@/app/GlobalRedux/slice/AuthSlice";
@@ -7,6 +9,7 @@ import FormSelectedButton from "./FormSelectButton";
 import FormHead from "./FormHead";
 import toast from "react-hot-toast";
 import { AppDispatch } from "@/app/GlobalRedux/store";
+import AOS from "aos";
 
 interface FormData {
   patientName: string;
@@ -52,9 +55,19 @@ const DocForm = () => {
     slotId: slotId,
   });
 
-  
+
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isDiabetesSelectOpen, setIsDiabetesSelectOpen] = useState(false);
+
+
+  useEffect(() => {
+    AOS.init({
+      // Global settings:
+      duration: 1000, // values from 0 to 3000, with step 50ms
+      once: false, // whether animation should happen only once - while scrolling down
+      mirror: false, // whether elements should animate out while scrolling past them
+    });
+  }, []);
 
   const validateForm = () => {
     let newErrors: { [key: string]: string } = {};
@@ -87,7 +100,7 @@ const DocForm = () => {
         }
       }
     }
-    
+
     if (formData.description && formData.description.length > 500)
       newErrors.description = "Description should not exceed 500 characters";
 
@@ -112,8 +125,8 @@ const DocForm = () => {
     setFormData((prev) => ({ ...prev, diabetes: value }));
   };
 
- 
-  
+
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (doctorId) {
@@ -139,7 +152,7 @@ const DocForm = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-full my-[2rem] xs:w-[99%] xs:mx-auto">
+    <div className="flex justify-center items-center h-full my-[2rem] xs:w-[99%] xs:mx-auto" data-aos="fade-up">
       <div className="w-full max-w-[63rem] h-[85%] bg-white py-[0.8rem] xs:px-[2rem] px-[4rem] border-[0.1rem] border-gray-700 mx-auto">
         <FormHead />
 

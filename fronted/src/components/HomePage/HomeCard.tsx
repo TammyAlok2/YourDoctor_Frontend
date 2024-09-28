@@ -57,8 +57,8 @@ const HomeCard: React.FC<HomeCard> = ({ setSearchTerm }) => {
   }
 
   return (
-    <div className="mt-[3rem] xs:mt-8">
-      <div className="rounded-2xl w-[74.4%] p-[2rem] relative overflow-hidden mx-auto border-teal-500 border-[0.1rem] xs:bg-gradient-to-br xs:from-[#00ffffc2] xs:to-[#dadde2ca] xs:z-[1]">
+    <div className="mt-[3rem] xs:mt-8" data-aos="fade-in">
+      <div className="rounded-2xl w-[74.4%] p-[2rem] relative overflow-hidden mx-auto border-teal-500 border-[0.1rem] bg-gradient-to-br from-[#00ffffc2] to-[#dadde2ca] z-[1]">
         {cardData.map((cardItem, index) => (
           <div
             className={index === current ? "slide active" : "slide"}
@@ -82,7 +82,7 @@ const HomeCard: React.FC<HomeCard> = ({ setSearchTerm }) => {
         ))}
         <div className="flex items-center justify-center font-semibold text-[2.3rem] mt-[3rem] xs:mb-[7rem] sm:mb-[5rem] md:mb-[7rem] xl:mb-[10rem] lg:mb-[7rem]"></div>
         <div className="flex items-center justify-center gap-[5rem] xs:flex-col sm:flex-col md:flex-row">
-          <div className="relative h-[2.4rem] bg-white rounded-lg xs:mt-2 shadow-lg">
+          <div className="relative h-[2.4rem] bg-white rounded-lg xs:mt-2 shadow-lg" data-aos="fade-right">
             <input
               type="text"
               className="w-full h-full rounded-lg relative py-[1rem] px-[1rem] outline-0 sm:w-[11rem] xs:w-[12rem] lg:w-[22rem] active:bg-[#f3f1f1]"
@@ -98,7 +98,7 @@ const HomeCard: React.FC<HomeCard> = ({ setSearchTerm }) => {
               alt="search-icon"
             />
           </div>
-          <div className="flex gap-[3rem] items-center justify-center">
+          <div className="flex gap-[3rem] items-center justify-center" data-aos="fade-left">
             <button className="xs:text-[0.8rem] xs:w-[6rem] text-[0.9rem] font-semibold text-white bg-[#FD7456] hover:bg-[#fd7556ce] py-[0.6rem] px-[1rem] rounded-xl [box-shadow:0_0_0.4rem_0_gray] sm:w-[7rem] active:text-[0.8rem] cursor-pointer">
               <Link href={"/labtests"}>Lab Tests</Link>
             </button>

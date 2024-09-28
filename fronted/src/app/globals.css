@@ -2,26 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
-html::selection{
-    background-color: aqua;
-    color:black;
+html::selection {
+  background-color: aqua;
+  color: black;
 }
 
 @media screen {
-    .pdf-only {
-      display: none;
-    }
+  .pdf-only {
+    display: none;
   }
-  
-  @media print {
-    .pdf-only {
-      display: block;
-    }
-  
-    /* You can also hide other elements like buttons in the PDF view */
-    .no-print {
-      display: none;
-    }
+}
+
+@media print {
+  .pdf-only {
+    display: block;
   }
-  
-  
+
+  /* You can also hide other elements like buttons in the PDF view */
+  .no-print {
+    display: none;
+  }
+}

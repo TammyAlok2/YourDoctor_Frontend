@@ -12,6 +12,7 @@ import {
   getAllDoctor,
 } from "@/app/GlobalRedux/slice/AuthSlice";
 import { useRouter, useSearchParams } from "next/navigation";
+import AOS from "aos";
 
 interface AppointmentsDetails {
   age?: number;
@@ -79,6 +80,8 @@ const AppointmentDetail = () => {
     undefined
   );
 
+
+  
   // Download the page content as PDF
   const handleDownload = async () => {
     const content = printRef.current;
@@ -116,7 +119,7 @@ const AppointmentDetail = () => {
       // Calculate position to center the content on the A4 page
       const xPos = (a4Width - scaledWidth) / 2;
       // const yPos = (a4Height - scaledHeight) / 2;
-
+      
       // Add the content image to the PDF, scaled and centered
       pdf.addImage(imgData, "PNG", xPos, 0, scaledWidth, scaledHeight);
 
@@ -147,32 +150,40 @@ const AppointmentDetail = () => {
     };
     getDoctorViaAppointment();
   }, [dispatch]);
-
+  
   const updateFeeToDisplay = (doctorData: Doctors) => {
     const currentTime = new Date();
     const currentHour = currentTime.getHours();
-
+    
     // Check if it's after 10 PM or before 5 AM (emergency hours)
     const isEmergencyTime = currentHour >= 22 || currentHour < 5;
-
+    
     // Determine which fee to display
     const fee = isEmergencyTime
-      ? doctorData.fees.emergencyFee1 !== undefined &&
-        doctorData.fees.emergencyFee1 !== 0
-        ? doctorData.fees.emergencyFee1
-        : doctorData.fees.firstVisitFee
-      : doctorData.fees.firstVisitFee;
-
+    ? doctorData.fees.emergencyFee1 !== undefined &&
+    doctorData.fees.emergencyFee1 !== 0
+    ? doctorData.fees.emergencyFee1
+    : doctorData.fees.firstVisitFee
+    : doctorData.fees.firstVisitFee;
+    
     setFeeToDisplay(fee);
   };
-
+  
   // Calculate discount and total
   const discount = feeToDisplay ? Math.round(feeToDisplay * 0.2) : 0;
   const total = feeToDisplay ? feeToDisplay - discount : 0;
-
+  
+  useEffect(() => {
+    AOS.init({
+      // Global settings:
+      duration: 1000, // values from 0 to 3000, with step 50ms
+      once: false, // whether animation should happen only once - while scrolling down
+      mirror: false, // whether elements should animate out while scrolling past them
+    });
+  }, []);
   return (
     <>
-      <div className="flex flex-col items-center mt-[2rem] mb-[3rem] relative overflow-hidden">
+      <div className="flex flex-col items-center mt-[2rem] mb-[3rem] relative overflow-hidden" data-aos="fade-left">
         <Link href={"/cart"}>
           <Image
             width={35}

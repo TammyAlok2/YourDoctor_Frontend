@@ -1,5 +1,3 @@
-'use client';
-
 import React, { Suspense } from 'react';
 import DocForm from './AppointmentForm components/DocForm'; // Adjust the import path as necessary
 
@@ -10,5 +8,13 @@ const Page: React.FC = () => (
     <DocForm />
   </Suspense>
 );
+
+
+export function generateMetadata(){
+  return{
+      title: "YourLab - Appointment Form",
+      description: "Schedule your appointment effortlessly with providing personal details, preferred date, time, and service type"
+  }
+}
 
 export default Page;

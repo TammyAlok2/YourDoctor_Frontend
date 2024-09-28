@@ -215,7 +215,7 @@ console.log('token is this ',token)
 
   return (
     <>
-      <nav className="p-4 border-b-[0.3rem] border-[#d5d5d5]">
+      <nav className="p-4 border-b-[0.3rem] border-[#d5d5d5]" data-aos="fade-down">
         <div className="container mx-auto flex xs:justify-around justify-between items-center max-[1025px]:min-[765px]:gap-[2rem]">
           <div className="flex gap-[2.5rem] items-center justify-center">
             <div className="flex gap-[0.2rem] items-end" onClick={logoClick}>

@@ -2,10 +2,20 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import AOS from "aos";
+import { useEffect } from 'react';
 
 const Footer:React.FC = () => {
+  useEffect(() => {
+      AOS.init({
+        // Global settings:
+        duration: 1000, // values from 0 to 3000, with step 50ms
+        once: false, // whether animation should happen only once - while scrolling down
+        mirror: false, // whether elements should animate out while scrolling past them
+      });
+    }, []);
     return (
-      <footer className="bg-gradient-to-b from-teal-500 to-teal-700 text-white py-10 px-[3rem]">
+      <footer className="bg-gradient-to-b from-teal-500 to-teal-700 text-white py-10 px-[3rem]" data-aos="fade-up">
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <h3 className="font-semibold mb-4 text-[1.5rem]">Company</h3>

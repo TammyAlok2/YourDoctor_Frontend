@@ -86,6 +86,9 @@ export const login = createAsyncThunk(
       document.cookie = `loginToken=${token}; Max-Age=${
         24 * 60 * 60
       }; path=/;  SameSite=Lax;`;
+
+      // Set a cookie
+    document.cookie = `isLoggedIn=${true}; path=/; Max-Age=${3600}; SameSite=Lax;`;
    
       return response.data;
     } catch (error: any) {

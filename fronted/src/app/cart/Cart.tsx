@@ -1,0 +1,94 @@
+"use client";
+
+import Link from "next/link";
+import AppointmentData from "../../components/CartComponents/AppointmentCard";
+import { useEffect, useRef, useState } from "react";
+
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/app/GlobalRedux/store";
+import { useRouter } from "next/navigation";
+import { getAllAppointments } from "../GlobalRedux/slice/AuthSlice";
+import Head from "next/head";
+import AOS from "aos";
+// import { generateMetadata } from './metadata';
+
+interface AppointmentsDetails {
+  age?: number;
+  bloodPressure?: string;
+  createdAt?: string;
+  date?: string;
+  description?: string;
+  diabetes?: string;
+  doctorId?: string;
+  gender?: string;
+  patientId?: string;
+  patientName?: string;
+  patientPhone: number;
+  slotId?: string;
+  time?: string;
+  updatedAt?: string;
+  userId?: string;
+  weight: number;
+  _id?: string;
+}
+
+export default function Cart() {
+  const dispatch = useDispatch<AppDispatch>();
+  const [appointmentsData, setAppointmentsData] = useState<AppointmentsDetails[] | null>([]);
+  console.log(appointmentsData);
+
+  useEffect(() => {
+    AOS.init({
+      // Global settings:
+      duration: 1000, // values from 0 to 3000, with step 50ms
+      once: false, // whether animation should happen only once - while scrolling down
+      mirror: false, // whether elements should animate out while scrolling past them
+    });
+  }, []);
+
+  useEffect(() => {
+
+    const appointments = async () => {
+      const res = await dispatch(getAllAppointments());
+      setAppointmentsData(res?.payload?.data);
+    };
+
+    appointments();
+  }, [dispatch]);
+
+  return (
+    <>
+      {/* Dynamic Head Metadata */}
+      <Head>
+        <title>Appointment Details</title>
+        <meta name="description" content="Details of your medical appointment and doctor's information." />
+      </Head>
+      <div className="min-h-screen bg-gray-50 py-10">
+        <div className="container mx-auto">
+          {/* Multiple Appointments */}
+          {appointmentsData?.map((data: any, index: any) => (
+            <div key={index} data-aos="fade-left">
+              <AppointmentData
+                name={data?.patientName}
+                date={data?.date}
+                time={data?.time}
+                patientId={data?._id}
+                doctorId={data?.doctorId}
+              />
+            </div>
+          ))}
+
+          {/* Back to Home Button */}
+          <div className="flex justify-center mt-10" data-aos="fade-in">
+            <Link href="/">
+              <div className="bg-[#0A8E8A] text-white py-3 px-6 rounded-lg">
+                Back to Home
+              </div>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+

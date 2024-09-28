@@ -62,6 +62,15 @@ const AppointmentSec2 = () => {
   const dispatch = useDispatch<AppDispatch>();
   const params: Params = useParams();
 
+  useEffect(() => {
+    AOS.init({
+      // Global settings:
+      duration: 1000, // values from 0 to 3000, with step 50ms
+      once: false, // whether animation should happen only once - while scrolling down
+      mirror: false, // whether elements should animate out while scrolling past them
+    });
+  }, []);
+
   // Function to go to the previous slide
   const prevSlide = () => {
     setCurrentIndex((prevIndex) =>
@@ -121,13 +130,6 @@ const AppointmentSec2 = () => {
     }
   }, [selectedIndex]);
 
-  useEffect(() => {
-    AOS.init({
-      once: false,
-      mirror: false,
-    });
-  }, []);
-
   // Handle date click to fetch schedules for the selected date
   const handleDateClick = (index:number) => {
     setSelectedIndex((currentIndex + index) % timeSchedulingData.length);
@@ -139,6 +141,7 @@ const AppointmentSec2 = () => {
         <button
           className="text-gray-800 font-bold py-1 px-2 rounded-full xs:w-[3rem] xs:h-[3rem] h-[4rem] w-[4rem]"
           onClick={prevSlide}
+          data-aos="fade-right"
         >
           <Image
             width="36"
@@ -147,7 +150,8 @@ const AppointmentSec2 = () => {
             alt="back"
           />
         </button>
-        <div className="flex space-x-4 xs:space-x-1 overflow-hidden w-full justify-center xs:items-center">
+        <div className="flex space-x-4 xs:space-x-1 overflow-hidden w-full justify-center xs:items-center"
+                data-aos="fade-up">
           {getVisibleItems().map((item, index) => {
             const globalIndex =
               (currentIndex + index) % timeSchedulingData.length;
@@ -175,6 +179,7 @@ const AppointmentSec2 = () => {
           className="text-gray-800 font-bold py-1 px-2 rounded-full xs:w-[3rem]
 xs:h-[3rem] h-[4rem] w-[4rem]"
           onClick={nextSlide}
+          data-aos="fade-left"
         >
           <Image
             width="34"

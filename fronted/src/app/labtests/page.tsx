@@ -1,5 +1,3 @@
-"use client";
-
 // import LabBackgroundImage from "@/components/LabTestComponents/LabBackgroundImage";
 // import LabTestCards from "@/components/LabTestComponents/LabTestCards";
 // import LabTestsCards from "@/components/LabTestComponents/LabTestsCards";
@@ -44,5 +42,12 @@ const LabTests: React.FC = () => {
     </>
   );
 };
+
+export function generateMetadata() {
+  return {
+      title: "YourLab - LabTests",
+      description: "Access a wide range of lab tests with YourLab."
+  }
+}
 
 export default LabTests;

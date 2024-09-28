@@ -1,4 +1,3 @@
-"use client";
 import React from 'react'
 
 const Reports:React.FC = () => {
@@ -7,6 +6,13 @@ const Reports:React.FC = () => {
       <h1>Coming soon</h1>
     </div>
   )
+}
+
+export function generateMetadata() {
+  return {
+      title: "YourLab - Reports",
+      description: "Access your lab reports securely through YourLab."
+  }
 }
 
 export default Reports
