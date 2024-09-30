@@ -72,13 +72,18 @@ const ProfileData: React.FC<ProfileDataProps> = ({ searchTerm }) => {
     return () => clearInterval(intervalId);
   }, []);
 
-  const filteredData = data.filter((doctor) =>
-    doctor.fullName.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredData = data?.filter((doctor) => {
+    const specialistMatch = doctor.specialist?.toLowerCase().includes(searchTerm) ?? false;
+    const addressMatch = doctor.address?.toLowerCase().includes(searchTerm) ?? false;
+    const fullNameMatch = doctor.fullName?.toLowerCase().includes(searchTerm) ?? false;
+
+    return specialistMatch || addressMatch || fullNameMatch;
+  }
   );
 
   const displayedData = filteredData.slice(0, 4);
 
-  
+
   useEffect(() => {
     AOS.init({
       // Global settings:
@@ -94,66 +99,65 @@ const ProfileData: React.FC<ProfileDataProps> = ({ searchTerm }) => {
         {isLoading
           ? Array(4).fill(0).map((_, index) => <ShimmerUI key={index} />)
           : displayedData.map((userData) => (
-              <div
-                className="flex flex-col sm:flex-row p-[1rem] shadow-md rounded-md w-[100%] xs:w-[18rem] xs:mx-auto text-[0.9rem]"
-                key={userData._id}
-                data-aos="fade-right"
-              >
-                <div className="flex flex-col gap-[1rem] w-[12rem] xs:mx-auto xs:mb-3">
-                  <h1 className="font-bold">
-                    Specialist:{" "}
-                    <span className="text-[blue]">{userData.specialist}</span>
-                  </h1>
-                  <div className="flex gap-[0.5rem]">
-                    Ratings: <ReviewComponent />
-                  </div>
-                  <p>Address: {userData.address}</p>
-                  <p>Pincode: {userData.pincode}</p>
-                  <ul className="text-gray-600 list-none">
-                    <a className="list-none text-gray-600">
-                      Fees:{" "}
-                      <span className="text-teal-700">
-                        {userData?.fees && userData?.fees?.firstVisitFee + "rs"}
-                      </span>
-                    </a>
-                  </ul>
+            <div
+              className="flex flex-col sm:flex-row p-[1rem] shadow-md rounded-md w-[100%] xs:w-[18rem] xs:mx-auto text-[0.9rem]"
+              key={userData._id}
+              data-aos="fade-right"
+            >
+              <div className="flex flex-col gap-[1rem] w-[12rem] xs:mx-auto xs:mb-3">
+                <h1 className="font-bold">
+                  Specialist:{" "}
+                  <span className="text-[blue]">{userData.specialist}</span>
+                </h1>
+                <div className="flex gap-[0.5rem]">
+                  Ratings: <ReviewComponent />
                 </div>
-                <div className="ml-auto flex flex-col items-end xs:items-center xs:ml-0 sm:items-end relative gap-[1rem] xs:w-[100%] sm:w-auto lg:w-[11rem]">
-                  <div className="w-[6rem] h-[6rem] rounded-full overflow-hidden items-end ml-auto relative xs:items-center xs:ml-0">
-                    <div className={`${userData?.status === false ? "" : "border-4 rounded-full w-22 h-22 border-[#0A8E8A] flex text-center justify-center p-[0.2rem] mx-auto"}`}>
-                      {userData?.avatar && (
-                        <Image
-                          src={userData?.avatar?.secure_url}
-                          alt={"Doctor Avatar"}
-                          width={100}
-                          height={100}
-                          className="rounded-full object-cover"
-                        />
-                      )}
-                    </div>
-                    <div
-                      className={`absolute right-2 w-[0.8rem] animate-ping rounded-full bottom-3 h-[0.8rem]`}
-                      style={{
-                        backgroundColor: `${
-                          userData?.status === false ? "" : "#54FC05"
-                        }`,
-                      }}
-                    ></div>
-                  </div>
-                 
-                  <h1 className="text-[rgb(17_164_160_/_99%)] active:text-[rgba(17,164,159,0.82)] active:text-[0.8rem] font-bold items-end ml-auto 2xl:text-[1rem] text-right xs:text-center sm:text-right xs:ml-0">
-                  <Link href={`/doctor/${userData._id}`}>
-                {userData.fullName}
-              </Link>
-                  </h1>
-                  <button className="bg-[#0A8E8A] hover:bg-[#0A8E8A] p-[0.3rem] text-white rounded-md ml-auto items-end xl:text-[0.8rem] 2xl:text-[1rem] lg:text-[0.8rem] xs:items-center md:items-end md:ml-auto xs:ml-0">
-                    <Link href={`/appointment/${userData._id}`}>
-                      Book Appointment
-                    </Link>
-                  </button>
-                </div>
+                <p>Address: {userData.address}</p>
+                <p>Pincode: {userData.pincode}</p>
+                <ul className="text-gray-600 list-none">
+                  <a className="list-none text-gray-600">
+                    Fees:{" "}
+                    <span className="text-teal-700">
+                      {userData?.fees && userData?.fees?.firstVisitFee + "rs"}
+                    </span>
+                  </a>
+                </ul>
               </div>
-            ))}
+              <div className="ml-auto flex flex-col items-end xs:items-center xs:ml-0 sm:items-end relative gap-[1rem] xs:w-[100%] sm:w-auto lg:w-[11rem]">
+                <div className="w-[6rem] h-[6rem] rounded-full overflow-hidden items-end ml-auto relative xs:items-center xs:ml-0">
+                  <div className={`${userData?.status === false ? "" : "border-4 rounded-full w-22 h-22 border-[#0A8E8A] flex text-center justify-center p-[0.2rem] mx-auto"}`}>
+                    {userData?.avatar && (
+                      <Image
+                        src={userData?.avatar?.secure_url}
+                        alt={"Doctor Avatar"}
+                        width={100}
+                        height={100}
+                        className="rounded-full object-cover"
+                      />
+                    )}
+                  </div>
+                  <div
+                    className={`absolute right-2 w-[0.8rem] animate-ping rounded-full bottom-3 h-[0.8rem]`}
+                    style={{
+                      backgroundColor: `${userData?.status === false ? "" : "#54FC05"
+                        }`,
+                    }}
+                  ></div>
+                </div>
+
+                <h1 className="text-[rgb(17_164_160_/_99%)] active:text-[rgba(17,164,159,0.82)] active:text-[0.8rem] font-bold items-end ml-auto 2xl:text-[1rem] text-right xs:text-center sm:text-right xs:ml-0">
+                  <Link href={`/doctor/${userData._id}`}>
+                    {userData.fullName}
+                  </Link>
+                </h1>
+                <button className="bg-[#0A8E8A] hover:bg-[#0A8E8A] p-[0.3rem] text-white rounded-md ml-auto items-end xl:text-[0.8rem] 2xl:text-[1rem] lg:text-[0.8rem] xs:items-center md:items-end md:ml-auto xs:ml-0">
+                  <Link href={`/appointment/${userData._id}`}>
+                    Book Appointment
+                  </Link>
+                </button>
+              </div>
+            </div>
+          ))}
       </div>
     </div>
   );

@@ -12,10 +12,17 @@ const CartData = () => {
 
 export function generateMetadata() {
     return {
-        title: "YourLab - Cart",
-        description: "View your medical appointment details"
+        title: "Cart - YourLab",
+        description: "View the details of your medical appointments, including doctor information and appointment times.",
+        keywords: "appointment details, medical appointments, healthcare appointments, doctor appointments, schedule appointments",
+        robots: "index, follow",
+        openGraph: {
+            title: "Cart - YourLab",
+            description: "View the details of your medical appointments, including doctor information and appointment times.",
+            type: "website",
+            siteName: "YourLab",
+        },
     }
 }
-
 
 export default CartData

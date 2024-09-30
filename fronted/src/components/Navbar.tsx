@@ -18,6 +18,7 @@ import {
   FaBars,
 } from "react-icons/fa";
 import { RxHamburgerMenu } from "react-icons/rx";
+import { GiTireIronCross } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/GlobalRedux/store";
 import type { NextPage } from "next";
@@ -32,7 +33,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
 
   const cookies = parseCookies();
   let token = cookies.loginToken; // Assuming the token is stored in a cookie called 'token'
-console.log('token is this ',token)
+// console.log('token is this ',token)
 
   const dispatch = useDispatch<AppDispatch>();
   const router: any = useRouter();
@@ -392,12 +393,12 @@ console.log('token is this ',token)
               onClick={toggleMenu}
               className="text-[1.4rem] focus:outline-none"
             >
-              <RxHamburgerMenu />
+              {!isOpen ? <RxHamburgerMenu data-aos="fade-in" /> : <GiTireIronCross data-aos="fade-in" className="text-[1.2rem]"/>}
             </button>
           </div>
         </div>
         {isOpen && (
-          <div className="lg:hidden mt-2 space-y-4 xs:py-[1rem] xs:px-[3rem] sm:px-[4rem] sm:py-[2rem] ">
+          <div className="lg:hidden mt-2 space-y-4 xs:py-[1rem] xs:px-[3rem] sm:px-[4rem] sm:py-[2rem]" data-aos="fade-in">
             <div className="flex items-center space-x-4" onClick={() =>setIsOpen(false)}>
               <div
                 onClick={toggleNeed}

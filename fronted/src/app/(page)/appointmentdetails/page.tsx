@@ -12,7 +12,15 @@ export default function AppointmentDetailPage() {
 
 export function generateMetadata(){
   return{
-      title: "YourLab - Appointment Details | Download PDF with Doctor & Patient Info",
-      description: "View and download detailed appointment information, including patient details, doctor fees, appointment date, and time. Easily export the appointment summary as a PDF for future reference."
+    title: "Appointment Details - YourLab",
+    description: "Handles the submission of an appointment and the display of a doctor's details.",
+    keywords: "appointment details, doctor details, patient details, reschedule, medical appointment",
+    robots: "index, follow",
+    openGraph: {
+      title: "Appointment Details - YourLab",
+      description: "Handles the submission of an appointment and the display of a doctor's details.",
+      type: "website",
+      siteName: "YourLab",
+    }
   }
 }
