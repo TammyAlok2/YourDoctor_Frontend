@@ -21,7 +21,7 @@ const ProfileSettings: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { data} = useSelector((state: RootState) => state.auth);
   const [userData, setUserData] = useState<UserData | null>(null);
-  console.log(userData)
+  // console.log(userData)
 
    useEffect(() => {
     AOS.init({

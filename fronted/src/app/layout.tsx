@@ -22,6 +22,12 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "YourLab",
   },
+  twitter:{
+    card: "summary_large_image"
+  },
+  alternates: {
+    canonical: "https://www.yourlab.in",
+  },
 };
 
 export default function RootLayout({

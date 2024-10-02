@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { cookies } from "next/headers";
+import toast from "react-hot-toast";
 
 export const revalidate = 3; //revalidate at most every hour
 
@@ -13,40 +13,11 @@ async function fetchDynamicDataFromAPI(apiUrl: string) {
     const data = await response.json();
     // console.log('API data:', data); // Add logging to check the data structure
     return data.data;
-  } catch (error) {
-    console.error("Error fetching data from API:", error);
+  } catch (error:any) {
+    toast.error("Error to fetch doctors: ", error)
+    // console.error("Error fetching data from API:", error);
     return null; // Return null or empty array on failure
   }
-}
-
-async function fetchDynamicAppointmentDataFromAPI(apiUrl: string) {
-  try {
-    // Access cookies from the incoming request
-    const cookieStore = cookies();
-    const token = cookieStore.get("loginToken"); // Assuming 'token' is the cookie key
-    const tokenValue = token?.value; // Assuming 'token' is the cookie key
-    const isLoggedIn = cookieStore.get("isLoggedIn");
-    const loginValue = isLoggedIn?.value;
-    
-    if (!token || loginValue !== 'true') {
-      console.log("Unauthorized! please login to continue");
-    }
-    console.log("cookies token: ", tokenValue);
-    console.log("login success: ", loginValue);
-    const response = await fetch(apiUrl, {
-      headers: {
-        Authorization: `Bearer ${tokenValue}`, // Attach token in the Authorization header
-      },
-    });
-    console.log("appointment data: ", response); // Check if data is received correctly
-
-    if (!response.ok) {
-      // Log response details to get more info
-      console.error("Error in response:", response.status, response.statusText);
-      throw new Error("Unauthorized request");
-    }
-
-  } catch (error) {}
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -54,10 +25,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const doctorsData = await fetchDynamicDataFromAPI(
     "http://localhost:5000/api/v1/doctor/allDoctors"
   );
-  const cartData = await fetchDynamicAppointmentDataFromAPI(
-    "http://localhost:5000/api/v1/user/allAppointments"
-  );
-  console.log("dynamic data: ", cartData);
 
   // Ensure that dynamicData is an array, otherwise default to an empty array
   const dynamicDoctorsRoutes = Array.isArray(doctorsData)
@@ -69,10 +36,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }))
     : []; // If dynamicData is not an array, return an empty array of dynamic routes
 
-  // Log the dynamic routes to verify
-  // console.log('Dynamic Routes:', dynamicRoutes);
-
-  // Static routes
   const staticRoutes = [
     {
       url: "https://www.yourlab.in",
@@ -83,9 +46,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     
     ...dynamicDoctorsRoutes,
   ];
-
-  // Log the final sitemap
-  // console.log('Sitemap:', staticRoutes);
 
   // Return combined static and dynamic routes
   return staticRoutes;

@@ -1,10 +1,27 @@
 import React from 'react';
 
-const PrivacyPolicy: React.FC = () => {
+export function generateMetadata() {
+    return {
+        title: "Privacy Policy - YourLab",
+        description: "Learn how YourLab collects, uses, and protects your personal information. Our privacy policy ensures your data security and transparency in handling your information.",
+        keywords: "privacy policy, data protection, user privacy, data security, personal information, cookie policy, user data, GDPR compliance, data collection, data usage, legal information, online privacy, data rights, data sharing policy, personal data protection YourLab",
+        // robots: {
+        //     index: false,
+        //     follow: true
+        // },
+        openGraph: {
+            title: `Privacy Policy - YourLab`,
+            description: `Learn how YourLab collects, uses, and protects your personal information. Our privacy policy ensures your data security and transparency in handling your information.`,
+            keywords: "privacy policy, data protection, user privacy, data security, personal information, cookie policy, user data, GDPR compliance, data collection, data usage, legal information, online privacy, data rights, data sharing policy, personal data protection YourLab",
+            type: "website",
+            siteName: "YourLab",
+        },
+    }
+}
 
+const PrivacyPolicy: React.FC = () => {
     return (
         <div>
-
             <h1>Privacy Policy</h1>
             <p>Last updated: September 22, 2024</p>
             <p>This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.</p>
@@ -168,15 +185,8 @@ const PrivacyPolicy: React.FC = () => {
                 </li>
             </ul><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
         </div>
-
     )
 }
 
-export function generateMetadata() {
-    return {
-        title: "YourLab - Privacy Policy",
-        description: "Learn how YourLab collects, uses, and protects your personal information. Our privacy policy ensures your data security and transparency in handling your information."
-    }
-}
 
 export default PrivacyPolicy

@@ -93,6 +93,10 @@ const ProfileData: React.FC<ProfileDataProps> = ({ searchTerm }) => {
     });
   }, []);
 
+  const handleError = (error:any) => {
+    console.error('Fetch error:', error);
+  };
+
   return (
     <div className="flex items-center justify-center relative">
       <div className="grid grid-cols-1 gap-[0.8rem] xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-4 justify-center mx-[1rem] sm:mx-[2rem] md:mx-[3rem] xs:my-0 my-[3rem] lg:w-full xs:w-[78%] xl:mx-2 2xl:mx-[1rem] lg:mx-3 lg:grid-cols-3">
@@ -100,7 +104,7 @@ const ProfileData: React.FC<ProfileDataProps> = ({ searchTerm }) => {
           ? Array(4).fill(0).map((_, index) => <ShimmerUI key={index} />)
           : displayedData.map((userData) => (
             <div
-              className="flex flex-col sm:flex-row p-[1rem] shadow-md rounded-md w-[100%] xs:w-[18rem] xs:mx-auto text-[0.9rem]"
+              className="flex flex-col sm:flex-row p-[1rem] shadow-md rounded-md w-[100%] xs:w-[18rem] xs:flex-col-reverse xs:gap-[1rem] xs:mx-auto text-[0.9rem]"
               key={userData._id}
               data-aos="fade-right"
             >
@@ -123,7 +127,7 @@ const ProfileData: React.FC<ProfileDataProps> = ({ searchTerm }) => {
                   </a>
                 </ul>
               </div>
-              <div className="ml-auto flex flex-col items-end xs:items-center xs:ml-0 sm:items-end relative gap-[1rem] xs:w-[100%] sm:w-auto lg:w-[11rem]">
+              <div className="ml-auto flex flex-col justify-evenly items-end xs:items-center xs:ml-0 sm:items-end relative gap-[1rem] xs:w-[100%] sm:w-auto lg:w-[11rem]">
                 <div className="w-[6rem] h-[6rem] rounded-full overflow-hidden items-end ml-auto relative xs:items-center xs:ml-0">
                   <div className={`${userData?.status === false ? "" : "border-4 rounded-full w-22 h-22 border-[#0A8E8A] flex text-center justify-center p-[0.2rem] mx-auto"}`}>
                     {userData?.avatar && (
@@ -133,6 +137,7 @@ const ProfileData: React.FC<ProfileDataProps> = ({ searchTerm }) => {
                         width={100}
                         height={100}
                         className="rounded-full object-cover"
+                        onError={handleError} // Handle any loading errors
                       />
                     )}
                   </div>
@@ -145,7 +150,7 @@ const ProfileData: React.FC<ProfileDataProps> = ({ searchTerm }) => {
                   ></div>
                 </div>
 
-                <h1 className="text-[rgb(17_164_160_/_99%)] active:text-[rgba(17,164,159,0.82)] active:text-[0.8rem] font-bold items-end ml-auto 2xl:text-[1rem] text-right xs:text-center sm:text-right xs:ml-0">
+                <h1 className="text-[rgb(17_164_160_/_99%)] active:text-[rgba(17,164,159,0.82)] active:text-[0.8rem] font-bold items-end ml-auto 2xl:text-[1rem] text-right xs:text-center sm:text-center lg:text-right xs:ml-0">
                   <Link href={`/doctor/${userData._id}`}>
                     {userData.fullName}
                   </Link>

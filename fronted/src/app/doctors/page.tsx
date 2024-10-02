@@ -9,11 +9,18 @@ const DoctorsData = () => {
   )
 }
 
-export function generateMetadata() {
+export async function generateMetadata() {
+  const res = await fetch("http://localhost:5000/api/v1/doctor/allDoctors");
+  const result = await res.json();
+  const dynamicData = result?.data.map((data:any)=>{
+    const {specialist} = data;
+    return `${specialist}`;
+  })
+  // console.log(dynamicData)
   return {
     title: "Doctors - YourLab",
     description: "Discover qualified doctors on YourLab. Browse through our comprehensive listings to find healthcare professionals that match your needs. Schedule appointments and view profiles easily.",
-    keywords: "cardiologists, Child Specialist, Medicine, Dentists, dermatologists, orthopedic doctors, pediatricians, family medicine, general practitioners, specialists, mental health professionals, endocrinologists, gynecologists, urologists, gastroenterologists, healthcare providers, YourLab doctors, medical specialists",
+    keywords: `${dynamicData}`,
     robots: "index, follow", // Ensures the page is indexed and links are followed by search engines
     openGraph: {
       title: "Doctors - YourLab",

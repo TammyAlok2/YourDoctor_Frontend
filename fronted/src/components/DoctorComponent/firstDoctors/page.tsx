@@ -79,6 +79,10 @@ const FirstDoctorsSection: React.FC<FirstDoctorsSectionProps> = ({
     return () => clearInterval(intervalId);
   }, []);
 
+  const handleError = (error:any) => {
+    console.error('Fetch error:', error);
+  };
+
   return (
     <div className="flex items-center justify-center relative xs:mb-[2rem]">
       <div className="grid grid-cols-1 gap-[0.8rem] xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-4 justify-center mx-[1rem] sm:mx-[2rem] md:mx-[3rem] xs:my-0 my-[3rem] lg:w-full xs:w-[78%] xl:mx-2 2xl:mx-[1rem] lg:mx-3 lg:grid-cols-3">
@@ -88,7 +92,7 @@ const FirstDoctorsSection: React.FC<FirstDoctorsSectionProps> = ({
               .map((_, index) => <ShimmerUI key={index} />)
           : filteredData?.map((userData) => (
               <div
-                className="flex flex-col sm:flex-row p-[1rem] shadow-md rounded-md w-[100%] xs:w-[18rem] xs:mx-auto text-[0.9rem]"
+                className="flex flex-col sm:flex-row p-[1rem] shadow-md rounded-md w-[100%] xs:w-[18rem] xs:flex-col-reverse xs:gap-[1rem] xs:mx-auto text-[0.9rem]"
                 key={userData._id}
                 data-aos="fade-right"
               >
@@ -127,6 +131,7 @@ const FirstDoctorsSection: React.FC<FirstDoctorsSectionProps> = ({
                           width={100}
                           height={100}
                           className="rounded-full object-cover"
+                          onError={handleError} // Handle any loading errors
                         />
                       )}
                     </div>
@@ -139,7 +144,7 @@ const FirstDoctorsSection: React.FC<FirstDoctorsSectionProps> = ({
                       }}
                     ></div>
                   </div>
-                  <h1 className="text-[rgb(17_164_160_/_99%)] active:text-[rgba(17,164,159,0.82)] active:text-[0.8rem] font-bold items-end ml-auto 2xl:text-[1rem] text-right xs:text-center sm:text-right xs:ml-0">
+                  <h1 className="text-[rgb(17_164_160_/_99%)] active:text-[rgba(17,164,159,0.82)] active:text-[0.8rem] font-bold items-end ml-auto 2xl:text-[1rem] text-right xs:text-center sm:text-center xs:ml-0">
                     <Link href={`/doctor/${userData._id}`}>
                       {userData.fullName}
                     </Link>

@@ -166,7 +166,7 @@ export const getAllAppointments = createAsyncThunk(
       // Parse cookies using nookies
       const cookies = parseCookies();
       const token = cookies.loginToken; // Assuming the token is stored in a cookie called 'token'
- console.log('token is this ',token)
+//  console.log('token is this ',token)
       if (!token) {
         return rejectWithValue("Unauthorized: No token provided");
       }

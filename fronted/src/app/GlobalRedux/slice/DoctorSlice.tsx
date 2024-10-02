@@ -48,7 +48,7 @@ export const getAllDoctors = createAsyncThunk(
   async (data: any) => {
     try {
       const res = axiosInstance.get("doctor/allDoctors");
-      console.log(res);
+      // console.log(res);
       return (await res).data;
     } catch (error: any) {
       toast.error(error?.response?.data?.message);
@@ -61,7 +61,7 @@ export const postEnquiry = createAsyncThunk(
   async (data: any) => {
     try {
       const res = axiosInstance.post("user/postEnquiry", data);
-      console.log(res);
+      // console.log(res);
       return (await res).data;
     } catch (error: any) {
       console.log(error)
