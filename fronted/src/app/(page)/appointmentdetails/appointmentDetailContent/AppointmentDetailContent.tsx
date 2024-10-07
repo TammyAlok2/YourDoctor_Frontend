@@ -34,7 +34,7 @@ interface AppointmentsDetails {
   _id?: string;
 }
 
-interface Doctor {
+export interface Doctor {
   _id: string;
   specialist?: string;
   address?: string;
@@ -150,6 +150,7 @@ const AppointmentDetail = () => {
     };
     getDoctorViaAppointment();
   }, [dispatch]);
+  // console.log(doctorData)
   
   const updateFeeToDisplay = (doctorData: Doctors) => {
     const currentTime = new Date();

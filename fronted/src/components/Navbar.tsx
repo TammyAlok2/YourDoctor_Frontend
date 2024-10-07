@@ -214,6 +214,10 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
     });
   }, []);
 
+  const avatar:any = typeof window !== "undefined" ? localStorage.getItem("data") : null
+  const data = JSON.parse(avatar)
+  // console.log(data.avatar)
+
   return (
     <>
       <nav className="p-4 border-b-[0.3rem] border-[#d5d5d5]" data-aos="fade-down">
@@ -300,7 +304,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
               <Link
                 href={"/reports"}
                 className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${
-                  pathname === "/reports" &&
+                  isReportsVisible &&
                   "bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg"
                 }`}
                 onClick={toggleReports}
@@ -316,24 +320,24 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                       : "contrast-[0.5]"
                   }`}
                 />
-                <span className="text-lg">Reports</span>
+                <span className="text-lg">Documents</span>
               </Link>
             </div>
             <div>
               <Link
                 href={"/cart"}
                 className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${
-                  pathname === "/cart" &&
+                  isCartVisible &&
                   "bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg"
                 }`}
                 onClick={toggleCart}
               >
                 <Image
                   className={`${
-                    pathname === "/cart" ? "invert-[1]" : "invert-[0.4]"
+                    isCartVisible ? "invert-[1]" : "invert-[0.4]"
                   }`}
-                  width={16}
-                  height={16}
+                  width={22}
+                  height={22}
                   src={"https://img.icons8.com/material-two-tone/24/buy.png"}
                   alt="cart icon"
                 />
@@ -342,9 +346,9 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
             </div>
             {!isLoggedIn ? (
               <div
-                className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${
+                className={`cursor-pointer bg-[#2874f0] px-[1rem] rounded-md text-white py-[0.5rem] flex items-center relative top-[0.2rem] gap-[0.3rem] ${
                   isSignupVisible &&
-                  "bg-gradient-to-r from-cyan-500 to-blue-500 text-white p-[0.3rem] rounded-lg"
+                  "bg-[#266cdd] text-white p-[0.3rem] rounded-lg"
                 }`}
                 onClick={toggleSignup}
               >
@@ -353,7 +357,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                   height={16}
                   src={"https://img.icons8.com/ios/50/guest-male.png"}
                   alt="yourlab icon"
-                  className={`${
+                  className={`invert-[1] ${
                     (isSignupVisible || pathname === "/signup") && "invert-[1]"
                   }`}
                 />
@@ -367,7 +371,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                   <Link
                     href="/profile"
                     className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${
-                      (pathname === "/profile") &&
+                      isProfileVisible &&
                       "bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg"
                     }`}
                     onClick={toggleProfile}
@@ -375,12 +379,9 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                     <Image
                       width={30}
                       height={30}
-                      src="https://img.icons8.com/ios-glyphs/30/user-male-circle.png"
+                      src={data?.avatar?.secure_url} //https://img.icons8.com/ios-glyphs/30/user-male-circle.png
                       alt="user-male-circle"
-                      className={`${
-                        (pathname === "/profile") &&
-                        "invert-[1]"
-                      }`}
+                      className={`rounded-full border-[0.1rem] border-black`} // ${(pathname === "/profile") && "invert-[1]"}
                     />
                     <div>Profile</div>
                   </Link>
@@ -421,7 +422,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                 onClick={toggleReports}
               >
                 <FaFileAlt className="text-xl xs:mr-2" />
-                <span>Report</span>
+                <span>Documents</span>
               </Link>
             </div>
             <div className="flex items-center space-x-4" onClick={() =>setIsOpen(false)}>
@@ -440,7 +441,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
             {!isLoggedIn ? (
               <div className="flex items-center space-x-4" onClick={() =>setIsOpen(false)}>
                 <div
-                  className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${
+                  className={`cursor-pointer bg-[#2874f0] px-[0.5rem] py-[0.3rem] rounded-md flex items-center relative top-[0.2rem] gap-[0.3rem] ${
                     isSignupVisible &&
                     "bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg"
                   }`}

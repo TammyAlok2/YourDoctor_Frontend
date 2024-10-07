@@ -5,11 +5,13 @@ import CardInfo from "@/components/HomePage/CardInfo";
 import ProfileData from "@/components/HomePage/ProfileData";
 import { useState } from "react";
 import LabCard from "./HomePage/LabCard";
+import DownloadApp from "./HomePage/DownLoadApp";
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState("");
   return (
     <div>
+      <DownloadApp />
       <HomeCard setSearchTerm={setSearchTerm} />
       <div className="my-[3rem]">
         <ProfileData searchTerm={searchTerm} />

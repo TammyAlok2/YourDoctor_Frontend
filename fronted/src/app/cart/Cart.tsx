@@ -2,14 +2,18 @@
 
 import Link from "next/link";
 import AppointmentData from "../../components/CartComponents/AppointmentCard";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/GlobalRedux/store";
-import { useRouter } from "next/navigation";
-import { getAllAppointments } from "../GlobalRedux/slice/AuthSlice";
+import { useRouter, useSearchParams } from "next/navigation";
+import { getAllAppointments, getAllDoctor } from "../GlobalRedux/slice/AuthSlice";
 import Head from "next/head";
 import AOS from "aos";
+import { isArray } from "util";
+// import { Doctor } from "../(page)/appointmentdetails/appointmentDetailContent/AppointmentDetailContent";
+// import { get } from "http";
+
 // import { generateMetadata } from './metadata';
 
 interface AppointmentsDetails {
@@ -32,10 +36,16 @@ interface AppointmentsDetails {
   _id?: string;
 }
 
+interface Doctor {
+  _id: string;
+  joinStatus: boolean;
+}
+
 export default function Cart() {
   const dispatch = useDispatch<AppDispatch>();
   const [appointmentsData, setAppointmentsData] = useState<AppointmentsDetails[] | null>([]);
-  console.log(appointmentsData);
+  const [doctorData, setDoctorData] = useState<Doctor | null>(null);
+  // console.log(appointmentsData);
 
   useEffect(() => {
     AOS.init({
@@ -56,6 +66,21 @@ export default function Cart() {
     appointments();
   }, [dispatch]);
 
+  useEffect(() => {
+    const getDoctorViaAppointment = async () => {
+      const res = await dispatch(getAllDoctor());
+      setDoctorData(res?.payload?.data);
+    };
+    getDoctorViaAppointment();
+  }, [dispatch]);
+  // console.log(doctorData)
+
+  // Match doctorId for each appointment and doctor
+  const getDoctorForAppointment = (doctorId: string) => {
+    const doctor = Array.isArray(doctorData) ? doctorData.find((doctor: Doctor) => doctor._id === doctorId) : null;
+    return doctor
+  };
+
   return (
     <>
       {/* Dynamic Head Metadata */}
@@ -65,19 +90,24 @@ export default function Cart() {
       </Head>
       <div className="min-h-screen bg-gray-50 py-10">
         <div className="container mx-auto">
+          <Suspense fallback={<div>Loading appointments...</div>}>
           {/* Multiple Appointments */}
-          {appointmentsData?.map((data: any, index: any) => (
-            <div key={index} data-aos="fade-left">
-              <AppointmentData
-                name={data?.patientName}
-                date={data?.date}
-                time={data?.time}
-                patientId={data?._id}
-                doctorId={data?.doctorId}
-              />
-            </div>
-          ))}
-
+          {appointmentsData?.map((data: any, index: any) => {
+            const doctorForAppointment = getDoctorForAppointment(data.doctorId || "");
+            // console.log(doctorForAppointment.joinStatus)
+            return (
+              <div key={index} data-aos="fade-left">
+                {doctorForAppointment?.joinStatus && <AppointmentData
+                  name={data?.patientName}
+                  date={data?.date}
+                  time={data?.time}
+                  patientId={data?._id}
+                  doctorId={data?.doctorId}
+                />}
+              </div>
+            )
+          })}
+          </Suspense>
           {/* Back to Home Button */}
           <div className="flex justify-center mt-10" data-aos="fade-in">
             <Link href="/">

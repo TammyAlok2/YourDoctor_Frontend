@@ -75,7 +75,7 @@ const ProfileSettings: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-4" data-aos="fade-in">
+    <div className="flex flex-col items-center bg-gray-50 p-4" data-aos="fade-in">
       <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
         {/* Profile Picture */}
         <div className="flex flex-col items-center">
