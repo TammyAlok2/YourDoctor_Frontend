@@ -75,7 +75,7 @@ const Login: React.FC<LoginProps> = ({onLoginCancel, onBack, onBack1 }) => {
   }
 
   return (
-    <div className="flex justify-center items-center bg-white rounded-xl xs:h-screen" data-aos="fade-in">
+    <div className="flex border-black border-[0.1rem] justify-center items-center bg-white rounded-xl xs:h-screen" data-aos="fade-in">
       <div className="w-full max-w-sm p-8 rounded mt-3">
         <h1 className="text-2xl text-gray-950 font-bold mb-4 text-center">
           Hi, Welcome Back! 👋

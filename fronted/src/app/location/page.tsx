@@ -146,7 +146,7 @@ const LocationSection: React.FC<LocationSectionProps> = ({
             type="number"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Enter pincode"
+            placeholder="Enter pincode / city"
             className="focus:outline-none w-full"
             onClick={() => setShowSuggestions(true)}
           />

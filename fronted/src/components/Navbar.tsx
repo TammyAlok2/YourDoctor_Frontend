@@ -17,6 +17,7 @@ import {
   FaUser,
   FaBars,
 } from "react-icons/fa";
+import { ImLocation2 } from "react-icons/im";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { GiTireIronCross } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
@@ -238,19 +239,22 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
               onClick={toggleLocation}
               className={`flex items-center justify-center gap-1 mt-2 xs:mt-[0.4rem] xs:-ml-8 sm:mt-[0.4rem] cursor-pointer ${
                 isLocationVisible &&
-                "bg-[#0A8E8A] text-white p-[0.3rem] xs:pl-4 rounded-lg"
+                "bg-[#0A8E8A] text-white py-[0.5rem] px-[1rem] xs:pl-4 rounded-lg"
               }`}
             >
-              <Image
+              {/* <Image
                 className={`${
                   isLocationVisible ? "invert-[1]" : "invert-[0.4]"
                 }`}
-                width={28}
-                height={24}
+                width={30}
+                height={28}
                 src={"https://img.icons8.com/ios/50/marker--v1.png"}
                 alt="location icon"
                 onClick={() =>setIsOpen(false)}
-              />
+              /> */}
+              <ImLocation2 className={`text-[2rem] text-black ${
+                  isLocationVisible ? "invert-[1]" : "invert-[0.4]"
+                }`}/>
               <span className="hidden sm:block text-lg leading-[1.3rem] xs:mr-4" onClick={() =>setIsOpen(false)}>
                 {selectedPincode || location ? (
                   <>
@@ -258,7 +262,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                     <p>{`${location}`}</p>
                   </>
                 ) : (
-                  "Location"
+                  "Search by city"
                 )}
               </span>
               <div onClick={handleShowFullAddress}>
@@ -277,7 +281,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                         </p>
                       </div>
                     ) : (
-                      "Location"
+                      "Search by city"
                     )}
                   </span>
                 )}
@@ -288,12 +292,12 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
             <div
               onClick={toggleNeed}
               className={`flex items-center justify-center gap-1 mt-2 cursor-pointer ${
-                isNeedVisible && "bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg"
+                isNeedVisible && "bg-[#0A8E8A] text-white py-[0.5rem] px-[1rem] rounded-lg"
               }`}
             >
               <Image
-                width={20}
-                height={20}
+                width={28}
+                height={28}
                 src={"https://img.icons8.com/material-outlined/24/phone.png"}
                 alt="help icon"
                 className={`${isNeedVisible ? "invert-[1]" : "invert-[0.3]"}`}
@@ -305,13 +309,13 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                 href={"/reports"}
                 className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${
                   isReportsVisible &&
-                  "bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg"
+                  "bg-[#0A8E8A] text-white py-[0.5rem] px-[1rem] rounded-lg"
                 }`}
                 onClick={toggleReports}
               >
                 <Image
-                  width={16}
-                  height={16}
+                  width={24}
+                  height={24}
                   src={"/reports.png"}
                   alt="reports icon"
                   className={`${
@@ -328,7 +332,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                 href={"/cart"}
                 className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${
                   isCartVisible &&
-                  "bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg"
+                  "bg-[#0A8E8A] text-white py-[0.5rem] px-[1rem] rounded-lg"
                 }`}
                 onClick={toggleCart}
               >
@@ -336,8 +340,8 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                   className={`${
                     isCartVisible ? "invert-[1]" : "invert-[0.4]"
                   }`}
-                  width={22}
-                  height={22}
+                  width={30}
+                  height={30}
                   src={"https://img.icons8.com/material-two-tone/24/buy.png"}
                   alt="cart icon"
                 />
@@ -366,19 +370,19 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
             ) : (
               <div>
                 <button
-                  className={`flex items-center w-full space-x-1 bg-gradient-to-r rounded-xl`}
+                  className={`flex items-center w-full space-x-4 bg-gradient-to-r rounded-xl`}
                 >
                   <Link
                     href="/profile"
-                    className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${
+                    className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.5rem] ${
                       isProfileVisible &&
-                      "bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg"
+                      "bg-[#0A8E8A] text-white py-[0.3rem] px-[1rem] rounded-lg"
                     }`}
                     onClick={toggleProfile}
                   >
                     <Image
-                      width={30}
-                      height={30}
+                      width={48}
+                      height={48}
                       src={data?.avatar?.secure_url} //https://img.icons8.com/ios-glyphs/30/user-male-circle.png
                       alt="user-male-circle"
                       className={`rounded-full border-[0.1rem] border-black`} // ${(pathname === "/profile") && "invert-[1]"}
@@ -500,7 +504,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
           onClick={() => setNeedVisible(false)}
         >
           <div
-            className="absolute right-[15%] top-[1.5rem] z-10 xs:left-0 xs:top-0 xs:w-full"
+            className="absolute left-[33%] w-[40rem] top-[10%] z-10 xs:left-0 xs:top-0 xs:w-full"
             onClick={handleInsideClick}
           >
             <div

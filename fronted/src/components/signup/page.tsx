@@ -122,12 +122,12 @@ const SignupPage: React.FC<SignProps> = ({onSignupCancel, onBack}) => {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-white rounded-xl" data-aos="fade-in">
+    <div className="flex border-black border-[0.1rem] justify-center items-center min-h-[85vh] mt-3 bg-white rounded-xl" data-aos="fade-in">
       <div className="w-full max-w-sm p-8 rounded -mt-5">
         <h1 className="text-2xl text-gray-950 font-bold mb-4 text-center">
           Create an Account
         </h1>
-        <form onSubmit={createNewAccount}>
+        <form onSubmit={createNewAccount} className="flex flex-col gap-[0.5rem]">
           <div className="my-1 text-[0.9rem]">
             <label htmlFor="image_uploads" className="cursor-pointer">
               {previewImage ? (

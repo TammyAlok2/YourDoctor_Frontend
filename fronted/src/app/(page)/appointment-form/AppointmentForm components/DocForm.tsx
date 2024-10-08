@@ -59,7 +59,6 @@ const DocForm = () => {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isDiabetesSelectOpen, setIsDiabetesSelectOpen] = useState(false);
 
-
   useEffect(() => {
     AOS.init({
       // Global settings:

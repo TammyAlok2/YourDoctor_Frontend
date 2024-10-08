@@ -103,7 +103,7 @@ const ProfileData: React.FC<ProfileDataProps> = ({ searchTerm }) => {
         {isLoading
           ? Array(2).fill(0).map((_, index) => <ShimmerUI key={index} />)
           : displayedData.map((userData) => (
-            <div className='shadow-md p-[1rem]'>
+            <div className='shadow-md p-[1rem] pb-[0.5rem]'>
             <div
               className="flex justify-end rounded-md w-[100%] xs:flex-col-reverse sm:flex-row-reverse sm:gap-[1.5rem] lg:gap-[2rem] text-[0.9rem] relative"
               key={userData._id}
@@ -132,7 +132,7 @@ const ProfileData: React.FC<ProfileDataProps> = ({ searchTerm }) => {
                 {/* <p><span className='font-semibold'>Pincode:</span> </p> */}
                 
               </div>
-              <div className="flex flex-col items-center w-[40%] xs:items-center xs:ml-0 relative gap-[1rem] xs:w-[100%] sm:w-auto lg:w-[40%]">
+              <div className="flex flex-col items-center justify-between w-[40%] xs:items-center xs:ml-0 relative gap-[1rem] xs:w-[100%] sm:w-auto lg:w-[40%]">
                 
                 <div className="rounded-full relative xs:items-center xs:ml-0">
                   <div className={`${userData?.status === false ? "" : "border-4 rounded-full w-[8rem] border-[#0A8E8A] flex text-center justify-center p-[0.2rem] mx-auto"}`}>
@@ -160,7 +160,7 @@ const ProfileData: React.FC<ProfileDataProps> = ({ searchTerm }) => {
                 </div>
               </div>
             </div>
-                <button className="bg-[#0A8E8A] w-[90%] ml-3 mt-4 hover:bg-[#0A8E8A] p-[0.4rem] text-white rounded-md xl:text-[0.8rem] xs:w-[100%] sm:w-[99%] sm:ml-1 lg:w-[95%] 2xl:text-[1rem] lg:text-[0.8rem] xs:items-center xs:ml-0">
+                <button className="bg-[#0A8E8A] w-[90%] ml-3 mt-4 hover:bg-[#0A8E8A] p-[0.3rem] text-white rounded-md xl:text-[0.8rem] xs:w-[100%] sm:w-[99%] sm:ml-1 lg:w-[90%] relative left-8 2xl:text-[1rem] lg:text-[0.8rem] xs:items-center xs:ml-0 lg:py-[0.6rem]">
                   <Link href={`/appointment/${userData._id}`}>
                     Book Appointment
                   </Link>
