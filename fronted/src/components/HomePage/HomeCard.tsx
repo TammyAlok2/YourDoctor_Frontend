@@ -4,24 +4,64 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import "aos/dist/aos.css";
 import AOS from "aos";
-import Link from "next/link";
-
+// import Link from "next/link";
+// import AutoTypingAndDeletingText from "./AutoTypingText";
+import '../../../src/app/globals.css'
+// import { FlipWords } from "../ui/flip-words";
+// import { InfiniteMovingCards } from "../ui/infinite-moving-cards";
+import { CiSearch } from "react-icons/ci";
 interface HomeCard {
   setSearchTerm: any;
 }
 
+const testimonials = [
+  {
+    img:"https://wallpapercave.com/wp/wp2968489.jpg",
+    name: "Comprehensive Health Support",
+    title: "Offering extensive medical care, this service covers everything from preventive health measures to chronic disease management. Patients receive continuous, personalized attention to help them maintain overall wellness and address a variety of health concerns.",
+  },
+  {
+    img:"https://wallpaperaccess.com/full/1189426.jpg",
+    name: "Emergency Care Specialist",
+    title: "Providing fast and effective treatment in critical situations, this service is designed to stabilize and manage urgent medical conditions. Patients can count on rapid response and expert care during emergencies, ensuring timely intervention when it's needed most.",
+  },
+  {
+    img:"https://tse1.mm.bing.net/th?id=OIF.%2bdxTgR96kOyk1V8uipltYg&pid=Api&P=0&h=220",
+    name: "Chronic Care Support Expert",
+    title: "This service focuses on providing ongoing support for managing chronic conditions such as diabetes, hypertension, and asthma. With tailored care plans and continuous monitoring, patients are empowered to live healthier lives while effectively managing their conditions.",
+  },
+  {
+    img:"https://wallpaperaccess.com/full/677511.jpg",
+    name: "Preventive Health Advocate",
+    title: "Dedicated to promoting health and preventing illness, this service offers routine check-ups, screenings, and personalized wellness plans. The focus is on early detection and proactive measures to help patients stay healthy and reduce the risk of future medical issues.",
+  },
+  {
+    img:"https://tse1.mm.bing.net/th?id=OIP.hITPmpTKXkGwqBfqDJt-QgHaE7&pid=Api&P=0&h=220",
+    name: "Rehabilitation and Recovery",
+    title: "Offering specialized rehabilitation services, this support system helps patients recover from surgeries, injuries, or long-term illnesses. Through personalized recovery plans and therapy, patients regain strength, mobility, and overall well-being.",
+  },
+];
+
+const textArray = [
+  "Welcome to YourLab!",
+  "Your health, your way.",
+  "Empowering better healthcare.",
+  "Discover personalized care.",
+  "Your journey to wellness begins here."
+];
+
 const cardData = [
   {
     cardImage:
-      "https://static.vecteezy.com/system/resources/thumbnails/008/137/038/small/female-doctor-in-medical-clothes-with-a-stethoscope-in-her-hands-on-a-medical-blue-background-side-view-healthcare-banner-copy-space-photo.jpeg",
+      "https://dg0qqklufr26k.cloudfront.net/wp-content/uploads/2024/06/cosmetologist-consult_homepage-banner-desktop.webp",
   },
   {
     cardImage:
-      "https://previews.123rf.com/images/kritchanut/kritchanut1608/kritchanut160800094/63246026-doctor-hand-touching-empty-virtual-screen-modern-medical-banner-background-concept.jpg",
+      "https://dg0qqklufr26k.cloudfront.net/wp-content/uploads/2024/09/main-banner-mobile.webp",
   },
   {
     cardImage:
-      "https://unihealthparanaque.com/static/image/services/servicecenter/othermedical_dep.jpg",
+      "https://dg0qqklufr26k.cloudfront.net/wp-content/uploads/2024/09/desktop-vitamin-banner-1.webp",
   },
 ];
 
@@ -54,7 +94,7 @@ const HomeCard: React.FC<HomeCard> = ({ setSearchTerm }) => {
   useEffect(() => {
     AOS.init({
       // Global settings:
-      duration: 1000, // values from 0 to 3000, with step 50ms
+      duration: 2000, // values from 0 to 3000, with step 50ms
       once: false, // whether animation should happen only once - while scrolling down
       mirror: false, // whether elements should animate out while scrolling past them
     });
@@ -96,82 +136,117 @@ const HomeCard: React.FC<HomeCard> = ({ setSearchTerm }) => {
     return null;
   }
 
+  // Scroll the page to the top when the button is clicked
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 450,
+      behavior: 'smooth',
+    });
+  };
+
   return (
-    <div className="mt-[1.5rem] xs:mt-8" data-aos="fade-in">
-      <div className="rounded-2xl w-[64.4%] p-[2rem] relative overflow-hidden mx-auto border-teal-500 border-[0.1rem] bg-gradient-to-br from-[#00ffffc2] to-[#dadde2ca] z-[1]">
+    <div className="mx-auto mt-[7.1rem]">
+      <>
+      <div className={`p-[2rem] relative overflow-hidden z-[-1] w-[73%] mx-auto h-[50vh] flex items-center justify-center flex-row-reverse gap-5`}>
+        {/* <InfiniteMovingCards
+        items={testimonials}
+        direction="right"
+        speed="normal"
+      /> */}
         {cardData.map((cardItem, index) => (
-          <div
-            className={index === current ? "slide active" : "slide"}
-            key={index}
-          >
-            {index === current && (
-              <Image
-                src={cardItem.cardImage}
-                alt="cardImage"
-                width={100}
-                height={100}
-                className="xs:h-[11rem] sm:h-full w-full h-full absolute -z-10 object-fit top-0 left-0 block"
-                // layout="responsive"
-                // quality={100}
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                data-aos="fade-left"
-                priority
-              />
-            )}
-          </div>
+          <>
+            <div
+              className={index === current ? "slide active" : "slide"}
+              key={index}
+            >
+              {index === current && (
+                <Image
+                  src={cardItem.cardImage}
+                  alt="cardImage"
+                  // width={500}
+                  // height={500}
+                  className="xs:h-[11rem] sm:h-full w-[80%] h-full absolute object-fit top-0 left-0 block contrast-75 rounded-2xl"
+                  fill
+                  objectFit="cover" // ensures the image covers the full area without distortion
+                  priority={true} // loads image with high priority
+                  quality={100} // improves image quality (value from 0 to 100)
+                  data-aos="fade-left"
+                // priority
+                />
+              )}
+            </div>
+
+          </>
         ))}
-        <div className="flex items-center justify-center font-semibold text-[2.3rem] mt-[3rem] xs:mb-[7rem] sm:mb-[5rem] md:mb-[7rem] xl:mb-[15rem] lg:mb-[7rem]"></div>
-        <div className="flex items-center justify-center gap-[5rem] xs:flex-col sm:flex-col md:flex-row lg:justify-between lg:pr-2 xl:justify-between xl:gap-[8rem] mb-[-1rem]">
-          <div className={`relative h-[3.4rem] bg-white rounded-lg xs:mt-2 shadow-lg ${showSuggestions && suggestions.length > 0 && 'absolute top-[-16rem]'}`}>
-            
-              <input
-                className={`w-full h-full rounded-lg relative py-[1.4rem] px-[1rem] outline-0 sm:w-[11rem] text-[1.3rem] xs:w-[12rem] lg:w-[39rem] active:bg-[#f3f1f1]`}
-                placeholder={"Search here"}
-                value={inputVal}
-                onChange={handleChange}
-                onFocus={() => setShowSuggestions(true)}
-                onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}  // small delay to allow click on suggestions
-              />
-              <Image
-                className="absolute right-[0.5rem] top-[0.6rem] invert-[0.2] cursor-pointer"
-                width={30}
-                height={30}
-                src={"https://img.icons8.com/ios-glyphs/50/search--v1.png"}
-                alt="search-icon"
-              />
-
-            {/* Search Suggestions Dropdown */}
-            {showSuggestions && suggestions.length > 0 && (
-              <ul className="absolute left-0 right-0 bg-white shadow-lg rounded-lg py-2 max-h-[10rem] overflow-y-auto z-50">
-                {suggestions.map((suggestion, index) => (
-                  <li
-                    key={index}
-                    className="px-4 py-2 z-10 hover:bg-gray-100 cursor-pointer"
-                    onClick={() => {
-                      setInputVal(suggestion);
-                      setShowSuggestions(true);
-                      handleSuggestionClick(suggestion)
-                    }}
-                    
-                    // onChange={handleChange}
-                  >
-                    {suggestion}
-                  </li>
-                ))}
-              </ul>
-            )}
+        <div className="flex items-center justify-center font-semibold text-[2.3rem]"></div>
+        <div className={`flex gap-[0.5rem] xs:flex-col sm:flex-col md:flex-col lg:pr-2 mb-[-1rem] w-[40%] ${(showSuggestions && suggestions.length > 0) && 'relative top-[-5rem]'}`}>
+          <div className='relative p-[1rem] rounded-xl text-left space-y-3'>
+            {/* <div className={`absolute z-[-1] opacity-50 inset-0 backdrop-blur-lg h-[100%]`}></div> */}
+            {/* <AutoTypingAndDeletingText /> */}
+            {/* <FlipWords words={textArray} className="text-6xl leading-tight text-black [text-shadow:0_0_.2rem_black] font-medium" />
+            <h1 className="text-black text-[1.3rem] font-[400] [text-shadow:0_0_.2rem_black]">At YourLab, we believe in empowering you with the tools and resources to take control of your health.</h1> */}
+            {/* <div className="flex items-center gap-10">
+              <div className="bg-teal-400 hover:bg-black p-2 rounded-full flex items-center justify-center">
+            <Image width="30" height="19" src="https://img.icons8.com/external-prettycons-lineal-prettycons/49/FFFFFF/external-heart-sports-prettycons-lineal-prettycons.png" alt="external-heart-sports-prettycons-lineal-prettycons" className="invert-[1] hover:invert-[0] transition-all hover:rotate-360"/>
+              </div>
+            <div className="bg-teal-400 hover:bg-black p-2 rounded-full flex items-center justify-center">
+            <Image width="30" height="30" src="https://img.icons8.com/glyph-neue/64/FFFFFF/doctors-bag.png" alt="doctors-bag" className="invert-[1] hover:invert-[0] transition-all hover:rotate-360"/>
+            </div>
+            <div className="bg-teal-400 hover:bg-black p-2 rounded-full flex items-center justify-center">
+            <Image width="30" height="30" src="https://img.icons8.com/dotty/80/FFFFFF/stethoscope.png" alt="stethoscope" className="invert-[1] hover:invert-[0] transition-all hover:rotate-360"/>
+            </div>
+            </div> */}
+          </div>
 
           </div>
-          <div className="flex gap-[3rem] items-center justify-center ml-[-4rem]" data-aos="fade-left">
-            <button className="xs:text-[0.8rem] xs:w-[6rem] text-[1.2rem] font-semibold text-white bg-[#FD7456] hover:bg-[rgb(243_98_66)] hover:shadow-[0rem_0rem_1rem_0rem_rgb(243_98_66)] py-[0.75rem] px-[1rem] rounded-xl [box-shadow:0_0_0.4rem_0_gray] sm:w-[9rem] active:text-[0.8rem] cursor-pointer">
-              <Link href={"/labtests"}>Lab Tests</Link>
-            </button>
-            <button className="text-[1.2rem] font-semibold text-white bg-[#0A8E8A] hover:bg-[rgb(10_129_126)] hover:shadow-[0rem_0rem_1rem_0rem_rgb(10_129_126)] py-[0.75rem] px-[1rem] rounded-xl [box-shadow:0_0_0.4rem_0_gray] sm:w-[9rem] active:text-[0.8rem]">
-              <Link href={"/doctors"}>Doctors</Link>
-            </button>
-          </div>
+
         </div>
+        <div className="w-[40%] mx-auto mb-4 -mt-7 z-10">
+        <div className={`relative h-[3rem] bg-white rounded-full shadow-lg`}>
+          {/* // ${showSuggestions && suggestions.length > 0 && 'absolute top-[-16rem]'} */}
+
+          <input
+            className={`w-[100%] h-full rounded-full relative py-[1.3rem] px-[1.3rem] outline-0 text-[1rem] active:bg-[#f3f1f1] bg-[rgb(255,255,255)]`}
+            placeholder={"Search doctors by name"}
+            value={inputVal}
+            onChange={handleChange}
+            onFocus={() => setShowSuggestions(true)}
+            onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}  // small delay to allow click on suggestions
+          />
+          <div className='absolute right-0 top-0 h-full w-[3.2rem] rounded-full bg-teal-300 hover:bg-teal-600 flex items-center justify-center'>
+          {/* <Image
+            className="right-[0.5rem] top-[0.6rem] invert-[0.2] cursor-pointer"
+            width={30}
+            height={30}
+            src={"/search_icon.png"}
+            alt="search-icon"
+          /> */}
+          <CiSearch className="right-[0.5rem] top-[0.6rem] invert-[0.2] cursor-pointer text-[1.5rem]"/>
+          </div>
       </div>
+
+          {/* Search Suggestions Dropdown */}
+          {showSuggestions && suggestions.length > 0 && (
+            <ul className="scrollbar-custom relative left-0 right-0 bg-white shadow-lg rounded-lg py-3 max-h-[14rem] overflow-y-auto z-50" onClick={scrollToTop}>
+              {suggestions.map((suggestion, index) => (
+                <li
+                  key={index}
+                  className={`px-4 py-2 z-10 hover:bg-gray-100 cursor-pointer`}
+                  onClick={() => {
+                    setInputVal(suggestion);
+                    setShowSuggestions(true);
+                    handleSuggestionClick(suggestion)
+                  }}
+
+                // onChange={handleChange}
+                >
+                  {suggestion}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+          </>
     </div>
   );
 };

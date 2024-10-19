@@ -25,9 +25,14 @@ const nextConfig = {
       "unihealthparanaque.com",
       "www.figma.com",
       "bookmerilab.com",
-      "static.vecteezy.com",
+      "dg0qqklufr26k.cloudfront.net",
       "img.freepik.com",
-      "thumbs.dreamstime.com"
+      "thumbs.dreamstime.com",
+      "wallpaperaccess.com",
+      "cdn.iconscout.com",
+      "ultra-realhomes.b-cdn.net",
+      "tse1.mm.bing.net",
+      "wallpapercave.com"
     ],
   },
   async rewrites() {

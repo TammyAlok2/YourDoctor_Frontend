@@ -5,6 +5,8 @@ import { Providers } from "./GlobalRedux/provider";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Loading from "./Loading";
+import { TracingBeam } from "@/components/ui/tracing-beam";
+import ScrollUpButton from "./Scrollup";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -41,7 +43,12 @@ export default function RootLayout({
         <Providers>
           <Loading />
           <Navbar />
+          <div className="absolute right-0 bottom-0">
+      <ScrollUpButton />
+          </div>
+      <TracingBeam className="px-0">
           {children}
+      </TracingBeam>
           <Footer />
         </Providers>
       </body>

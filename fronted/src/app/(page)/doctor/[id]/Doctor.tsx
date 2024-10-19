@@ -32,7 +32,7 @@ interface Doctor {
 }
 
 const ShimmerUI = () => (
-  <div className="animate-pulse">
+  <div className="animate-pulse mt-[5rem]">
     <div className="bg-white p-6 md:p-8 lg:p-12 rounded-lg shadow-lg mb-12">
       <div className="flex flex-col md:flex-row justify-between items-start">
         <div className="text-black space-y-4 w-full md:w-2/3">
@@ -151,7 +151,7 @@ const DoctorPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 mt-[4rem]">
       <header className="h-8"></header>
       <main className="max-w-4xl mx-auto pb-4 px-4 md:px-6 lg:px-4 xl:px-8">
         <div className="bg-white p-6 xs:w-[82%] xs:mx-auto md:p-8 lg:p-8 rounded-lg shadow-lg mb-4 relative" data-aos="fade-out">

@@ -109,7 +109,7 @@ const AppointmentSec1: React.FC = () => {
 
   return (
     <div>
-      <div className="2xl:w-[948px] xs:flex-col xl:w-[70rem] lg:w-[58rem] mx-auto flex mb-[3rem] mt-[4rem] flex-row-reverse px-[2rem] pt-[1rem] shadow-lg rounded-xl md:w-[40rem] sm:w-[30rem] xs:w-[20rem] justify-between relative" data-aos="fade-in">
+      <div className="2xl:w-[948px] xs:flex-col xl:w-[70rem] lg:w-[58rem] mx-auto flex mb-[3rem] mt-[8rem] flex-row-reverse px-[2rem] pt-[1rem] shadow-lg rounded-xl md:w-[40rem] sm:w-[30rem] xs:w-[20rem] justify-between relative" data-aos="fade-in">
         <div className="flex space-y-2 relative justify-center">
           <Link href={`/doctor/${params.id}`}>
             <div className={`${doctor.status === false ? "" : "border-4 rounded-full border-[#0A8E8A] w-[8.8rem] h-[8.8rem] flex text-center justify-center p-[0.2rem] mx-auto"}`}>

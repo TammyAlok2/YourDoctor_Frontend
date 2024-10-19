@@ -8,9 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/GlobalRedux/store";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getAllAppointments, getAllDoctor } from "../GlobalRedux/slice/AuthSlice";
-import Head from "next/head";
 import AOS from "aos";
-import { isArray } from "util";
+// import { isArray } from "util";
 // import { Doctor } from "../(page)/appointmentdetails/appointmentDetailContent/AppointmentDetailContent";
 // import { get } from "http";
 
@@ -83,12 +82,7 @@ export default function Cart() {
 
   return (
     <>
-      {/* Dynamic Head Metadata */}
-      <Head>
-        <title>Appointment Details</title>
-        <meta name="description" content="Details of your medical appointment and doctor's information." />
-      </Head>
-      <div className="min-h-screen bg-gray-50 py-10">
+      <div className="min-h-screen py-10 mt-[5rem]">
         <div className="container mx-auto">
           <Suspense fallback={<div>Loading appointments...</div>}>
           {/* Multiple Appointments */}

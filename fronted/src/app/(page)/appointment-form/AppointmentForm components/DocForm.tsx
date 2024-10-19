@@ -151,7 +151,7 @@ const DocForm = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-full my-[2rem] xs:w-[99%] xs:mx-auto" data-aos="fade-up">
+    <div className="flex justify-center items-center h-full my-[2rem] xs:w-[99%] xs:mx-auto mt-[6rem]" data-aos="fade-up">
       <div className="w-full max-w-[63rem] h-[85%] bg-white py-[0.8rem] xs:px-[2rem] px-[4rem] border-[0.1rem] border-gray-700 mx-auto">
         <FormHead />
 

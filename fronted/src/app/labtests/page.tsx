@@ -7,7 +7,7 @@ import React from "react";
 const LabTests: React.FC = () => {
   return (
     <>
-      {/* <div className="flex flex-col items-center p-4">
+      {/* <div className="flex flex-col items-center p-4 mt-[4rem]">
         <div className="relative w-full max-w-md xs:w-[60%] sm:w-[60%] md:w-[60%] lg:w-[58%]">
           <input
             type="text"
@@ -36,7 +36,7 @@ const LabTests: React.FC = () => {
               <LabTestsCards />
         </div>
       </div> */}
-      <div className="text-[3rem] font-semibold flex items-center justify-center h-[50vh]">
+      <div className="text-[3rem] font-semibold flex items-center justify-center h-[50vh] mt-[4rem]">
         Coming Soon...
       </div>
     </>

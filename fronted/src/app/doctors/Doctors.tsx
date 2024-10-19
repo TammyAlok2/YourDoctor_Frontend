@@ -36,7 +36,7 @@ const Doctors: React.FC = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center p-4">
+      <div className="flex flex-col items-center p-4 mt-[6rem]">
         <div className="relative w-full max-w-md xs:w-[60%] sm:w-[60%] md:w-[60%] lg:w-[58%]">
           <input
             type="text"

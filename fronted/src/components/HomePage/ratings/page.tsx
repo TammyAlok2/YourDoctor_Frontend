@@ -16,7 +16,7 @@ const ReviewComponent:React.FC = () => {
         {[1, 2, 3, 4, 5].map((star) => (
           <svg
             key={star}
-            className={`h-7 w-7 cursor-pointer ${
+            className={`h-7 w-7 cursor-none ${
               rating >= star ? 'text-yellow-500' : 'text-gray-300'
             }`}
             fill="currentColor"

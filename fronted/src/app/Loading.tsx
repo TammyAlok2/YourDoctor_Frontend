@@ -1,5 +1,6 @@
 "use client";
 
+import { color } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { RiseLoader } from "react-spinners";
 
@@ -18,8 +19,9 @@ const Loading = () => {
     }, []);
   return <div>
     {
-        isLoading ? <div className="text-[3rem] font-bold flex items-center justify-center absolute top-0 z-10 w-screen h-screen bg-[#0000002c]"><RiseLoader color="#37a9a3" /></div> : ""
+        isLoading ? <div className="text-[3rem] text-[#37a9a3] font-bold flex items-center justify-center absolute top-0 z-10 w-screen h-[100%] bg-[#0000002c]"><div className="loader"></div></div> : ""
     }
+    {/* <RiseLoader color="#37a9a3" /> */}
   </div>;
 };
 

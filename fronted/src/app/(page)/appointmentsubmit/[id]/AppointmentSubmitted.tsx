@@ -128,7 +128,7 @@ const AppointmentSubmitted: React.FC = () => {
   return (
     <>
       <div>
-        <div className="2xl:w-[70rem] xl:w-[70rem] lg:w-[58rem] mx-auto flex my-[2rem] rounded-xl flex-row-reverse justify-between px-[1.5rem] py-[1rem] shadow-md md:w-[40rem] sm:w-[30rem] xs:w-[20rem] xs:flex-col">
+        <div className="2xl:w-[70rem] xl:w-[70rem] lg:w-[58rem] mx-auto flex my-[2rem] rounded-xl flex-row-reverse justify-between px-[1.5rem] py-[1rem] shadow-md md:w-[40rem] sm:w-[30rem] xs:w-[20rem] xs:flex-col mt-[6rem]">
           <div className="flex items-center flex-col space-y-2">
             <div className="w-[8rem] h-[8rem] rounded-full relative flex items-center justify-center">
               <div
