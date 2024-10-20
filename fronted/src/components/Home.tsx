@@ -32,17 +32,17 @@ const Home = () => {
       <div>
         <BlogSection />
       </div>
-      <div>
-        <Supporters />
-      </div>
       {/* <div>
         <Testimonials />
-      </div> */}
+        </div> */}
+      <div>
+        <LabLists />
+      </div>
       <div>
         <ReviewPage />
       </div>
       <div>
-        <LabLists />
+        <Supporters />
       </div>
       <div>
         <FaqPage />
