@@ -4,7 +4,8 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { BsArrowRight } from "react-icons/bs";
 import AOS from "aos";
-import Link from 'next/link';
+import { title } from 'process';
+import { date } from 'yup';
 
 interface BlogPost {
   id: number;
@@ -71,20 +72,140 @@ const blogPosts: BlogPost[] = [
     category: 'Sleep Health',
     userName: 'Laura Wilson', // Added user name
   },
+  {
+    id: 7,
+    title: 'Exercise and its Benefits for Heart Health',
+    description: 'Regular exercise strengthens the heart and improves cardiovascular function.',
+    imageUrl: '/blogimg7.png',
+    date: 'January 28, 2021',
+    category: 'Fitness',
+    userName: 'Samuel Brown',
+  },
+  {
+    id: 8,
+    title: 'Hydration and Why It Matters',
+    description: 'Staying hydrated is key to maintaining energy levels, skin health, and digestion.',
+    imageUrl: '/blogimg8.png',
+    date: 'April 15, 2022',
+    category: 'Hydration',
+    userName: 'Anna Thompson',
+  },
+  {
+    id: 9,
+    title: 'How Yoga Can Help Reduce Stress',
+    description: 'Yoga is an excellent way to manage stress, improve flexibility, and enhance mental clarity.',
+    imageUrl: '/blogimg9.png',
+    date: 'February 20, 2023',
+    category: 'Mental clarity',
+    userName: 'Olivia White',
+  },
+  {
+    id: 10,
+    title: 'The Importance of Regular Dental Checkups',
+    description: 'Regular dental checkups help in preventing cavities, gum disease, and other oral health issues.',
+    imageUrl: '/blogimg10.png',
+    date: 'November 3, 2022',
+    category: 'Dental Health',
+    userName: 'Christopher Clark',
+  },
+  {
+    id: 11,
+    title: 'Boosting Immunity with Natural Remedies',
+    description: 'Learn how natural remedies can help boost your immune system and fight infections.',
+    imageUrl: '/blogimg11.png',
+    date: 'March 8, 2023',
+    category: 'Health',
+    userName: 'Sophia Harris',
+  },
+  {
+    id: 12,
+    title: 'Healthy Aging: Tips for Seniors',
+    description: 'Simple lifestyle changes can help you age gracefully and stay healthy as you grow older.',
+    imageUrl: '/blogimg12.png',
+    date: 'October 19, 2022',
+    category: 'Lifestyle',
+    userName: 'David Moore',
+  },
+  {
+    id: 13,
+    title: 'Mindfulness Practices for Daily Life',
+    description: 'Incorporate mindfulness into your daily routine to reduce stress and improve mental clarity.',
+    imageUrl: '/blogimg13.png',
+    date: 'July 10, 2023',
+    category: 'Mental Health',
+    userName: 'Emma Lee',
+  },
+  {
+    id: 14,
+    title: 'Vegan Diets and Their Benefits',
+    description: 'Discover the health benefits of adopting a plant-based diet and how to get started.',
+    imageUrl: '/blogimg14.png',
+    date: 'June 1, 2021',
+    category: 'Nutrition',
+    userName: 'William Taylor',
+  },
+  {
+    id: 15,
+    title: 'Balancing Work and Life',
+    description: 'Achieve a better work-life balance with these practical tips for managing your time and energy.',
+    imageUrl: '/blogimg15.png',
+    date: 'September 12, 2021',
+    category: 'Lifestyle',
+    userName: 'Isabella Johnson',
+  },
+  {
+    id: 16,
+    title: 'Managing Diabetes through Diet',
+    description: 'Learn how to manage diabetes with a healthy diet and improve your overall well-being.',
+    imageUrl: '/blogimg16.png',
+    date: 'May 24, 2022',
+    category: 'Health',
+    userName: 'Daniel King',
+  },
+  {
+    id: 17,
+    title: 'Meditation for Mental Clarity',
+    description: 'Meditation can help improve focus, reduce anxiety, and enhance overall mental health.',
+    imageUrl: '/blogimg17.png',
+    date: 'August 29, 2023',
+    category: 'Mental Health',
+    userName: 'Mia Young',
+  },
+  {
+    id: 18,
+    title: 'The Benefits of Staying Active',
+    description: 'Regular physical activity helps maintain muscle strength and joint flexibility as you age.',
+    imageUrl: '/blogimg18.png',
+    date: 'October 6, 2021',
+    category: 'Fitness',
+    userName: 'James Turner',
+  },
 ];
 
 
 const categoryColors: Record<string, string> = {
-  'Health': 'bg-[#FE5948]',
-  'Lifestyle': 'bg-[#39cabb]',
-  'Mental Health': 'bg-[#ffcc00]',
-  'Nutrition': 'bg-[#8a2be2]',
-  'Stress Management': 'bg-[#20b2aa]',
-  'Sleep Health': 'bg-[#ff6347]',
+  1:'bg-[#FE5948]', // Red
+  2:'bg-[#39CABB]', // Teal
+  3:'bg-[#FFCC00]', // Yellow
+  4:'bg-[#8A2BE2]', // BlueViolet
+  5:'bg-[#20B2AA]', // LightSeaGreen
+  6:'bg-[#FF6347]', // Tomato
+  7:'bg-[#32CD32]', // LimeGreen
+  8:'bg-[#FF69B4]', // HotPink
+  9:'bg-[#FFA500]', // Orange
+  10:'bg-[#4682B4]', // SteelBlue
+  11:'bg-[#6A5ACD]', // SlateBlue
+  12:'bg-[#FF4500]', // OrangeRed
+  13:'bg-[#7FFF00]', // Chartreuse
+  14:'bg-[#DC143C]', // Crimson
+  15:'bg-[#00CED1]', // DarkTurquoise
+  16:'bg-[#FF1493]', // DeepPink
+  17:'bg-[#FFD700]', // Gold
+  18:'bg-[#8B008B]', // DarkMagenta
 };
 
 
-const BlogSection = () => {
+const AllBlogs = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [isButtonHovered, setIsButtonHovered] = useState<number | null | string>(null);
 
@@ -98,7 +219,7 @@ const BlogSection = () => {
   }, []);
 
   return (
-    <div className="w-[80%] mx-auto p-8 relative mb-[4rem]">
+    <div className="w-[80%] mx-auto p-8 relative mb-[4rem] mt-[6rem]">
       <h4 className='text-[rgb(125,125,125)] text-center mb-2 font-bold'>News & Article</h4>
       <h2 className="text-4xl text-center mb-8 text-[#00224f] font-bold">Stay Update With <span className='text-[rgb(17_164_160_/_99%)]'>YOURLab</span></h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -122,7 +243,7 @@ const BlogSection = () => {
                 priority={true} // Preload image if it's above the fold
               />
               <span
-                className={`absolute z-10 mt-[-4.7rem] text-white left-3 bottom-3 py-[.2rem] px-[.8rem] rounded-md ${categoryColors[post.category]}`}
+                className={`absolute z-10 mt-[-4.7rem] text-white left-3 bottom-3 py-[.2rem] px-[.8rem] rounded-md ${categoryColors[post.id]}`}
               >
                 {post.category}
               </span>
@@ -165,14 +286,8 @@ const BlogSection = () => {
           </div>
         ))}
       </div>
-      <div className='flex justify-center items-center absolute overflow-hidden right-10 my-8 gap-4'>
-        <h1 className='left-right-animation text-[#51c3c3f4] [text-shadow:0.1rem_0.1rem_0.2rem_#51c3c3f4] font-semibold text-[1.3rem]'>See all blogs {"->"}</h1>
-        <Link href="/allblogs">
-          <button className='font-semibold m-3 p-[0.5rem] shadow-lg hover:shadow-none hover-animation overflow-hidden flex items-center justify-center rounded-lg hover:text-white transition-all duration-1000 ease-in-out'><span className='w-[0rem] h-[0rem] bg-[#3ad0c4] rounded-full absolute -z-10 transition-all duration-1000 ease-in-out right-[-4rem]'></span>Click here...</button>
-        </Link>
-      </div>
     </div>
   );
 };
 
-export default BlogSection;
+export default AllBlogs;

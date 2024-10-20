@@ -121,7 +121,6 @@ const ProfileData: React.FC<ProfileDataProps> = ({ searchTerm }) => {
                   className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out ${isCardHovered === userData._id ? 'opacity-100' : 'opacity-0'
                     }`}
                 >
-                  {/* {isCardHovered === userData._id && <Image src="/cardhover.png" alt="hovereffect" fill objectFit='cover' priority={true} className='opacity-[0.1] relative left-[5rem] transition-transform duration-300 hover:scale-205' />} */}
                 </div>
                 <div
                   className="flex justify-end rounded-md w-[100%] xs:flex-col-reverse sm:flex-row-reverse sm:gap-[1.5rem] text-[0.9rem] relative"
@@ -147,8 +146,6 @@ const ProfileData: React.FC<ProfileDataProps> = ({ searchTerm }) => {
                       </a>
                     </ul>
                     <p className='xs:text-center text-[0.96rem] flex items-center gap-2 font-semibold text-gray-700'><span className='font-semibold'><Image width="30" height="30" src="https://img.icons8.com/sf-black-filled/50/0A8E8A/address.png" alt="address" /></span> {userData.address.trim()}, {userData.pincode}</p>
-
-                    {/* <p><span className='font-semibold'>Pincode:</span> </p> */}
 
                   </div>
                   <div className="flex flex-col items-center justify-evenly w-[40%] xs:items-center xs:ml-0 relative gap-[1rem] xs:w-[100%] sm:w-auto lg:w-[40%]">
@@ -195,7 +192,6 @@ const ProfileData: React.FC<ProfileDataProps> = ({ searchTerm }) => {
                       />
                     )}
                   </button>
-                  {/* <img width="50" height="50" src="https://img.icons8.com/ios/50/40C057/right--v1.png" alt="right--v1"/> */}
                 </Link>
               </div>
             </FollowerPointerCard>

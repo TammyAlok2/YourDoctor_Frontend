@@ -180,23 +180,6 @@ const HomeCard: React.FC<HomeCard> = ({ setSearchTerm }) => {
         ))}
         <div className="flex items-center justify-center font-semibold text-[2.3rem]"></div>
         <div className={`flex gap-[0.5rem] xs:flex-col sm:flex-col md:flex-col lg:pr-2 mb-[-1rem] w-[40%] ${(showSuggestions && suggestions.length > 0) && 'relative top-[-5rem]'}`}>
-          <div className='relative p-[1rem] rounded-xl text-left space-y-3'>
-            {/* <div className={`absolute z-[-1] opacity-50 inset-0 backdrop-blur-lg h-[100%]`}></div> */}
-            {/* <AutoTypingAndDeletingText /> */}
-            {/* <FlipWords words={textArray} className="text-6xl leading-tight text-black [text-shadow:0_0_.2rem_black] font-medium" />
-            <h1 className="text-black text-[1.3rem] font-[400] [text-shadow:0_0_.2rem_black]">At YourLab, we believe in empowering you with the tools and resources to take control of your health.</h1> */}
-            {/* <div className="flex items-center gap-10">
-              <div className="bg-teal-400 hover:bg-black p-2 rounded-full flex items-center justify-center">
-            <Image width="30" height="19" src="https://img.icons8.com/external-prettycons-lineal-prettycons/49/FFFFFF/external-heart-sports-prettycons-lineal-prettycons.png" alt="external-heart-sports-prettycons-lineal-prettycons" className="invert-[1] hover:invert-[0] transition-all hover:rotate-360"/>
-              </div>
-            <div className="bg-teal-400 hover:bg-black p-2 rounded-full flex items-center justify-center">
-            <Image width="30" height="30" src="https://img.icons8.com/glyph-neue/64/FFFFFF/doctors-bag.png" alt="doctors-bag" className="invert-[1] hover:invert-[0] transition-all hover:rotate-360"/>
-            </div>
-            <div className="bg-teal-400 hover:bg-black p-2 rounded-full flex items-center justify-center">
-            <Image width="30" height="30" src="https://img.icons8.com/dotty/80/FFFFFF/stethoscope.png" alt="stethoscope" className="invert-[1] hover:invert-[0] transition-all hover:rotate-360"/>
-            </div>
-            </div> */}
-          </div>
 
           </div>
 

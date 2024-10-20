@@ -547,7 +547,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
               </button>
             </div>
           )}
-          <div className="lg:hidden relative xs:top-[0.4rem] xs:left-2 md:right-[2rem]">
+          <div className="lg:hidden relative xs:top-[0.4rem] md:right-[2rem]">
             <button
               onClick={toggleMenu}
               className="text-[1.4rem] focus:outline-none"

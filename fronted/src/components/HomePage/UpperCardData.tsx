@@ -1,3 +1,5 @@
+import layout from '@/app/layout';
+import image from 'next/image';
 import Image from 'next/image';
 const UpperCardData = () => {
     const services = [
@@ -29,10 +31,10 @@ const UpperCardData = () => {
     ];
 
     return (
-        <div className="flex justify-between items-center mt-[3.1rem] space-x-4 w-[73%] mx-auto mb-6">
+        <div className="flex flex-wrap justify-center items-center mt-12 space-x-4 md:space-x-6 lg:space-x-8 xl:space-x-10 w-[90%] md:w-[80%] lg:w-[73%] mx-auto mb-6">
             {services.map((service) => (
-                <div key={service.id} className="flex flex-col items-center">
-                    <div className="relative w-[10rem] h-[7rem]">
+                <div key={service.id} className="flex flex-col items-center mb-6 w-[45%] sm:w-[30%] md:w-[20%] lg:w-[15%]">
+                    <div className="relative w-[8rem] h-[6rem] md:w-[10rem] md:h-[7rem]">
                         <Image
                             src={service.image}
                             alt={service.label}
@@ -40,7 +42,7 @@ const UpperCardData = () => {
                             objectFit="cover"
                         />
                     </div>
-                    <p className="mt-4 text-lg font-semibold text-gray-700">{service.label}</p>
+                    <p className="mt-4 text-base sm:text-lg font-semibold text-gray-700 text-center">{service.label}</p>
                 </div>
             ))}
         </div>

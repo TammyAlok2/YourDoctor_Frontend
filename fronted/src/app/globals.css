@@ -146,3 +146,19 @@ html::selection {
   right: 1rem;
   width: 90%;
 }
+
+/* left right text animation  */
+.left-right-animation{
+  animation: slide 1s ease-in-out infinite alternate;
+  position: relative;
+  /* transition-duration: 3s; */
+}
+
+@keyframes slide {
+  0%{
+    left: 0rem;
+  }
+  100%{
+    left: 1.7rem;
+  }
+}

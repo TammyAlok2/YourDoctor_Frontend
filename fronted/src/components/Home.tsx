@@ -12,6 +12,7 @@ import Supporters from "./HomePage/Supporter";
 import { ReviewPage } from "./HomePage/ReviewPage";
 import FaqPage from "./HomePage/FAQ";
 import AppointmentProcess from "./HomePage/AppointmentProcess";
+import LabLists from "./HomePage/LabLists";
 // import Testimonials from "./HomePage/Testimonials";
 
 const Home = () => {
@@ -39,6 +40,9 @@ const Home = () => {
       </div> */}
       <div>
         <ReviewPage />
+      </div>
+      <div>
+        <LabLists />
       </div>
       <div>
         <FaqPage />
