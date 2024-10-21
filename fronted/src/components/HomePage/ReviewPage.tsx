@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { CardStack } from "../ui/card-stack";
 import style from 'styled-jsx/style';
 
+import { InfiniteMovingCards } from "../ui/infinite-moving-cards";
+
 // Define a type for the card data structure
 interface Card {
     id: number;
@@ -18,6 +20,35 @@ export const ReviewPage = ({
 }: {
     className?: string;
 }) => {
+
+    const testimonials = [
+        {
+          img:"https://wallpapercave.com/wp/wp2968489.jpg",
+          name: "Comprehensive Health Support",
+          title: "Offering extensive medical care, this service covers everything from preventive health measures to chronic disease management. Patients receive continuous, personalized attention to help them maintain overall wellness and address a variety of health concerns.",
+        },
+        {
+          img:"https://wallpaperaccess.com/full/1189426.jpg",
+          name: "Emergency Care Specialist",
+          title: "Providing fast and effective treatment in critical situations, this service is designed to stabilize and manage urgent medical conditions. Patients can count on rapid response and expert care during emergencies, ensuring timely intervention when it's needed most.",
+        },
+        {
+          img:"https://tse1.mm.bing.net/th?id=OIF.%2bdxTgR96kOyk1V8uipltYg&pid=Api&P=0&h=220",
+          name: "Chronic Care Support Expert",
+          title: "This service focuses on providing ongoing support for managing chronic conditions such as diabetes, hypertension, and asthma. With tailored care plans and continuous monitoring, patients are empowered to live healthier lives while effectively managing their conditions.",
+        },
+        {
+          img:"https://wallpaperaccess.com/full/677511.jpg",
+          name: "Preventive Health Advocate",
+          title: "Dedicated to promoting health and preventing illness, this service offers routine check-ups, screenings, and personalized wellness plans. The focus is on early detection and proactive measures to help patients stay healthy and reduce the risk of future medical issues.",
+        },
+        {
+          img:"https://tse1.mm.bing.net/th?id=OIP.hITPmpTKXkGwqBfqDJt-QgHaE7&pid=Api&P=0&h=220",
+          name: "Rehabilitation and Recovery",
+          title: "Offering specialized rehabilitation services, this support system helps patients recover from surgeries, injuries, or long-term illnesses. Through personalized recovery plans and therapy, patients regain strength, mobility, and overall well-being.",
+        },
+      ];
+
     const CARDS: Card[] = [
         {
             id: 0,
@@ -162,9 +193,14 @@ export const ReviewPage = ({
                 {/* Left side - Doctor Image */}
 
                 {/* Right side - Review Section */}
-                <div className="w-1/2 p-6 rounded-r-lg text-white">
+                {/* <div className="w-1/2 p-6 rounded-r-lg text-white">
                     <CardStack items={CARDS} />
-                </div>
+                </div> */}
+                <InfiniteMovingCards
+        items={testimonials}
+        direction="right"
+        speed="normal"
+      />
             </div>
         </div>
     );

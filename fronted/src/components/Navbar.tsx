@@ -730,7 +730,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
       )}
 
       {visibleComponent === "signup" && (
-        <div className="absolute top-[5rem] left-[20%] z-10 w-[63.64%] mx-auto xs:left-0 xs:top-0 xs:w-[100%]">
+        <div className="absolute top-[-1rem] left-[20%] z-10 w-[63.64%] mx-auto xs:left-0 xs:top-0 xs:w-[100%]">
           <div
             className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer z-10"
             onClick={() => {
@@ -756,7 +756,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
       )}
 
       {visibleComponent === "login" && (
-        <div className="absolute top-[8rem] left-[20%] z-10 w-[63.64%] mx-auto xs:left-0 xs:top-0 xs:w-[100%]">
+        <div className="absolute top-[rem] left-[20%] z-10 w-[63.64%] mx-auto xs:left-0 xs:top-0 xs:w-[100%]">
           <div
             className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer z-10"
             onClick={() => {
@@ -783,7 +783,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
       )}
 
       {visibleComponent === "forgot" && (
-        <div className="absolute top-[8rem] left-[20%] z-10 w-[60%] mx-auto xs:left-0 xs:top-0 xs:w-[100%]">
+        <div className="absolute top-[rem] left-[20%] z-10 w-[60%] mx-auto xs:left-0 xs:top-0 xs:w-[100%]">
           <div
             className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer z-10"
             onClick={() => {
