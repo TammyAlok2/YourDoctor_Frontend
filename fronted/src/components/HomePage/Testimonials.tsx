@@ -85,7 +85,7 @@ const Testimonials: React.FC = () => {
       </div>
 
       {/* Dots Navigation */}
-      <div className="flex justify-center space-x-2 mt-4">
+      {/* <div className="flex justify-center space-x-2 mt-4">
         {testimonials.map((_, idx) => (
           <button
             key={idx}
@@ -93,7 +93,12 @@ const Testimonials: React.FC = () => {
             className={`w-3 h-3 rounded-full ${currentIndex === idx ? 'bg-teal-600' : 'bg-gray-300'}`}
           />
         ))}
-      </div>
+      </div> */}
+      {/* <InfiniteMovingCards
+        items={testimonials}
+        direction="right"
+        speed="normal"
+      /> */}
     </div>
   );
 };

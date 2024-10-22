@@ -97,10 +97,7 @@ export const InfiniteMovingCards = ({
             key={item.name}
           >
             <blockquote>
-                <Image fill
-                  objectFit="cover" // ensures the image covers the full area without distortion
-                  priority={true} // loads image with high priority
-                  quality={100} src={item.img} alt="image" className="opacity-[0.4]"/>
+                <Image width={100} height={100} src={item.img} alt="image" className="opacity-[0.4]"/>
               <div
                 aria-hidden="true"
                 className="user-select-none -z-1 pointer-events-none absolute -left-0.5 -top-0.5"

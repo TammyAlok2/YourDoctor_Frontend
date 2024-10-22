@@ -14,15 +14,15 @@ import { CiSearch } from "react-icons/ci";
 const cardData = [
     {
         cardImage:
-            "https://dg0qqklufr26k.cloudfront.net/wp-content/uploads/2024/06/cosmetologist-consult_homepage-banner-desktop.webp",
+            "/medical-equipment.png",
     },
     {
         cardImage:
-            "https://dg0qqklufr26k.cloudfront.net/wp-content/uploads/2024/09/main-banner-mobile.webp",
+            "/Tips-for-Choosing-Medical-Equipment-For-Your-Practice.png",
     },
     {
         cardImage:
-            "https://dg0qqklufr26k.cloudfront.net/wp-content/uploads/2024/09/desktop-vitamin-banner-1.webp",
+            "",
     },
 ];
 
