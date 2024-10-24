@@ -122,7 +122,7 @@ const BlogSection = () => {
                 priority={true} // Preload image if it's above the fold
               />
               <span
-                className={`absolute z-10 mt-[-4.7rem] text-white left-3 bottom-3 py-[.2rem] px-[.8rem] rounded-md ${categoryColors[post.category]}`}
+                className={`absolute z-1 mt-[-4.7rem] text-white left-3 bottom-3 py-[.2rem] px-[.8rem] rounded-md ${categoryColors[post.category]}`}
               >
                 {post.category}
               </span>

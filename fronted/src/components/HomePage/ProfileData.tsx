@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import Image from "next/image";
 import ReviewComponent from "./ratings/page";
 import { AppDispatch } from "@/app/GlobalRedux/store";
-import { FollowerPointerCard } from "../ui/following-pointer";
+// import { FollowerPointerCard } from "../ui/following-pointer";
 import AOS from "aos";
 
 interface DoctorData {
@@ -102,20 +102,21 @@ const ProfileData: React.FC<ProfileDataProps> = ({ searchTerm }) => {
   };
 
   return (
-    <div className="flex items-center justify-center relative cursor-none">
+    <div className="flex flex-col items-center justify-center relative">
+      <h1 className='font-bold text-[1.5rem] mb-2 text-[#2a2a62] text-center'><span className='text-[2.2rem] text-gray-600'>M</span>eet Our top <span className='text-teal-500'>doctors</span></h1>
       <div className="grid grid-cols-1 gap-[1rem] xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 justify-center mx-[1rem] sm:mx-[2rem] md:mx-[1rem] xs:my-0 my-[3rem] lg:w-full xs:w-[78%] xl:mx-2 2xl:mx-[1rem] lg:mx-3 lg:grid-cols-2">
         {isLoading
           ? Array(3).fill(0).map((_, index) => <ShimmerUI key={index} />)
           : displayedData.map((userData) => (
-            <FollowerPointerCard
-              title={
-                <TitleComponent
-                  title={userData?.fullName}
-                // avatar={userData?.avatar?.secure_url}
-                />
-              }
-            >
-              <div className='shadow-md pb-[0.5rem] rounded-lg' onMouseEnter={() => setIsCardHovered(userData._id)}
+            // <FollowerPointerCard
+            //   title={
+            //     <TitleComponent
+            //       title={userData?.fullName}
+            //     // avatar={userData?.avatar?.secure_url}
+            //     />
+            //   }
+            // >
+              <div className='shadow-md pb-[0.5rem] rounded-lg relative z-1' onMouseEnter={() => setIsCardHovered(userData._id)}
                 onMouseLeave={() => setIsCardHovered(null)}>
                 <div
                   className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out ${isCardHovered === userData._id ? 'opacity-100' : 'opacity-0'
@@ -128,8 +129,8 @@ const ProfileData: React.FC<ProfileDataProps> = ({ searchTerm }) => {
                   data-aos="fade-right"
                 >
                   <div className="flex flex-col gap-[1.1rem] xs:mx-auto xs:mb-3 text-[1.1rem] xs:mt-2">
-                    <h1 className="text-[rgb(17_164_160_/_99%)] text-[1.2rem] active:text-[rgba(17,164,159,0.82)] active:text-[1.1rem] font-bold md:text-left xs:ml-0 xs:text-center cursor-none">
-                      <Link href={`/doctor/${userData._id}`} className=' cursor-none'>
+                    <h1 className="text-[rgb(17_164_160_/_99%)] text-[1.2rem] active:text-[rgba(17,164,159,0.82)] active:text-[1.1rem] font-bold md:text-left xs:ml-0 xs:text-center cursor-pointer">
+                      <Link href={`/doctor/${userData._id}`} className=' cursor-pointer'>
                         {userData.fullName}
                       </Link>
                     </h1>
@@ -176,8 +177,8 @@ const ProfileData: React.FC<ProfileDataProps> = ({ searchTerm }) => {
                     </div>
                   </div>
                 </div>
-                <Link href={`/appointment/${userData._id}`} className='cursor-none'>
-                  <button className="bg-white mx-auto mt-4 p-[0.3rem] hover:text-white text-black rounded-md xl:text-[0.8rem] xs:w-[100%] sm:w-[99%] sm:ml-1 lg:w-[90%] lg:mx-auto lg:ml-[1.5rem] relative 2xl:text-[1rem] lg:text-[0.8rem] xl:active:text-[0.9rem] font-semibold xs:items-center xs:ml-0 lg:py-[0.5rem] cursor-none overflow-hidden border-[#0A8E8A] group border" onMouseEnter={() => setIsHovered(userData._id)}
+                <Link href={`/appointment/${userData._id}`} className='cursor-pointer'>
+                  <button className="bg-white mx-auto mt-4 p-[0.3rem] hover:text-white text-black rounded-md xl:text-[0.8rem] xs:w-[100%] sm:w-[99%] sm:ml-1 lg:w-[90%] lg:mx-auto lg:ml-[1.5rem] relative 2xl:text-[1rem] lg:text-[0.8rem] xl:active:text-[0.9rem] font-semibold xs:items-center xs:ml-0 lg:py-[0.5rem] cursor-pointer overflow-hidden border-[#0A8E8A] group border" onMouseEnter={() => setIsHovered(userData._id)}
                     onMouseLeave={() => setIsHovered(null)}>
                     <span className="absolute bottom-0 left-0 h-full w-full rounded-sm bg-[#0a8e8abd] transform -translate-x-full translate-y-full group-hover:translate-x-0 group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></span>
                     {isHovered === userData._id ? (
@@ -194,7 +195,7 @@ const ProfileData: React.FC<ProfileDataProps> = ({ searchTerm }) => {
                   </button>
                 </Link>
               </div>
-            </FollowerPointerCard>
+            // </FollowerPointerCard>
           ))}
       </div>
     </div>

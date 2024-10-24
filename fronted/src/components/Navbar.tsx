@@ -332,7 +332,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
 
   return (
     <div className="relative">
-      <nav className="p-4 fixed top-0 right-0 left-0 z-10 bg-white [box-shadow:0rem_0rem_0.5rem_0.1rem_lightgray]" data-aos="fade-down">
+      <nav className="p-4 fixed top-0 right-0 left-0 bg-white [box-shadow:0rem_0rem_0.5rem_0.1rem_lightgray] z-[100]" data-aos="fade-down">
         <div className={`max-width-auto flex justify-between gap-[10%] ${!isLoggedIn && 'gap-[15%]'} items-center`}>
           <div className="flex gap-[2.5rem] items-center justify-center">
             <div className="flex gap-[0.2rem] items-end" onClick={logoClick}>
@@ -353,13 +353,14 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                 }`}
             >
               <Image
-                className={`${isLocationVisible ? "invert-[1]" : "invert-[0.4]"
+                className={`${isLocationVisible ? "invert-[0.1]" : "invert-[0.4]"
                   }`}
                 width={30}
                 height={28}
                 src={"/icons8-location-unscreen.gif"}
                 alt="location icon"
                 onClick={() => setIsOpen(false)}
+                unoptimized={true}
               />
               {/* <ImLocation2 className={`text-[2rem] text-black ${isLocationVisible ? "invert-[-1]" : "invert-[0.4]"
                 }`} /> */}
@@ -408,13 +409,14 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
               >
                 {/* <FaHome className={`text-[2rem] mr-[0.2rem] ${isHomeVisible ? "text-black" : "invert-[0.3]"}`} /> */}
                 <Image
-                  className={`relative top-[-.2rem] ${isLocationVisible ? "invert-[1]" : "invert-[0.4]"
+                  className={`relative top-[-.2rem] ${isHomeVisible ? "invert-[0.1]" : "invert-[0.4]"
                     }`}
                   width={30}
                   height={28}
                   src={"/icons8-home-unscreen.gif"}
                   alt="location icon"
                   onClick={() => setIsOpen(false)}
+                  unoptimized={true}
                 />
                 <span className="text-lg">Home</span>
               </Link>
@@ -433,14 +435,16 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                 >
                   {/* <MdMedicalServices className="text-[2rem] contrast-[0.5]" /> */}
                   <Image
-                    className={`${isLocationVisible ? "invert-[1]" : "invert-[0.4]"
+                    className={`${isServicesVisible ? "invert-[.1]" : "invert-[0.4]"
                       }`}
                     width={30}
                     height={28}
                     src={"/icons8-service-unscreen.gif"}
                     alt="location icon"
                     onClick={() => setIsOpen(false)}
-                  /> Services</div>
+                    unoptimized={true}
+                  />
+                  Services</div>
 
               </button>
               {isDropdownOpen && (
@@ -449,13 +453,13 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                   <div onClick={() => setIsOpen(false)}
                     className={`flex items-center gap-1 mt-2 cursor-pointer ${isTestsVisible && "bg-[#0A8E8A] text-white py-[0.5rem] px-[1rem] rounded-lg"
                       }`}>
-                    <Image width={29} height={29} src="/icons8-test-tube-unscreen.gif" alt="test-results" className="contrast-[0.5]" />
+                    <Image width={29} height={29} src="/icons8-test-tube-unscreen.gif" alt="test-results" className="contrast-[0.5]" unoptimized={true} />
                     <Link href={"/labtests"}>Lab Tests</Link>
                   </div>
                   <div onClick={() => setIsOpen(false)}
                     className={`flex items-center gap-1 mt-2 cursor-pointer ${isDoctorsVisible && "bg-[#0A8E8A] text-white py-[0.5rem] px-[1rem] rounded-lg"
                       }`}>
-                    <Image width={29} height={29} src="/ezgif-4-de9de80cc1.gif" alt="test-results" className="contrast-[0.5]" />
+                    <Image width={29} height={29} src="/ezgif-4-de9de80cc1.gif" alt="test-results" className="contrast-[0.5]" unoptimized={true} />
                     <Link href={"/doctors"}>Doctors</Link>
                   </div>
 
@@ -476,6 +480,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                           ? "grayscale-[0.5]"
                           : "contrast-[0.5]"
                           }`}
+                        unoptimized={true}
                       />
                       <span className="text-lg">Documents</span>
                     </Link>
@@ -497,6 +502,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                 src={"/icons8-call-unscreen.gif"}
                 alt="help icon"
                 className={`${isNeedVisible ? "invert-[-1]" : "invert-[0.3]"}`}
+                unoptimized={true}
               />
               <span className="text-lg">Need Help</span>
             </div>
@@ -517,6 +523,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                     height={30}
                     src={"/icons8-cart-unscreen.gif"}
                     alt="cart icon"
+                    unoptimized={true}
                   />
                   <span className="text-lg">Cart</span>
                 </Link>
@@ -530,12 +537,8 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                 }`}
               onClick={toggleSignup}
             >
-              <Image
-                width={16}
-                height={16}
-                src={"https://img.icons8.com/ios/50/guest-male.png"}
-                alt="signup icon"
-                className={`invert-[1] ${(isSignupVisible || pathname === "/signup") && "invert-[1]"
+              <FaUser
+                className={`text-white text-xl xs:mr-3 ${(isSignupVisible || pathname === "/signup") && "text-white"
                   }`}
               />
               <span className="text-lg">Login/Signup</span>
@@ -583,7 +586,17 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                 className={`flex items-center gap-1 mt-2 cursor-pointer ${isHomeVisible && "border-b-[.2rem] border-teal-500 mt-[-.2rem] text-black font-bold py-[0.5rem] w-[5.5rem]"
                   }`}
               >
-                <FaHome className={`text-[1.7rem] mr-[0.2rem] ${isHomeVisible ? "text-black" : "invert-[0.3]"}`} />
+                {/* <FaHome className={`text-[1.7rem] mr-[0.2rem] ${isHomeVisible ? "text-black" : "invert-[0.3]"}`} /> */}
+                <Image
+                  className={`relative top-[-.2rem] ${isLocationVisible ? "invert-[1]" : "invert-[0.4]"
+                    }`}
+                  width={30}
+                  height={28}
+                  src={"/icons8-home-unscreen.gif"}
+                  alt="location icon"
+                  onClick={() => setIsOpen(false)}
+                  unoptimized={true}
+                />
 
                 <span className="text-md">Home</span>
               </Link>
@@ -598,7 +611,19 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                   onClick={toggleServices}
                   className={`flex items-center gap-1 cursor-pointer ${isServicesVisible && "border-b-[.2rem] border-teal-500  text-black font-bold py-[0.5rem]"
                     }`}
-                ><MdMedicalServices className="text-[1.7rem] contrast-[0.5]" /> Services</div>
+                >
+                  {/* <MdMedicalServices className="text-[1.7rem] contrast-[0.5]" /> */}
+                  <Image
+                    className={`${isLocationVisible ? "invert-[1]" : "invert-[0.4]"
+                      }`}
+                    width={30}
+                    height={28}
+                    src={"/icons8-service-unscreen.gif"}
+                    alt="location icon"
+                    onClick={() => setIsOpen(false)}
+                    unoptimized={true}
+                  />
+                  Services</div>
 
               </button>
               {isDropdownOpen && (
@@ -607,20 +632,22 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                   <div onClick={toggleTests}
                     className={`flex items-center gap-1 mt-2 cursor-pointer ${isTestsVisible && "bg-[#0A8E8A] text-white py-[0.5rem] px-[1rem] rounded-lg"
                       }`}>
-                    <Image width={29} height={29} src="https://img.icons8.com/ios-filled/50/test-results.png" alt="test-results" className="contrast-[0.5]" />
+                    {/* <Image width={29} height={29} src="https://img.icons8.com/ios-filled/50/test-results.png" alt="test-results" className="contrast-[0.5]" /> */}
+                    <Image width={29} height={29} src="/icons8-test-tube-unscreen.gif" alt="test-results" className="contrast-[0.5]" unoptimized={true} />
                     <Link href={"/labtests"}>Lab Tests</Link>
                   </div>
                   <div onClick={toggleDoctors}
                     className={`flex items-center gap-1 mt-2 cursor-pointer ${isDoctorsVisible && "bg-[#0A8E8A] text-white py-[0.5rem] px-[1rem] rounded-lg"
                       }`}>
-                    <Image width={29} height={29} src="https://img.icons8.com/external-flatart-icons-solid-flatarticons/50/external-doctors-biochemistry-and-medicine-healthcare-flatart-icons-solid-flatarticons.png" alt="test-results" className="contrast-[0.5]" />
+                    {/* <Image width={29} height={29} src="https://img.icons8.com/external-flatart-icons-solid-flatarticons/50/external-doctors-biochemistry-and-medicine-healthcare-flatart-icons-solid-flatarticons.png" alt="test-results" className="contrast-[0.5]" /> */}
+                    <Image width={33} height={33} src="/ezgif-4-de9de80cc1.gif" alt="test-results" className="contrast-[0.5]" unoptimized={true} />
                     <Link href={"/doctors"}>Doctors</Link>
                   </div>
 
                   {isLoggedIn && (<div onClick={() => setIsOpen(false)}>
                     <Link
                       href={"/reports"}
-                      className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${isReportsVisible &&
+                      className={`cursor-pointer flex items-center relative top-[0.2rem] left-[1rem] gap-[0.3rem] ${isReportsVisible &&
                         "bg-[#0A8E8A] text-white py-[0.5rem] px-[1rem] rounded-lg"
                         }`}
                       onClick={toggleReports}
@@ -628,7 +655,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                       <Image
                         width={24}
                         height={24}
-                        src={"/reports.png"}
+                        src={"/icons8-stack-of-documents-unscreen.gif"}
                         alt="reports icon"
                         className={`${pathname === "/reports"
                           ? "grayscale-[0.5]"
@@ -650,7 +677,15 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                   "bg-[#0A8E8A] text-white p-[0.3rem] rounded-lg"
                   }`}
               >
-                <FaPhone className="text-xl xs:mr-3" />
+                {/* <FaPhone className="text-xl xs:mr-3" /> */}
+                <Image
+                width={28}
+                height={28}
+                src={"/icons8-call-unscreen.gif"}
+                alt="help icon"
+                className={`${isNeedVisible ? "invert-[-1]" : "invert-[0.3]"}`}
+                unoptimized={true}
+              />
                 <span>Need Help</span>
               </div>
             </div>
@@ -662,7 +697,16 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                   }`}
                 onClick={toggleCart}
               >
-                <FaShoppingCart className="text-xl xs:mr-3" />
+                {/* <FaShoppingCart className="text-xl xs:mr-3" /> */}
+                <Image
+                    className={`relative top-[-.2rem] ${isCartVisible ? "invert-[-1]" : "invert-[0.4]"
+                      }`}
+                    width={30}
+                    height={30}
+                    src={"/icons8-cart-unscreen.gif"}
+                    alt="cart icon"
+                    unoptimized={true}
+                  />
                 <span>Cart</span>
               </Link>
             </div>
@@ -702,13 +746,14 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
       </nav>
 
       {visibleComponent === "location" && isLocationVisible && (
-        <div onClick={() => setShowFullAddress(false)}>
+        <div
+        className="" onClick={() => setShowFullAddress(false)}>
           <div
-            className="relative top-[5rem] z-10 w-full h-[100vh] bg-transparent"
+          className="fixed h-screen w-screen z-[1000] top-[15%]"
             onClick={() => setLocationVisible(false)}
           >
             <div
-              className="absolute left-[15%] top-[1.5rem] z-10 bg-white rounded-xl py-[0.5rem] px-[1rem] 2xl:w-[30rem]"
+              className="fixed left-[14%] top-[7rem] z-10 bg-white rounded-xl py-[0.5rem] px-[1rem] 2xl:w-[30rem] shadow-lg"
               onClick={handleInsideClick} // Prevent closing when clicking inside
             >
               <Location {...handlePincodeSelect} />
@@ -719,22 +764,21 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
 
       {visibleComponent === "need-help" && isNeedVisible && (
         <div
-          className="relative z-10 w-full h-[100vh] bg-[#0000004b] xs:left-0 top-[5rem] xs:w-[100%]"
+          className="fixed z-10 w-full h-[100vh] xs:left-0 top-[5rem] xs:w-[100%]"
           onClick={() => setNeedVisible(false)}
         >
           <div
-            className="absolute left-[33%] w-[40rem] top-[10%] -z-10 xs:left-0 xs:top-0 xs:w-full"
+            className="relative left-[33%] w-[40rem] top-[4%] xs:left-0 xs:top-0 xs:w-full"
             onClick={handleInsideClick}
           >
             <div
-              className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer z-10"
+              className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer z-1"
               onClick={() => {
                 setVisibleComponent(null);
                 setNeedVisible(!isNeedVisible);
               }}
-              data-aos="fade-right"
             >
-              <img
+              <Image
                 width="30"
                 height="30"
                 src="https://img.icons8.com/ios-glyphs/30/multiply.png"
@@ -747,7 +791,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
       )}
 
       {visibleComponent === "signup" && (
-        <div className="absolute top-[-1rem] left-[20%] z-10 w-[63.64%] mx-auto xs:left-0 xs:top-0 xs:w-[100%]">
+        <div className="fixed top-[5rem] left-[20%] z-10 w-[63.64%] mx-auto xs:left-0 xs:top-0 xs:w-[100%]">
           <div
             className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer z-10"
             onClick={() => {
@@ -773,7 +817,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
       )}
 
       {visibleComponent === "login" && (
-        <div className="absolute top-[rem] left-[20%] z-10 w-[63.64%] mx-auto xs:left-0 xs:top-0 xs:w-[100%]">
+        <div className="fixed top-[rem] left-[20%] z-10 w-[63.64%] mx-auto xs:left-0 xs:top-0 xs:w-[100%]">
           <div
             className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer z-10"
             onClick={() => {
@@ -800,7 +844,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
       )}
 
       {visibleComponent === "forgot" && (
-        <div className="absolute top-[rem] left-[20%] z-10 w-[60%] mx-auto xs:left-0 xs:top-0 xs:w-[100%]">
+        <div className="fixed top-[rem] left-[20%] z-10 w-[60%] mx-auto xs:left-0 xs:top-0 xs:w-[100%]">
           <div
             className="font-bold right-4 top-4 text-[1.2rem] absolute cursor-pointer z-10"
             onClick={() => {

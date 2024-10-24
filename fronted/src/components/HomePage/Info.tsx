@@ -14,16 +14,12 @@ import { CiSearch } from "react-icons/ci";
 const cardData = [
     {
         cardImage:
-            "/medical-equipment.png",
+            "/medical-equipment..png",
     },
     {
         cardImage:
             "/Tips-for-Choosing-Medical-Equipment-For-Your-Practice.png",
-    },
-    {
-        cardImage:
-            "",
-    },
+    }
 ];
 
 const Info: React.FC = () => {

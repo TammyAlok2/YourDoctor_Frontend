@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import ReviewComponent from "../HomePage/ratings/page";
 
 export const InfiniteMovingCards = ({
   items,
@@ -75,7 +76,7 @@ export const InfiniteMovingCards = ({
     <div
       ref={containerRef}
       className={cn(
-        "scroller relative z-20  max-w-2xl overflow-hidden  [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
+        "scroller relative z-1 max-w-xl overflow-hidden",
         className
       )}
     >
@@ -89,25 +90,24 @@ export const InfiniteMovingCards = ({
       >
         {items.map((item, idx) => (
           <li
-            className="w-[20rem] max-w-full relative rounded-2xl border border-b-0 flex-shrink-0 shadow-inner shadow-black shadow-xl px-8 py-6 md:w-[20rem] overflow-hidden"
-            style={{
-              background:
-                "linear-gradient(180deg, var(--slate-800), var(--slate-900)",
-            }}
+            className="w-[20rem] max-w-full relative rounded-2xl border border-b-0 flex-shrink-0 shadow-xl px-8 py-6 md:w-[20rem] overflow-hidden"
             key={item.name}
           >
             <blockquote>
-                <Image width={100} height={100} src={item.img} alt="image" className="opacity-[0.4]"/>
+                <Image width={100} height={100} src={item.img} alt="image" className="rounded-full w-[5rem] h-[5rem]"/>
               <div
                 aria-hidden="true"
-                className="user-select-none -z-1 pointer-events-none absolute -left-0.5 -top-0.5"
+                className="user-select-none z-1 pointer-events-none absolute -left-0.5 -top-0.5"
               ></div>
+              <div className="mt-[1rem] mb-[-1rem]">
+              <ReviewComponent />
+              </div>
               <div className="relative z-20 mt-6 flex flex-row items-center">
                 <span className="flex flex-col gap-1">
-                  <span className=" text-xl leading-[1.6] text-gray-100 font-semibold">
+                  <span className=" text-xl leading-[1.6] text-gray-500 font-semibold">
                     {item.name}
                   </span>
-                  <span className=" text-sm leading-[1.6] text-gray-100 font-thin">
+                  <span className=" text-sm leading-[1.6] text-gray-800 font-medium">
                     {item.title}
                   </span>
                 </span>

@@ -39,7 +39,7 @@ const LabLists = () => {
     return null;
   }
   return (
-    <div className="min-h-screen py-10">
+    <div className="min-h-[50%] py-10">
       <div className="container mx-auto">
         <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">Lab Lists</h1>
 
@@ -55,7 +55,7 @@ const LabLists = () => {
               <div className='flex flex-col items-center justify-center'>
                 <h2 className="text-2xl font-semibold text-gray-700">{lab.name}</h2>
                 <p className="text-gray-600 mt-2">{lab.address}</p>
-                <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                <button className="mt-4 bg-[lightslategrey] text-white px-4 py-2 rounded hover:bg-[black]">
                   View Details
                 </button>
               </div>

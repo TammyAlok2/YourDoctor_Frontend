@@ -31,7 +31,7 @@ export default function DownloadApp() {
 
   return (
     <div className="flex items-center h-[5rem] absolute right-0">
-      <div className="fixed right-4 top-[8rem] z-10 flex items-center">
+      <div className="fixed right-4 top-[8rem] z-100 flex items-center">
       {!openSelect && <h1 className="border-[0.1rem] border-black rounded-md px-2 py-1 border-r-transparent mr-[-0.1rem] relative hover:bg-teal-100 cursor-pointer font-bold bg-white" data-aos='fade-out' onClick={handleOpenDownloadSelect}>Download App</h1>}
       {openSelect && <ul className="font-bold">
         <li className="border-[0.1rem] border-black hover:bg-teal-200 rounded-md px-2 py-1 border-r-transparent bg-white -mr-1 relative cursor-pointer mb-1" data-aos='fade-bottom'>Patient App</li>

@@ -211,14 +211,14 @@ const SignupPage: React.FC<SignProps> = ({onSignupCancel, onBack}) => {
           </div>
           <button
             type="submit"
-            className="w-full p-2 bg-teal-600 text-white rounded-lg mb-3 text-[0.9rem]"
+            className="w-full p-2 bg-teal-600 text-white rounded-lg mb-1 text-[0.9rem]"
           >
             Sign up
           </button>
-          <div className="text-center text-gray-500 mb-6">
+          <div className="text-center text-gray-500 mb-2">
             _____________or With_____________
           </div>
-          <button className="w-full p-2 bg-white text-gray-500 border rounded-lg flex items-center justify-center mb-4">
+          <button className="w-full p-2 bg-white text-gray-500 border rounded-lg flex items-center justify-center mb-2">
             <img
               src="/google-logo.png"
               alt="Google Logo"

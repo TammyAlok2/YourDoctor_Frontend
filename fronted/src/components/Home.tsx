@@ -45,7 +45,7 @@ const Home = () => {
       {/* <div>
         <Testimonials />
         </div> */}
-      <div>
+      <div className="mt-[9rem]">
         <ReviewPage />
       </div>
       <div>

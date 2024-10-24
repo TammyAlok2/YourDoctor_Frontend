@@ -84,73 +84,71 @@ const NeedHelp: React.FC<NeedHelpProps> = ({ onNeedCancel }) => {
   }, []);
 
   return (
-    <div className="flex justify-center items-center" data-aos="fade-in">
+    <div className="flex justify-center items-center relative z-[-1]" data-aos="fade-in">
       <div className="bg-white p-10 fl pb-6 xs:p-[3rem] rounded-2xl shadow-lg w-full xs:h-screen">
 
 
-<div>
+        <div>
 
         </div>
         <div className="flex gap-[2rem] items-center mb-[1rem]">
-      <Image width={100} height={100} src='/YOURLab_Logo.png' alt='Yourlab_Logo' className="w-[13rem] relative ml-[-1rem]"/>
-      <div className="w-[20rem]">
-<div className="text-left mb-5">
-  <h1 className="font-bold text-[1.4rem] relative">Need Help</h1>
-  {/* <p className="text-[0.9rem] font-light">We are here to help with any questions or issues you may have</p> */}
-</div>
-        <form className="space-y-4 w-[100%]" onSubmit={handleSubmit}>
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-gray-700 font-bold mb-2"
-            >
-              Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className={`w-full p-2 border-black border-[0.1rem] rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 ${
-                errors.name ? "border-red-500" : ""
-              }`}
-              placeholder="Enter your name (min 5 letters)"
-            />
-            {errors.name && (
-              <p className="text-red-500 text-sm mt-1">{errors.name}</p>
-            )}
+          <Image width={100} height={100} src='/YOURLab_Logo.png' alt='Yourlab_Logo' className="w-[13rem] relative ml-[-1rem]" />
+          <div className="w-[20rem]">
+            <div className="text-left mb-5">
+              <h1 className="font-bold text-[1.4rem] relative">Need Help</h1>
+              {/* <p className="text-[0.9rem] font-light">We are here to help with any questions or issues you may have</p> */}
+            </div>
+            <form className="space-y-4 w-[100%]" onSubmit={handleSubmit}>
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block text-gray-700 font-bold mb-2"
+                >
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className={`w-full p-2 border-black border-[0.1rem] rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 ${errors.name ? "border-red-500" : ""
+                    }`}
+                  placeholder="Enter your name (min 5 letters)"
+                />
+                {errors.name && (
+                  <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+                )}
+              </div>
+              <div>
+                <label
+                  htmlFor="mobile"
+                  className="block text-gray-700 font-bold mb-2"
+                >
+                  Mobile No.
+                </label>
+                <input
+                  type="tel"
+                  id="mobile"
+                  value={mobile}
+                  onChange={(e) => setMobile(e.target.value)}
+                  className={`w-full p-2 border-black border-[0.1rem] rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 ${errors.mobile ? "border-red-500" : ""
+                    }`}
+                  placeholder="Enter 10-digit mobile number"
+                />
+                {errors.mobile && (
+                  <p className="text-red-500 text-sm mt-1">{errors.mobile}</p>
+                )}
+              </div>
+              <button
+                type="submit"
+                className="w-[90%] mx-[1rem] bg-teal-500 text-white py-2 rounded-md hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500 mt-[0.5rem] relative top-4"
+              >
+                Submit
+              </button>
+              <Toaster />
+            </form>
           </div>
-          <div>
-            <label
-              htmlFor="mobile"
-              className="block text-gray-700 font-bold mb-2"
-            >
-              Mobile No.
-            </label>
-            <input
-              type="tel"
-              id="mobile"
-              value={mobile}
-              onChange={(e) => setMobile(e.target.value)}
-              className={`w-full p-2 border-black border-[0.1rem] rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 ${
-                errors.mobile ? "border-red-500" : ""
-              }`}
-              placeholder="Enter 10-digit mobile number"
-            />
-            {errors.mobile && (
-              <p className="text-red-500 text-sm mt-1">{errors.mobile}</p>
-            )}
-          </div>
-          <button
-            type="submit"
-            className="w-[90%] mx-[1rem] bg-teal-500 text-white py-2 rounded-md hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500 mt-[0.5rem] relative top-4"
-          >
-            Submit
-          </button>
-          <Toaster />
-        </form>
-      </div>
-</div>
+        </div>
       </div>
     </div>
   );

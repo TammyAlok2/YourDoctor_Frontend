@@ -82,7 +82,7 @@ const Supporters: FC = () => {
 
         {/* Button */}
         <div
-          className={`transition-all duration-500 ease-in-out transform z-10 ${isButtonHovered === service.id ? 'translate-y-0 opacity-100' : 'translate-y-3 opacity-0'} flex items-center opacity-100`}
+          className={`transition-all duration-500 ease-in-out transform z-1 ${isButtonHovered === service.id ? 'translate-y-0 opacity-100' : 'translate-y-3 opacity-0'} flex items-center opacity-100`}
         >
           {isButtonHovered === service.id ? (
             <div className="flex items-center justify-center">
@@ -116,11 +116,11 @@ const Supporters: FC = () => {
         {isButtonHovered === service.id && (
           <Image
             width="150"
-            height="150"
+            height="100"
             src={service.lowerimage}
             alt="hovereffect"
             priority={true}
-            className="absolute right-0 bottom-0 transition-transform duration-300 hover:scale-105"
+            className="absolute right-0 bottom-0 transition-transform duration-300 hover:scale-105 z-[-1]"
           />
         )}
       </div>
