@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
@@ -22,10 +22,11 @@ const UserPage = () => {
       const formData = new FormData();
       formData.append('file', selectedFile);
 
-      // For now, simulate uploading and navigating to a new page
+      // Simulate file uploading
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      router.push(`/reports/user/${username}/uploads?file=${selectedFile.name}`);
+      // Use `replace` instead of `push` to avoid full page reload
+      router.replace(`/reports/user/${username}/uploads?file=${selectedFile.name}`);
     }
   };
 

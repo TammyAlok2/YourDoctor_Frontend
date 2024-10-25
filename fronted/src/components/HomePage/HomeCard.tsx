@@ -139,7 +139,7 @@ const HomeCard: React.FC<HomeCard> = ({ setSearchTerm }) => {
   // Scroll the page to the top when the button is clicked
   const scrollToTop = () => {
     window.scrollTo({
-      top: 450,
+      top:550,
       behavior: 'smooth',
     });
   };

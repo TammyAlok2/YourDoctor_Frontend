@@ -364,7 +364,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
               />
               {/* <ImLocation2 className={`text-[2rem] text-black ${isLocationVisible ? "invert-[-1]" : "invert-[0.4]"
                 }`} /> */}
-              <span className="hidden sm:block text-lg leading-[1.3rem] xs:mr-4" onClick={() => setIsOpen(false)}>
+              <span className="hidden sm:block text-[1rem] leading-[1.3rem] xs:mr-4" onClick={() => setIsOpen(false)}>
                 {selectedPincode || location ? (
                   <>
                     <p>{`${selectedPincode}`}</p>
@@ -418,7 +418,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                   onClick={() => setIsOpen(false)}
                   unoptimized={true}
                 />
-                <span className="text-lg">Home</span>
+                <span className="text-[1rem]">Home</span>
               </Link>
               <div className="border-b-[.2rem] border-teal-500 w-0 hover:w-full"></div>
             </div>
@@ -430,7 +430,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
               >
                 <div
                   onClick={toggleServices}
-                  className={`flex items-center gap-1 mt-3 cursor-pointer ${isServicesVisible && "border-b-[.2rem] border-teal-500 mt-[-.2rem] text-black font-bold py-[0.5rem]"
+                  className={`flex items-center gap-1 mt-3 cursor-pointer ${isServicesVisible && "border-b-[.2rem] border-teal-500 mt-[-.2rem] text-black text-[1rem] font-bold py-[0.5rem]"
                     }`}
                 >
                   {/* <MdMedicalServices className="text-[2rem] contrast-[0.5]" /> */}
@@ -466,7 +466,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                   {isLoggedIn && (<div>
                     <Link
                       href={"/reports"}
-                      className={`cursor-pointer flex items-center relative top-[0.2rem] gap-[0.3rem] ${isReportsVisible &&
+                      className={`cursor-pointer flex items-center relative top-[0.2rem] pl-[0.4rem] gap-[0.3rem] ${isReportsVisible &&
                         "bg-[#0A8E8A] text-white py-[0.5rem] px-[1rem] rounded-lg"
                         }`}
                       onClick={toggleReports}
@@ -482,7 +482,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                           }`}
                         unoptimized={true}
                       />
-                      <span className="text-lg">Documents</span>
+                      <span className="text-[1rem]">Documents</span>
                     </Link>
                   </div>)}
 
@@ -499,12 +499,12 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
               <Image
                 width={28}
                 height={28}
-                src={"/icons8-call-unscreen.gif"}
+                src={"/icons8-phone-ringing-unscreen.gif"}
                 alt="help icon"
-                className={`${isNeedVisible ? "invert-[-1]" : "invert-[0.3]"}`}
+                className={`relative bottom-[0.3rem] ${isNeedVisible ? "invert-[-1]" : "invert-[0.3]"}`}
                 unoptimized={true}
               />
-              <span className="text-lg">Need Help</span>
+              <span className="text-[1rem]">Need Help</span>
             </div>
 
 
@@ -525,7 +525,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                     alt="cart icon"
                     unoptimized={true}
                   />
-                  <span className="text-lg">Cart</span>
+                  <span className="text-[1rem]">Cart</span>
                 </Link>
               </div>
             )}
@@ -562,7 +562,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                     alt="user-male-circle"
                     className={`rounded-full border-[0.1rem] border-black`} // ${(pathname === "/profile") && "invert-[1]"}
                   />
-                  <div>Profile</div>
+                  <div></div>
                 </Link>
               </button>
             </div>
@@ -647,7 +647,7 @@ const Navbar: NextPage<PageProps> = ({ title }) => {
                   {isLoggedIn && (<div onClick={() => setIsOpen(false)}>
                     <Link
                       href={"/reports"}
-                      className={`cursor-pointer flex items-center relative top-[0.2rem] left-[1rem] gap-[0.3rem] ${isReportsVisible &&
+                      className={`cursor-pointer flex items-center relative top-[0.2rem] left-[.5rem] gap-[0.3rem] ${isReportsVisible &&
                         "bg-[#0A8E8A] text-white py-[0.5rem] px-[1rem] rounded-lg"
                         }`}
                       onClick={toggleReports}

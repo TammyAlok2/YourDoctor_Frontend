@@ -46,9 +46,7 @@ export default function RootLayout({
           <div className="absolute right-0 bottom-0">
       <ScrollUpButton />
           </div>
-      <TracingBeam className="px-0">
           {children}
-      </TracingBeam>
           <Footer />
         </Providers>
       </body>
