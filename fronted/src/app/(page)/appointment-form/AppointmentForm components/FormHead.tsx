@@ -1,7 +1,7 @@
 
 const FormHead = () => {
     return (
-      <div className="my-[1rem]">
+      <div className="mb-[1rem] mt-[0.5rem]">
         <h1 className="text-center font-bold text-3xl">Patient Details</h1>
       </div>
     )

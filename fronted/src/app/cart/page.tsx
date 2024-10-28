@@ -1,12 +1,28 @@
-"use client";
 import React from 'react'
+import Cart from './Cart'
 
-const Cart:React.FC = () => {
-  return (
-    <div className='flex items-center justify-center h-[22rem] font-bold text-3xl'>
-      <h1>Empty</h1>
-    </div>
-  )
+const CartData = () => {
+    return (
+        <div>
+        <Cart/>
+        </div>
+    )
 }
 
-export default Cart
+
+export function generateMetadata() {
+    return {
+        title: "Cart - YourLab",
+        description: "View the details of your medical appointments, including doctor information and appointment times.",
+        keywords: "appointment details, medical appointments, healthcare appointments, doctor appointments, schedule appointments",
+        robots: "index, follow",
+        openGraph: {
+            title: "Cart - YourLab",
+            description: "View the details of your medical appointments, including doctor information and appointment times.",
+            type: "website",
+            siteName: "YourLab",
+        },
+    }
+}
+
+export default CartData

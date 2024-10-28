@@ -1,92 +1,42 @@
-"use client";
+import React from 'react'
+import DoctorPayment from './DoctorPayment'
 
-import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import Link from "next/link";
-
-interface Doctor {
-  _id: string;
-  fees: {
-    firstVisitFee: number;
-    emergencyFee1: number;
-  };
+const DoctorPaymentData = () => {
+  return (
+    <div>
+      <DoctorPayment />
+    </div>
+  )
 }
 
-const DoctorPayment: React.FC = () => {
-  const params = useParams();
-  const [doctor, setDoctor] = useState<Doctor | undefined>(undefined);
-  const [feeToDisplay, setFeeToDisplay] = useState<number | undefined>(undefined);
 
-  useEffect(() => {
-    // Check if window is available (ensures this runs on client-side)
-    if (typeof window !== "undefined") {
-      const doctors = localStorage.getItem("doctors");
+export function generateMetadata() {
+  const keywords = [
+    "doctor payment",
+    "pay doctor's fees",
+    "medical fees payment",
+    "secure doctor payment",
+    "appointment payment online",
+    "doctor fee discounts",
+    "emergency fee payment",
+    "first-time visit fee",
+    "online doctor payment",
+    "YourLab doctor payment",
+    "YourLab medical payments"
+  ].join(", ");
+  return {
+    title: "Doctor Payment - YourLab",
+    description: "Pay your doctor's appointment fee securely. Get real-time updates on fees and discounts, including special offers on emergency and first-time visit fees.",
+    keywords,
+    robots: "index, follow",
+    openGraph: {
+      title: "Doctor Payment - YourLab",
+      description: "Pay your doctor's appointment fee securely. Get real-time updates on fees and discounts, including special offers on emergency and first-time visit fees.",
+      type: "website",
+      siteName: "YourLab",
+    },
+  }
+}
 
-      if (doctors) {
-        const parsedDoctors = JSON.parse(doctors) as Doctor[];
-        const foundDoctor = parsedDoctors.find((doc: Doctor) => doc._id === params.id);
 
-        if (foundDoctor) {
-          setDoctor(foundDoctor);
-          const currentTime = new Date();
-          const currentHour = currentTime.getHours();
-
-          // Check if it's after 10 PM or before 5 AM (emergency hours)
-          const isEmergencyTime = currentHour >= 22 || currentHour <= 5;
-
-          // Determine which fee to display
-          const fee = isEmergencyTime
-            ? (foundDoctor.fees.emergencyFee1 !== undefined && foundDoctor.fees.emergencyFee1 !== 0
-                ? foundDoctor.fees.emergencyFee1
-                : foundDoctor.fees.firstVisitFee)
-            : foundDoctor.fees.firstVisitFee;
-
-          setFeeToDisplay(fee);
-        }
-      }
-    }
-  }, [params.id]);
-
-  // Calculate discount and total
-  const discount = feeToDisplay ? Math.round(feeToDisplay * 0.3) : 0;
-  const total = feeToDisplay ? feeToDisplay - discount : 0;
-
-  return (
-    <div className="flex h-screen flex-col items-center mt-[1.7rem]">
-      <div className="bg-white pt-6 pb-10 px-7 border-[0.3rem] border-[#0A8E8A] w-[34rem] text-center rounded-lg shadow-lg">
-        <h1 className="text-2xl text-left font-semibold mb-2">You're paying,</h1>
-        <p className="text-4xl font-semibold mt-[1.5rem] mb-2">
-          Rs {feeToDisplay || 'N/A'}
-        </p>
-        <div className="bg-green-100 text-green-800 p-3 rounded-md mt-4 mb-6">
-          <p className="font-bold">Special Offer!</p>
-          <p>Get a 30% discount on your visit today!</p>
-        </div>
-        <hr className="border-t-2 border-gray-200" />
-        <div className="mt-4">
-          <div className="flex justify-between text-lg">
-            <span className="font-bold">Original Fee</span>
-            <span>Rs {feeToDisplay || 'N/A'}</span>
-          </div>
-          <div className="flex justify-between text-lg mt-1">
-            <span className="font-bold">Tax</span>
-            <span>Rs 0.00</span>
-          </div>
-          <div className="flex justify-between text-lg mt-1 text-green-600">
-            <span className="font-bold">Discount (30%)</span>
-            <span>- Rs {discount}</span>
-          </div>
-          <div className="flex justify-between text-xl mt-3 pt-3 border-t-2 border-gray-200">
-            <span className="font-bold">Total</span>
-            <span className="font-bold text-[#0A8E8A]">Rs {total}</span>
-          </div>
-        </div>
-      </div>
-      <button className="mt-[7rem] bg-[#0A8E8A] text-white py-3 px-6 rounded-lg hover:bg-[#086e6e] transition duration-200 text-2xl shadow-md">
-        <Link href={`/appointmentsubmit/${params.id}`}>Pay at clinic</Link>
-      </button>
-    </div>
-  );
-};
-
-export default DoctorPayment;
+export default DoctorPaymentData

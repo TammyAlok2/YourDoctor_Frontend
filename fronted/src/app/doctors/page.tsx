@@ -1,67 +1,54 @@
-"use client";
+import React from 'react'
+import Doctors from './Doctors'
 
-import React, { useState } from "react";
-import FirstDoctorsSection from "../../components/DoctorComponent/firstDoctors/page";
-import SecondDoctorsSection from "../../components/DoctorComponent/secondDoctors/page";
-import Image from "next/image";
-
-interface Doctor {
-  _id: string;
-  specialist?: string;
-  address?: string;
-  fullName?: string;
-  pincode?: string;
-  fees?: { firstVisitFee?: number };
-  avatar?: { secure_url: string };
-  status?: boolean;
-  title?: string;
-  description?: string;
+const DoctorsData = () => {
+  return (
+    <div>
+      <Doctors />
+    </div>
+  )
 }
 
-const Doctors: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [data, setData] = useState<Doctor[]>([]);
+export async function generateMetadata() {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/doctor/allDoctors`);
+    
+    if (!res.ok) throw new Error("Failed to fetch doctors data");
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value.toLowerCase());
-  };
+    const result = await res.json();
+    const dynamicData = result?.data
+      .map((data: any) => data.specialist)
+      .join(", ");
 
-  const filteredData = data.filter((doctor) => {
-    const specialistMatch = doctor.specialist?.toLowerCase().includes(searchTerm) ?? false;
-    const addressMatch = doctor.address?.toLowerCase().includes(searchTerm) ?? false;
-    const fullNameMatch = doctor.fullName?.toLowerCase().includes(searchTerm) ?? false;
-   
-    return specialistMatch || addressMatch || fullNameMatch;
-  });
+    return {
+      title: "Doctors - YourLab",
+      description: "Discover qualified doctors on YourLab. Browse through our comprehensive listings to find healthcare professionals that match your needs. Schedule appointments and view profiles easily.",
+      keywords: dynamicData,
+      robots: "index, follow",
+      openGraph: {
+        title: "Doctors - YourLab",
+        description: "Search through YourLab's comprehensive database to find doctors and healthcare specialists. Book your appointment online with ease.",
+        type: "website",
+        url: "https://www.yourlab.com/doctors",
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching doctors metadata:", error);
+    
+    return {
+      title: "Doctors - YourLab",
+      description: "Browse through qualified doctors at YourLab. Schedule appointments and view profiles easily.",
+      keywords: "doctors, healthcare, specialists",
+      robots: "index, follow",
+      openGraph: {
+        title: "Doctors - YourLab",
+        description: "Search through YourLab's comprehensive database to find doctors and healthcare specialists. Book your appointment online with ease.",
+        type: "website",
+        url: "https://www.yourlab.com/doctors",
+      },
+    };
+  }
+}
 
-  return (
-    <>
-      <div className="flex flex-col items-center p-4">
-        <div className="relative w-full max-w-md xs:w-[60%] sm:w-[60%] md:w-[60%] lg:w-[58%]">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="mb-4 py-2 pl-4 pr-8 border rounded-full w-full"
-            value={searchTerm}
-            onChange={handleSearch}
-          />
-          <div className="bg-white absolute top-[0.6rem] right-3 cursor-pointer">
-            <Image
-              className="invert-[0.2]"
-              width={20}
-              height={20}
-              src="https://img.icons8.com/ios-glyphs/50/search--v1.png"
-              alt="search-icon"
-            />
-          </div>
-        </div>
-      </div>
-      <div>
-        <SecondDoctorsSection />
-        <FirstDoctorsSection setData={setData} filteredData={filteredData} />
-      </div>
-    </>
-  );
-};
 
-export default Doctors;
+export default DoctorsData

@@ -31,6 +31,7 @@ export const logout = createAsyncThunk("user/logout", async (data: any) => {
     toast.promise(res, {
       loading: "Wait! logout in progress...",
       success: (data: any) => {
+        document.cookie = "token=; Max-Age=0; path=/; SameSite=Strict";
         return data?.data?.message;
       },
       error: "Failed to logout",
@@ -47,7 +48,7 @@ export const getAllDoctors = createAsyncThunk(
   async (data: any) => {
     try {
       const res = axiosInstance.get("doctor/allDoctors");
-      console.log(res);
+      // console.log(res);
       return (await res).data;
     } catch (error: any) {
       toast.error(error?.response?.data?.message);
@@ -60,7 +61,7 @@ export const postEnquiry = createAsyncThunk(
   async (data: any) => {
     try {
       const res = axiosInstance.post("user/postEnquiry", data);
-      console.log(res);
+      // console.log(res);
       return (await res).data;
     } catch (error: any) {
       console.log(error)

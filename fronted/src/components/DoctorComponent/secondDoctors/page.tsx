@@ -59,7 +59,7 @@ const SecondDoctorsSection: React.FC = () => {
               className="rounded-full mb-4 h-[6rem] w-[6rem]"
             />
             <p className="text-[1.2rem] text-center font-bold">{box.description}</p>
-            <h2 className="text-xl font-bold mb-2 text-center text-[#0A8E8A]">{box.title}</h2>
+            <h2 className="text-xl font-bold mb-2 text-center text-[#0A8E8A] active:text-[1.2rem] cursor-pointer hover:text-[#0a8e8ad2]">{box.title}</h2>
           </div>
         ))}
       </div>

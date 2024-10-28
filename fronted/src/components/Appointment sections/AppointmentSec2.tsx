@@ -62,6 +62,15 @@ const AppointmentSec2 = () => {
   const dispatch = useDispatch<AppDispatch>();
   const params: Params = useParams();
 
+  useEffect(() => {
+    AOS.init({
+      // Global settings:
+      duration: 1000, // values from 0 to 3000, with step 50ms
+      once: false, // whether animation should happen only once - while scrolling down
+      mirror: false, // whether elements should animate out while scrolling past them
+    });
+  }, []);
+
   // Function to go to the previous slide
   const prevSlide = () => {
     setCurrentIndex((prevIndex) =>
@@ -96,6 +105,9 @@ const AppointmentSec2 = () => {
       if (schedule?.payload?.success) {
         const response = schedule?.payload?.data as Schedule;
         toast.success(schedule?.payload?.message);
+        if(!response){
+          setMessage(schedule?.payload?.message || "No schedules available.");
+        }
         setSlot(response);
    
       } else {
@@ -118,24 +130,18 @@ const AppointmentSec2 = () => {
     }
   }, [selectedIndex]);
 
-  useEffect(() => {
-    AOS.init({
-      once: false,
-      mirror: false,
-    });
-  }, []);
-
   // Handle date click to fetch schedules for the selected date
   const handleDateClick = (index:number) => {
     setSelectedIndex((currentIndex + index) % timeSchedulingData.length);
   };
 
   return (
-    <div className="2xl:w-[70rem] shadow-lg mx-auto py-[1rem] my-[3rem]">
+    <div className="2xl:w-[1185px] shadow-lg mx-auto py-[1rem] my-[3rem]">
       <div className="relative w-full max-w-4xl mx-auto flex items-center justify-between space-x-2">
         <button
-          className="text-gray-800 font-bold py-1 px-2 rounded-full h-[4rem] w-[4rem]"
+          className="text-gray-800 font-bold py-1 px-2 rounded-full xs:w-[3rem] xs:h-[3rem] h-[4rem] w-[4rem]"
           onClick={prevSlide}
+          data-aos="fade-right"
         >
           <Image
             width="36"
@@ -144,14 +150,15 @@ const AppointmentSec2 = () => {
             alt="back"
           />
         </button>
-        <div className="flex space-x-4 overflow-hidden w-full justify-center">
+        <div className="flex space-x-4 xs:space-x-1 overflow-hidden w-full justify-center xs:items-center"
+                data-aos="fade-up">
           {getVisibleItems().map((item, index) => {
             const globalIndex =
               (currentIndex + index) % timeSchedulingData.length;
             return (
               <div
                 key={index}
-                className={`flex flex-col space-x-[0.5rem] w-1/3 p-4 items-center justify-center flex-shrink-0 cursor-pointer  ${
+                className={`flex flex-col space-x-[0.5rem] w-1/3 p-4 xs:p-0 items-center justify-center flex-shrink-0 cursor-pointer  ${
                   selectedIndex === globalIndex
                     ? "bg-gradient-to-r from-green-400 to-green-600 text-white border-b-4 border-green-700 rounded-lg"
                     : ""
@@ -159,18 +166,20 @@ const AppointmentSec2 = () => {
                   item.isToday && selectedIndex !== index
                     ? "text-black"
                     : "hover:border-b-[0.3rem] hover:border-black"
-                } ${!index && "border-b-[0.3rem] border-teal-500"}`}
+                } ${!index && "border-b-[0.3rem] border-[#0A8E8A]"}`}
                 onClick={() => handleDateClick(index)}
               >
-                <h2 className="text-xl font-bold mb-2">{item.day}</h2>
+                <h2 className="text-xl xs:ml-[0.5rem] xs:text-[0.9rem] font-bold mb-2">{item.day}</h2>
               
               </div>
             )
           })}
         </div>
         <button
-          className="text-gray-800 font-bold py-1 px-2 rounded-full h-[4rem] w-[4rem]"
+          className="text-gray-800 font-bold py-1 px-2 rounded-full xs:w-[3rem]
+xs:h-[3rem] h-[4rem] w-[4rem]"
           onClick={nextSlide}
+          data-aos="fade-left"
         >
           <Image
             width="34"
@@ -187,7 +196,7 @@ const AppointmentSec2 = () => {
       ) : slot ? (
         <AppointmentSec3 allSlot={slot} />
       ) : (
-        <h1 className="text-center mt-4">{message}</h1>
+        <h1 className="text-center mt-4 text-xl">{message}</h1>
       )}
     </div>
   );

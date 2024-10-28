@@ -4,28 +4,29 @@ import type { NextRequest } from "next/server";
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
 
-  // Try to get the token from different sources
-  let token = request.cookies.get("token")?.value;
-
-  // If token is not found in cookies, check headers
-  if (!token) {
-    const authHeader = request.headers.get("Authorization");
-    token = authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : "";
-  }
+  // Get the token from the cookies
+  const token = request.cookies.get('loginToken')?.value;
 
   console.log('Path:', path);
   console.log('Token:', token);
 
   // Public paths that do not require authentication
-  const isPublicPath = ["/login", "/forget", "/signup", "/doctors"].includes(path);
+  const publicPaths = ["/login", "/forget", "/signup", "/doctors","/cart"];
+  // Protected paths that require authentication
+  const protectedPaths = ["/appointment-form"];
+
+  // Check if the current path is public
+  const isPublicPath = publicPaths.some(p => path.startsWith(p));
+  // Check if the current path is protected
+  const isProtectedPath = protectedPaths.some(p => path.startsWith(p));
 
   // If the user is logged in and tries to access a public path (except /doctors), redirect to home
-  if (isPublicPath && token && path !== "/doctors") {
+  if (isPublicPath && token && path !== "/doctors" && path !== "/cart") {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
   // If the user is not logged in and tries to access a protected path, redirect to the login page
-  if (!isPublicPath && !token) {
+  if (isProtectedPath && !token) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
@@ -38,11 +39,12 @@ export const config = {
     "/login",
     "/signup",
     "/forget",
-    "/doctors", // Accessible to both logged-in and non-logged-in users
+    "/doctors",
     "/logout",
     "/profile",
     "/profileupdate",
     "/updatepassword",
-    "/appointment-form/:path*", // Protected: only logged-in users can access
+    "/cart",
+    "/appointment-form/:path*",
   ],
 };
