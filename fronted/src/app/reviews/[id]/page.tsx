@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { getAllDoctors } from '@/app/GlobalRedux/slice/DoctorSlice';
 import { createReview } from '@/app/GlobalRedux/slice/AuthSlice';
+import { AppDispatch } from '@/app/GlobalRedux/store';
 import Link from 'next/link';
 
 
@@ -54,7 +55,7 @@ console.log(doctorId)
     setShowSuccess(true);
   };
 
-const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>();
 
   const fetchDoctorData = async () => {
     try {

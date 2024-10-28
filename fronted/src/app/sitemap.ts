@@ -23,7 +23,7 @@ async function fetchDynamicDataFromAPI(apiUrl: string) {
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Fetch dynamic data from the API
   const doctorsData = await fetchDynamicDataFromAPI(
-    "http://localhost:5000/api/v1/doctor/allDoctors"
+    `${process.env.NEXT_PUBLIC_API_URL}/api/v1/doctor/allDoctors`
   );
 
   // Ensure that dynamicData is an array, otherwise default to an empty array
