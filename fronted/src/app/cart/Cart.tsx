@@ -44,7 +44,7 @@ export default function Cart() {
   const dispatch = useDispatch<AppDispatch>();
   const [appointmentsData, setAppointmentsData] = useState<AppointmentsDetails[] | null>([]);
   const [doctorData, setDoctorData] = useState<Doctor | null>(null);
-  // console.log(appointmentsData);
+  console.log(appointmentsData);
 
   useEffect(() => {
     AOS.init({
@@ -72,7 +72,7 @@ export default function Cart() {
     };
     getDoctorViaAppointment();
   }, [dispatch]);
-  // console.log(doctorData)
+   console.log(doctorData)
 
   // Match doctorId for each appointment and doctor
   const getDoctorForAppointment = (doctorId: string) => {
@@ -91,7 +91,7 @@ export default function Cart() {
             // console.log(doctorForAppointment.joinStatus)
             return (
               <div key={index} data-aos="fade-left">
-                {doctorForAppointment?.joinStatus && <AppointmentData
+                {doctorForAppointment && <AppointmentData
                   name={data?.patientName}
                   date={data?.date}
                   time={data?.time}

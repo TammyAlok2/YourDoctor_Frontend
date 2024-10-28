@@ -274,6 +274,29 @@ export const resetPassword = createAsyncThunk(
   }
 );
 
+export const createReview = createAsyncThunk(
+  "user/reset/password",
+  async (data: [string, any]) => {
+    try {
+      const res = axiosInstance.post(`user/addReview/${data[0]}`, data[1], {
+        withCredentials: true,
+      });
+      // console.log(res)
+      toast.promise(res, {
+        loading: "Please Wait! Adding review is in progress... ",
+        success: (data) => {
+          return data?.data?.message;
+        },
+        error: "Failed to create Review",
+      });
+      return (await res).data;
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message);
+      // throw error;
+    }
+  }
+);
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,

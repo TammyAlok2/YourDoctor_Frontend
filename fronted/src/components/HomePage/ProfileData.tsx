@@ -102,6 +102,7 @@ const ProfileData: React.FC<ProfileDataProps> = ({ searchTerm }) => {
   };
 
   return (
+    <div className="w-[80%] mx-auto p-8 relative mb-[4rem]"> 
     <div className="flex flex-col items-center justify-center relative">
       <h1 className='font-bold text-[1.5rem] mb-2 text-[#2a2a62] text-center'><span className='text-[2.2rem] text-gray-600'>M</span>eet Our top <span className='text-teal-500'>doctors</span></h1>
       <div className="grid grid-cols-1 gap-[1rem] xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 justify-center mx-[1rem] sm:mx-[2rem] md:mx-[1rem] xs:my-0 my-[3rem] lg:w-full xs:w-[78%] xl:mx-2 2xl:mx-[1rem] lg:mx-3 lg:grid-cols-2">
@@ -198,7 +199,17 @@ const ProfileData: React.FC<ProfileDataProps> = ({ searchTerm }) => {
             // </FollowerPointerCard>
           ))}
       </div>
+      
     </div>
+    <div className='flex justify-center items-center absolute overflow-hidden right-10 my-8 gap-4'>
+        <h1 className='left-right-animation text-[#51c3c3f4] [text-shadow:0.1rem_0.1rem_0.2rem_#51c3c3f4] font-semibold text-[1.3rem]'>See All Doctors {"->"}</h1>
+        <Link href="/doctors">
+          <button className='font-semibold m-3 p-[0.5rem] shadow-lg hover:shadow-none hover-animation overflow-hidden flex items-center justify-center rounded-lg hover:text-white transition-all duration-1000 ease-in-out'><span className='w-[0rem] h-[0rem] bg-[#3ad0c4] rounded-full absolute -z-10 transition-all duration-1000 ease-in-out right-[-4rem]'></span>Click here...</button>
+        </Link>
+      </div>
+    </div>
+      
+    
   );
 };
 

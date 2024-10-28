@@ -4,7 +4,7 @@ import Cart from './Cart'
 const CartData = () => {
     return (
         <div>
-            <Cart />
+        <Cart/>
         </div>
     )
 }

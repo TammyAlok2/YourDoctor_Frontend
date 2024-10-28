@@ -171,7 +171,7 @@ const AppointmentDetail = () => {
   };
   
   // Calculate discount and total
-  const discount = feeToDisplay ? Math.round(feeToDisplay * 0.2) : 0;
+  const discount = feeToDisplay ? Math.round(100) : 0;
   const total = feeToDisplay ? feeToDisplay - discount : 0;
   
   useEffect(() => {
@@ -376,6 +376,16 @@ const AppointmentDetail = () => {
           >
             Download
           </button>
+               <Link href={`/reviews/${doctorId}`}>
+               <button
+           
+            className="bg-[#0A8E8A] text-white px-4 py-2 rounded hover:bg-teal-600 transition"
+          >
+            Review
+          </button>
+
+               </Link>
+
         </div>
       </div>
     </>

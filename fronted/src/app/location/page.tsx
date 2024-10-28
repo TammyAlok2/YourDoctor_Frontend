@@ -3,16 +3,20 @@
 import React, { useState, useEffect } from "react";
 import AOS from "aos";
 
-// Define the shape of pincode data
+interface PostOffice {
+  Name: string;
+  District: string;
+  State: string;
+  Pincode: string;
+}
+
 interface LocationSectionProps {
   onPincodeSelect: (pincode: string, location: string) => void;
 }
 
-const LocationSection: React.FC<LocationSectionProps> = ({
-  onPincodeSelect,
-}) => {
+const LocationSection: React.FC<LocationSectionProps> = ({ onPincodeSelect }) => {
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
-  const [pincodes, setPincodes] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<PostOffice[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedPincode, setSelectedPincode] = useState<string>("");
   const [location, setLocation] = useState<string>("");
@@ -22,111 +26,86 @@ const LocationSection: React.FC<LocationSectionProps> = ({
 
   useEffect(() => {
     AOS.init({
-      // Global settings:
-      duration: 1000, // values from 0 to 3000, with step 50ms
-      once: false, // whether animation should happen only once - while scrolling down
-      mirror: false, // whether elements should animate out while scrolling past them
+      duration: 1000,
+      once: false,
+      mirror: false,
     });
   }, []);
 
-  // Fetch pincodes based on the search term
-  useEffect(() => {
-    if (searchTerm.length >= 1) {
-      fetchPincodes(searchTerm);
-    } else {
-      setPincodes([]);
-    }
-  }, [searchTerm]);
-
-  // Function to fetch pincodes from the API
-  const fetchPincodes = async (search: string) => {
+  // Function to fetch locations based on search term
+  const fetchLocations = async (search: string) => {
     setLoading(true);
     setError("");
     try {
-      const response = await fetch(
-        `https://api.postalpincode.in/pincode/${search}`
-      );
+      let url: string;
+      // If search term is numeric and 6 digits, search by pincode
+      if (/^\d{6}$/.test(search)) {
+        url = `https://api.postalpincode.in/pincode/${search}`;
+      } else {
+        // Otherwise search by city name
+        url = `https://api.postalpincode.in/postoffice/${search}`;
+      }
+
+      const response = await fetch(url);
       const data = await response.json();
+
       if (data[0].Status === "Success") {
-        const uniquePincodes: string[] = Array.from(
-          new Set(
-            data[0].PostOffice.map((po: { Pincode: string }) => po.Pincode)
+        const postOffices: PostOffice[] = data[0].PostOffice;
+        // Remove duplicates based on unique combinations of city, district, and pincode
+        const uniqueLocations = postOffices.filter((po, index, self) =>
+          index === self.findIndex((p) => 
+            p.Name === po.Name && 
+            p.District === po.District && 
+            p.Pincode === po.Pincode
           )
         );
-        setPincodes(uniquePincodes);
+        setSuggestions(uniqueLocations);
       } else {
-        setPincodes([]);
+        setSuggestions([]);
+        setError("No locations found");
       }
     } catch (error) {
-      console.error("Error fetching pincodes:", error);
-      setError("Failed to fetch pincodes. Please try again.");
+      console.error("Error fetching locations:", error);
+      setError("Failed to fetch locations. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
-  // Function to handle pincode selection and fetch location data
-  const handlePincodeSelect = async (pincode: string) => {
-    if (!/^\d{6}$/.test(pincode)) {
-      setError("Invalid Pincode. Please enter a 6-digit pincode.");
-      setLocation("Location not found");
-      onPincodeSelect(pincode, "Location not found");
-      return;
-    }
+  // Debounce search to prevent too many API calls
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (searchTerm.length >= 3) {
+        fetchLocations(searchTerm);
+      } else {
+        setSuggestions([]);
+      }
+    }, 300);
 
-    setSelectedPincode(pincode);
-    setSearchTerm(pincode);
+    return () => clearTimeout(timeoutId);
+  }, [searchTerm]);
+
+  const handleLocationSelect = (postOffice: PostOffice) => {
+    const locationString = `${postOffice.Name}, ${postOffice.District}, ${postOffice.State}`;
+    setSelectedPincode(postOffice.Pincode);
+    setLocation(locationString);
+    setSearchTerm(`${postOffice.Name} - ${postOffice.Pincode}`);
     setShowSuggestions(false);
-    setLoading(true);
-    setError("");
 
-    try {
-      const response = await fetch(
-        `https://api.postalpincode.in/pincode/${pincode}`
-      );
-      const data = await response.json();
-      if (data[0].Status === "Success") {
-        const postOffice = data[0].PostOffice[0];
-        const locationString = `${postOffice.Name}, ${postOffice.District}`;
-        setLocation(locationString);
-
-        onPincodeSelect(pincode, locationString);
-        if (typeof window !== "undefined") {
-          localStorage.setItem("location", locationString);
-          localStorage.setItem("pincode", pincode);
-        }
-
-      } else {
-        setLocation("Location not found");
-        onPincodeSelect(pincode, "Location not found");
-      }
-    } catch (error) {
-      console.error("Error fetching pincode information:", error);
-      setError("Failed to fetch location information. Please try again.");
-    } finally {
-      setLoading(false);
+    onPincodeSelect(postOffice.Pincode, locationString);
+    
+    if (typeof window !== "undefined") {
+      localStorage.setItem("location", locationString);
+      localStorage.setItem("pincode", postOffice.Pincode);
     }
   };
-
-  // Function to handle the Done button click
-  const handleDone = () => {
-    if (/^\d{6}$/.test(searchTerm)) {
-      handlePincodeSelect(searchTerm);
-    } else {
-      setError("Invalid Pincode. Please enter a 6-digit pincode.");
-    }
-  };
-  useEffect(()=>{
-    handleDone();
-  },[])
 
   const handleReload = () => {
-    setIsLoading(true)
+    setIsLoading(true);
     window.location.reload();
-  }
+  };
 
   return (
-    <>
     <div className="relative max-w-2xl mx-auto" data-aos="fade-left">
       <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden">
         <div className="flex-grow flex items-center px-4 py-2 relative">
@@ -143,10 +122,10 @@ const LocationSection: React.FC<LocationSectionProps> = ({
             />
           </svg>
           <input
-            type="number"
+            type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Enter pincode / city"
+            placeholder="Search by city name or pincode"
             className="focus:outline-none w-full"
             onClick={() => setShowSuggestions(true)}
           />
@@ -172,33 +151,36 @@ const LocationSection: React.FC<LocationSectionProps> = ({
           {error && <div className="px-4 py-2 text-red-500">{error}</div>}
           {!loading &&
             !error &&
-            pincodes.map((pincode, index) => (
+            suggestions.map((postOffice, index) => (
               <div
                 key={index}
                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                onClick={() => handlePincodeSelect(pincode)}
+                onClick={() => handleLocationSelect(postOffice)}
               >
-                {pincode}
+                <div className="font-medium">{postOffice.Name}</div>
+                <div className="text-sm text-gray-600">
+                  {postOffice.District}, {postOffice.State} - {postOffice.Pincode}
+                </div>
               </div>
             ))}
         </div>
       )}
 
       {selectedPincode && (
-        <div className="mt-4 p-4 bg-gray-100 rounded-lg cursor-pointer" onClick={handleReload}>
+        <div 
+          className="mt-4 p-4 bg-gray-100 rounded-lg cursor-pointer" 
+          onClick={handleReload}
+        >
           <p className="font-semibold">Selected Pincode: {selectedPincode}</p>
           <p>Location: {location}</p>
         </div>
       )}
     </div>
-    </>
   );
 };
 
-// Page Component
 export default function Page() {
   const handlePincodeSelect = (pincode: string, location: string) => {
-    // Handle the selected pincode and location here
     console.log("Selected Pincode:", pincode);
     console.log("Location:", location);
   };

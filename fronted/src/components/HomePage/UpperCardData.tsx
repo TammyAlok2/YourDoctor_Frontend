@@ -1,5 +1,4 @@
 import layout from '@/app/layout';
-import image from 'next/image';
 import Image from 'next/image';
 const UpperCardData = () => {
     const services = [

@@ -100,6 +100,7 @@ const LabCard: FC = () => {
                       />
                     </div>
                   </div>
+
                   <div className="flex justify-center mt-4">
                     <button className="bg-teal-600 hover:bg-teal-500 text-white py-2 px-6 rounded-full text-sm xl:px-4 2xl:px-6">
                       Select Lab

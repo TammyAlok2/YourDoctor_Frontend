@@ -50,13 +50,13 @@ const Supporters: FC = () => {
     const [buttonHoverDirect, setButtonHoverDirect] = useState<number | null>(null); // Track direct button hover
 
     return (
-       <div className="container mx-auto py-12 px-6 gap-[1.5rem] flex flex-wrap justify-center">
+      <div className="container mx-auto py-12 px-6 gap-8 flex flex-wrap justify-center">
   {services.map((service) => (
     <div
       key={service.id}
       onMouseEnter={() => setIsButtonHovered(service.id)}
       onMouseLeave={() => setIsButtonHovered(null)}
-      className="w-full sm:w-[45%] md:w-[30%] lg:w-[15%] shadow-lg relative"
+      className="w-full sm:w-[70%] md:w-[45%] lg:w-[25%] xl:w-[20%] shadow-lg relative transition-transform duration-300 ease-in-out hover:scale-105" // Adjust width here for larger sizes
     >
       {/* Hover Image */}
       <div
@@ -64,8 +64,8 @@ const Supporters: FC = () => {
       >
         {isButtonHovered === service.id && (
           <Image
-            width="150"
-            height="150"
+            width="180" // Increased width for a bigger hover image
+            height="180"
             src={service.upperimage}
             alt="hovereffect"
             priority={true}
@@ -75,10 +75,10 @@ const Supporters: FC = () => {
       </div>
 
       {/* Content */}
-      <div className="bg-white rounded-lg p-6 flex flex-col items-center text-center overflow-hidden">
-        <img src={service.icon} alt={service.title} className="w-16 h-16 mb-4" />
-        <p className="text-xs text-gray-500">{service.title}</p>
-        <h3 className="text-lg font-bold">{service.highlight}</h3>
+      <div className="bg-white rounded-lg p-8 flex flex-col items-center text-center overflow-hidden">
+        <img src={service.icon} alt={service.title} className="w-20 h-20 mb-6" /> {/* Increased icon size */}
+        <p className="text-sm text-gray-500">{service.title}</p> {/* Adjusted font size */}
+        <h3 className="text-xl font-bold">{service.highlight}</h3> {/* Adjusted font size */}
 
         {/* Button */}
         <div
@@ -87,15 +87,15 @@ const Supporters: FC = () => {
           {isButtonHovered === service.id ? (
             <div className="flex items-center justify-center">
               <button
-                className="py-[0.5rem] mt-3 px-[0.7rem] text-[0.9rem] font-semibold rounded-full border-[0.1rem] border-gray-300 relative flex items-center justify-center overflow-hidden transition-all hover-animation hover:text-white"
+                className="py-[0.7rem] mt-4 px-[1rem] text-[1rem] font-semibold rounded-full border-[0.1rem] border-gray-300 relative flex items-center justify-center overflow-hidden transition-all hover-animation hover:text-white"
                 onMouseEnter={() => setButtonHoverDirect(service.id)}
                 onMouseLeave={() => setButtonHoverDirect(null)}
                 style={{ transitionDelay: buttonHoverDirect === null ? '0.1s' : '0s' }}
               >
                 {buttonHoverDirect === service.id ? (
-                  <span className="w-[0rem] h-[0rem] text-white text-[0.9rem] rounded-full absolute -z-10 transition-all duration-1000 ease-in-out"></span>
+                  <span className="w-[0rem] h-[0rem] text-white text-[1rem] rounded-full absolute -z-10 transition-all duration-1000 ease-in-out"></span>
                 ) : (
-                  <span className="w-[0rem] h-[0rem] bg-[#39CABB] text-white text-[0.9rem] rounded-full absolute -z-10 transition-all duration-1000 ease-in-out"></span>
+                  <span className="w-[0rem] h-[0rem] bg-[#39CABB] text-white text-[1rem] rounded-full absolute -z-10 transition-all duration-1000 ease-in-out"></span>
                 )}
                 <span className="w-[0rem] h-[0rem] bg-[#39CABB] text-white rounded-full absolute -z-10 transition-all duration-1000 ease-in-out"></span>
                 More details
@@ -103,8 +103,8 @@ const Supporters: FC = () => {
             </div>
           ) : (
             <div className="flex items-center justify-center mx-auto">
-              <button className="py-[.7rem] px-[.7rem] font-bold rounded-full relative flex items-center justify-center overflow-hidden bg-[#39cabb20] hover:black">
-                <BsArrowRight className="text-[1.2rem] text-[#39cabb]" />
+              <button className="py-[.8rem] px-[.8rem] font-bold rounded-full relative flex items-center justify-center overflow-hidden bg-[#39cabb20] hover:black">
+                <BsArrowRight className="text-[1.4rem] text-[#39cabb]" />
               </button>
             </div>
           )}
@@ -112,11 +112,11 @@ const Supporters: FC = () => {
       </div>
 
       {/* Lower Image */}
-      <div className="relative h-[1.5rem]">
+      <div className="relative h-[2rem]">
         {isButtonHovered === service.id && (
           <Image
-            width="150"
-            height="100"
+            width="180"
+            height="120"
             src={service.lowerimage}
             alt="hovereffect"
             priority={true}

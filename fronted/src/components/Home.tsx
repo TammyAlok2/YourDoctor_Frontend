@@ -14,8 +14,12 @@ import FaqPage from "./HomePage/FAQ";
 import AppointmentProcess from "./HomePage/AppointmentProcess";
 import LabLists from "./HomePage/LabLists";
 import Info from "./HomePage/Info";
+
+
 // import { InfiniteMovingCards } from "./ui/infinite-moving-cards";
-// import Testimonials from "./HomePage/Testimonials";
+// import Testimonials from "./HomePage/Testimonials";   
+
+
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState("");

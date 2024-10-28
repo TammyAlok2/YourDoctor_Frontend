@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 
+import Link from 'next/link';
+
 // Mock lab data
 const labData = [
   {
@@ -39,7 +41,7 @@ const LabLists = () => {
     return null;
   }
   return (
-    <div className="min-h-[50%] py-10">
+    <div className="w-[80%] mx-auto p-8 relative mb-[4rem]">
       <div className="container mx-auto">
         <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">Lab Lists</h1>
 
@@ -62,6 +64,14 @@ const LabLists = () => {
             </div>
           ))}
         </div>
+
+
+        <div className='flex justify-center items-center absolute overflow-hidden right-10 my-8 gap-4'>
+        <h1 className='left-right-animation text-[#51c3c3f4] [text-shadow:0.1rem_0.1rem_0.2rem_#51c3c3f4] font-semibold text-[1.3rem]'>See All Labs  {"->"}</h1>
+        <Link href="/allblogs">
+          <button className='font-semibold m-3 p-[0.5rem] shadow-lg hover:shadow-none hover-animation overflow-hidden flex items-center justify-center rounded-lg hover:text-white transition-all duration-1000 ease-in-out'><span className='w-[0rem] h-[0rem] bg-[#3ad0c4] rounded-full absolute -z-10 transition-all duration-1000 ease-in-out right-[-4rem]'></span>Click here...</button>
+        </Link>
+      </div>
       </div>
     </div>
   );
