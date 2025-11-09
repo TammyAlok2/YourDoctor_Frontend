@@ -35,6 +35,7 @@ type PageProps = {
 const Navbar: NextPage<PageProps> = ({ title }) => {
 
   const cookies = parseCookies();
+  console.log(cookies)
   let token = cookies.loginToken; // Assuming the token is stored in a cookie called 'token'
   // console.log('token is this ',token)
 
